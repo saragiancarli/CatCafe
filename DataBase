@@ -1,0 +1,53 @@
+CREATE DATABASE IF NOT EXISTS `MyAppDB`
+  /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+
+USE `MyAppDB`;
+
+/*------------------------------------------------------------------
+  2. TABELLA User  (id, first_name, last_name, email, phone_number, password)
+------------------------------------------------------------------*/
+CREATE TABLE IF NOT EXISTS `User` (
+    id            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    first_name    VARCHAR(100) NOT NULL,
+    last_name     VARCHAR(100) NOT NULL,
+    email         VARCHAR(150) NOT NULL UNIQUE,
+    phone_number  VARCHAR(30)  NOT NULL,
+    password      VARCHAR(255) NOT NULL,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
+
+/* Utente di prova – password in chiaro per test (usa hash in produzione) */
+INSERT INTO `User` (first_name, last_name, email, phone_number, password)
+VALUES ('Charlie', 'Tester', 'charlie.tester@example.com',
+        '123456789', '1')
+ON DUPLICATE KEY UPDATE id = id;   -- evita errore se rilanci lo script
+/* crea la tabella con i campi richiesti */
+CREATE TABLE IF NOT EXISTS  `Staf` (
+    Stafid          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Staf_first_name VARCHAR(100) NOT NULL,
+    Staflast_name   VARCHAR(100) NOT NULL,
+    Stafemail       VARCHAR(150) NOT NULL UNIQUE,
+    Stafpassword    VARCHAR(255) NOT NULL,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
+
+/* inserisci (o aggiorna se già presente) */
+INSERT INTO  `Staf` (Staf_first_name, Staflast_name, Stafemail, Stafpassword)
+VALUES ('Matteo', 'Tester', 'matteo.tester@example.com', '1234')
+ON DUPLICATE KEY UPDATE Stafid = Stafid;
+CREATE TABLE IF NOT EXISTS `bookings` (
+    id                   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    email                VARCHAR(150)  NOT NULL,
+    nomePrenotazione     VARCHAR(255)  NOT NULL,
+    data                 DATE          NOT NULL,
+    ora                  TIME          NOT NULL,
+    numeroPartecipanti  INT UNSIGNED  NOT NULL,
+    status               VARCHAR(20)   NOT NULL DEFAULT 'PENDING',
+
+    /* FK opzionale (scommenta se esiste tabella users) */
+    -- FOREIGN KEY (email) REFERENCES users(email)
+    --     ON UPDATE CASCADE
+    --     ON DELETE CASCADE,
+
+    UNIQUE KEY uk_email_data (email, data)   -- evita doppie prenotazioni
+) ENGINE = InnoDB;
