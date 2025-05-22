@@ -1,0 +1,58 @@
+package Bean;
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import Entity.Booking;
+import Entity.BookingStatus;
+
+public class ManageBookingBean {
+
+    /* ---------- campi ---------- */
+    private final List<Booking> bookings = new ArrayList<>();
+    private Booking selected;
+
+    /* ---------- costruttori ---------- */
+    /** Costruttore vuoto (se ti serve ancora). */
+    public ManageBookingBean() { }
+
+    /** ❶ Costruttore che accetta subito la prenotazione
+        – è quello richiesto dal riferimento  ManageBookingBean::new  */
+    public ManageBookingBean(Booking booking) {
+        this.selected = booking;
+    }
+
+    /* ---------- lista completa ---------- */
+    public void setBookings(List<Booking> list) {
+        bookings.clear();
+        if (list != null) bookings.addAll(list);
+    }
+    public List<Booking> getBookings() {
+        return Collections.unmodifiableList(bookings);
+    }
+
+    /* ---------- selezione ---------- */
+    public void   setSelected(Booking b) {
+    	this.selected = b;
+    	}
+    public Booking getSelected()        {
+    	return selected; 
+    	}
+    public boolean hasSelection()       {
+    	return selected != null; 
+    	}
+
+    /* ---------- azioni ---------- */
+    public void confirmSelection() {
+    	if (selected != null) selected.confirm();
+    	}
+    public void cancelSelection()  {
+    	if (selected != null) selected.cancel(); 
+    	}
+
+    public boolean isAlreadyDecided() {
+        return selected == null || selected.getStatus() != BookingStatus.PENDING;
+    }
+}

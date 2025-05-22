@@ -1,0 +1,99 @@
+package ControllerGrafici;
+
+
+import javafx.scene.layout.VBox;
+
+import java.util.logging.Logger;
+
+import Bean.ClientRegistrationBean;
+import Bean.ModelBeanFactory;
+import ControllerApplicativi.ClientRegistrationController;
+import View.RegistrationViewAlternative;
+
+public class RegistrationAlternativeController {
+
+    private static final Logger LOG =
+            Logger.getLogger(RegistrationAlternativeController.class.getName());
+
+    private final NavigationService navigationService;
+    private final String            userType;          // "user" | "staf" o null
+
+    private final RegistrationViewAlternative view;    // GUI concreta
+    private final ClientRegistrationController service = new ClientRegistrationController();
+
+    /* ------------------------------------------------------------ */
+    public RegistrationAlternativeController(NavigationService nav, String userType) {
+        this.navigationService = nav;
+        this.userType          = userType;
+
+        this.view = new RegistrationViewAlternative() {
+            
+            protected String getTitleText() {
+                return "Registrazione " + (userType == null
+                        ? "" : userType.equals("user") ? "User" : "Staf");
+            }
+             public void hideSpecificErrors() { /* se serve */ }
+        };
+
+        addEventHandlers();
+    }
+
+    /* ------------------------------------------------------------ */
+    private void addEventHandlers() {
+        view.getConfirmButton().setOnAction(e -> handleRegistration());
+        view.getLoginButton().setOnAction(e  -> navigationService
+                .navigateToLogin(navigationService, userType));
+    }
+
+    /* ------------------------------------------------------------ */
+    private void handleRegistration() {
+
+        /* 1 · popola il bean dalla view */
+        ClientRegistrationBean bean =
+                ModelBeanFactory.getClientRegistrationBean(view);
+
+        if (userType != null) bean.setUserType(userType);   // scelta fissa
+        /* altrimenti l’ha già impostato il factory via getSelectedUserType() */
+
+        /* 2 · validazione GUI usando i metodi atomici del bean */
+        boolean ok = true;
+        view.hideAllErrors();
+
+        if (!bean.hasValidFirstName())  { view.showFirstNameError();                     ok = false; }
+        if (!bean.hasValidLastName())   { view.showLastNameError();                      ok = false; }
+        if (!bean.hasValidEmail())      { view.showEmailError("email non conforme");      ok = false; }
+        if (!bean.hasValidPhone())      { view.showPhoneNumberError("10 cifre richieste"); ok = false; }
+        if (!bean.hasValidPassword())   { view.showPasswordError("8-16 caratteri");      ok = false; }
+        if (!bean.passwordsMatch())     { view.showRepeatPasswordError("Le password non coincidono"); ok = false; }
+
+        if (!ok) return;                // fermati – errori visibili in GUI
+
+        /* 3 · business: tenta la registrazione */
+        String esito = service.registerUser(bean);
+
+        switch (esito) {
+            case "success" -> navigateToNextPage();
+
+            case "error:user_already_exists" ->
+                view.showEmailError("Email o telefono già registrati");
+
+            case "error:database_error" ->
+                view.getDatabaseError().setText("Errore di sistema. Riprova più tardi.");
+
+            case "error:validation" ->
+                view.getDatabaseError().setText("Dati non validi.");
+
+            default ->
+                view.getDatabaseError().setText("Errore sconosciuto.");
+        }
+    }
+
+    /* ------------------------------------------------------------ */
+    private void navigateToNextPage() {
+        navigationService.navigateToHomePage(navigationService,
+                                             userType != null ? userType : "user");
+    }
+
+    /* ------------------------------------------------------------ */
+    public VBox getRoot() { return view.getRoot(); }
+}
