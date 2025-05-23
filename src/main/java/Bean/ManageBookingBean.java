@@ -37,22 +37,12 @@ public class ManageBookingBean {
     public void   setSelected(Booking b) {
     	this.selected = b;
     	}
-    public Booking getSelected()        {
+    public Booking getSelected() {
     	return selected; 
     	}
-    public boolean hasSelection()       {
+    public boolean hasSelection() {
     	return selected != null; 
     	}
-
-    /* ---------- azioni ---------- */
-    public void confirmSelection() {
-    	if (selected != null) selected.confirm();
-    	}
-    public void cancelSelection()  {
-    	if (selected != null) selected.cancel(); 
-    	}
-
-    public boolean isAlreadyDecided() {
-        return selected == null || selected.getStatus() != BookingStatus.PENDING;
-    }
+    
+   
 }
