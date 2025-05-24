@@ -33,16 +33,18 @@ public class HomePageAlternativeController {
         if (sel == homeView.getBookSeatOption()) {
         	navigationService.navigateToBooking(navigationService, typeOfLogin);
 
-        } //else if (sel == view.getAdoptOption()) {
-            //navigationService.navigateToAdoption(navigationService, typeOfLogin);}     
+        } 
+        /*else if (sel == view.getAdoptOption()) {
+            navigationService.navigateToAdoption(navigationService, typeOfLogin);}     */
 
          
     else if (sel == homeView.getMenageBookOption()) {
     	navigationService.navigateToMenageBooking(navigationService, typeOfLogin);       
 
-        } //else if (sel == view.getCatOption()) {
+        } 
+        /*else if (sel == view.getCatOption()) {
             //navigationService.navigateToManageCats(navigationService);              
-        //}
+        }*/
     });
 }
 

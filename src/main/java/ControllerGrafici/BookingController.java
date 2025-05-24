@@ -14,7 +14,7 @@ import View.BookingView;
 
 public class BookingController {
 
-    private static final Logger LOG =
+    private static final Logger lOG =
             Logger.getLogger(BookingController.class.getName());
 
 	
@@ -22,7 +22,7 @@ public class BookingController {
     /* ------------------------------------------------------------ */
     private final NavigationService nav;
     private final BookingView   view;
-    private  String typeOfLogin;
+    private final String typeOfLogin;
     private final BookingService    service = new BookingService();
 
     /* ------------------------------------------------------------ */
@@ -72,7 +72,7 @@ public class BookingController {
         switch (esito) {
 
             case "success" -> {
-                LOG.info("Prenotazione salvata con successo");
+                lOG.info("Prenotazione salvata con successo");
                 nav.navigateToHomePage(nav, "user");                 // torni alla home
             }
 
@@ -92,7 +92,7 @@ public class BookingController {
 
     /* ----------------------- annulla ---------------------------- */
     private void handleCancel() {
-        nav.navigateToHomePage(nav, "user");
+        nav.navigateToHomePage(nav, typeOfLogin);
     }
 
     /* -------------------- root per il NavigationManager --------- */

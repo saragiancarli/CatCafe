@@ -81,7 +81,7 @@ public class BookingControllerAlternative {
         switch (esito) {
             case "success" ->
             
-                 navigation.navigateToHomePage(navigation, "user");
+                 navigation.navigateToHomePage(navigation, typeOfLogin);
 
             case "error:duplicate" ->
                  view.setDataError("Hai già una prenotazione per quel giorno.");

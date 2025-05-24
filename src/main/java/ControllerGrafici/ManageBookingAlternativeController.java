@@ -19,7 +19,7 @@ public class ManageBookingAlternativeController {
             new ManageBookingAlternativeView();
     private final ManageBookingService service = new ManageBookingService();
 
-	private NavigationService nav;
+	private final NavigationService nav;
 
 	private String typeOfLogin;
 

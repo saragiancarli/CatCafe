@@ -17,9 +17,9 @@ public class ManageBookingController {
     private final ManageBookingView    view    = new ManageBookingView();
     private final ManageBookingService service = new ManageBookingService();
 
-	private NavigationService navigationService;
+	private final NavigationService navigationService;
 
-	private String typeOfLogin;
+	private final String typeOfLogin;
 
     public ManageBookingController(NavigationService navigationService, String typeOfLogin) {
     	this.navigationService=navigationService;
@@ -56,7 +56,7 @@ public class ManageBookingController {
             }
         });
         view.getBtnBack().setOnAction(e -> {
-        	navigationService.navigateToHomePage(navigationService, "staf"); 
+        	navigationService.navigateToHomePage(navigationService, typeOfLogin); 
         });
     }
 
