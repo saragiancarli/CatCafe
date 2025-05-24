@@ -65,7 +65,7 @@ public  class LoginView {
         root.getChildren().addAll(titleLabel, emailField, emailErrorLabel, passwordField, passwordErrorLabel, errorMessage, loginButton,  registrationPrompt, registerButton);
     }
 
-    //protected abstract String getTitleText();
+    
     public  String getType(){
     return typeOfLogin;}
 

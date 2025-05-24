@@ -9,10 +9,10 @@ import javafx.scene.layout.VBox;
 public class HomePageView {
     protected VBox root;
     private final Button bookSeatButton;
-    private final Button AdoptionButton;
-    private final Button MenageBookingButton;
-    private final Button MenageCatButton;
-    private final Button LogoutButton;
+    private final Button adoptionButton;
+    private final Button menageBookingButton;
+    private final Button menageCatButton;
+    private final Button logoutButton;
     
 	private String typeOfLogin;
 	private String text;
@@ -42,38 +42,38 @@ public class HomePageView {
 
         // Bottoni per i casi d'uso
         bookSeatButton = new Button("Prenota Un Tavolo");
-        AdoptionButton = new Button("Adotta un gatto!!");
-        MenageBookingButton = new Button("Gestisci prenotazioni");
-        MenageCatButton = new Button("Gestisci gatti");
-        LogoutButton=new Button("Logout");
+        adoptionButton = new Button("Adotta un gatto!!");
+        menageBookingButton = new Button("Gestisci prenotazioni");
+        menageCatButton = new Button("Gestisci gatti");
+        logoutButton=new Button("Logout");
         
 
         
 
         bookSeatButton.setDisable(!isUser);
-        AdoptionButton.setDisable(!isUser);
+        adoptionButton.setDisable(!isUser);
 
-        MenageBookingButton.setDisable(!isStaf);
-        MenageCatButton.setDisable(!isStaf);
+        menageBookingButton.setDisable(!isStaf);
+        menageCatButton.setDisable(!isStaf);
         
 		// Aggiungi alla root
-        root.getChildren().addAll(description,title, bookSeatButton, AdoptionButton, MenageBookingButton, MenageCatButton,LogoutButton);
+        root.getChildren().addAll(description,title, bookSeatButton, adoptionButton, menageBookingButton, menageCatButton,logoutButton);
     }
 
     public Button getBookButton() {
         return bookSeatButton;
     }
     public Button getBookActivityButton() {
-        return AdoptionButton;
+        return adoptionButton;
     }
     public Button getMenageBookingButton() {
-        return MenageBookingButton;
+        return menageBookingButton;
     }
     public Button getReceptionistAccessButton() {
-        return MenageCatButton;
+        return menageCatButton;
     }
     public Button getLogoutButton() {
-    	return LogoutButton;
+    	return logoutButton;
     	}
     public VBox getRoot() { 
     	return root;

@@ -20,16 +20,16 @@ public class BookingView {
     private final ComboBox<LocalTime> ora;           // ora (slot da 15')
     private final TextField  numeroPartecipanti;     // n. posti
     private final TextField  nomePrenotazione;       // titolo
-    private final TextField  Email;                  // e-mail di conferma
+    private final TextField  email;                  // e-mail di conferma
 
     private final Button confirmButton;
     private final Button cancelButton;
 
     /* ---------- label di errore ----------------------------------- */
-    private final Label DataErrorLabel;
-    private final Label OraErrorLabel;
+    private final Label dataErrorLabel;
+    private final Label oraErrorLabel;
     private final Label numeroPartecipantiErrorLabel;
-    private final Label NomePrenotazioneErrorLabel;
+    private final Label nomePrenotazioneErrorLabel;
     private final Label emailErrorLabel;
 
     private static final String ERROR_MESSAGE = "error-message";   // stile CSS
@@ -49,14 +49,14 @@ public class BookingView {
         Label dataLabel = new Label("Giorno");
         data = new DatePicker();
         data.setPromptText("Seleziona la data");
-        DataErrorLabel = makeErrLabel();
+        dataErrorLabel = makeErrLabel();
 
         /* ----- Ora (ComboBox) ----- */
         Label oraLabel = new Label("Ora di arrivo");
         ora = new ComboBox<>();
         populateTimeBox();                      // slot 15-min 08:00-23:45
         ora.setPromptText("Seleziona l'ora");
-        OraErrorLabel = makeErrLabel();
+        oraErrorLabel = makeErrLabel();
 
         /* ----- Numero partecipanti ----- */
         Label partLabel = new Label("Numero partecipanti");
@@ -70,13 +70,13 @@ public class BookingView {
         nomePrenotazione = new TextField();
         nomePrenotazione.setPromptText("Es. 'Luca'");
         nomePrenotazione.setMaxWidth(200);
-        NomePrenotazioneErrorLabel = makeErrLabel();
+        nomePrenotazioneErrorLabel = makeErrLabel();
 
         /* ----- E-mail ----- */
         Label emailLabel = new Label("E-mail di conferma");
-        Email = new TextField();
-        Email.setPromptText("nome@esempio.com");
-        Email.setMaxWidth(260);
+        email = new TextField();
+        email.setPromptText("nome@esempio.com");
+        email.setMaxWidth(260);
         emailErrorLabel = makeErrLabel();
 
         /* ----- Bottoni ----- */
@@ -86,11 +86,11 @@ public class BookingView {
         /* ----- composizione ----- */
         root.getChildren().addAll(
             title,
-            dataLabel, data, DataErrorLabel,
-            oraLabel,  ora,  OraErrorLabel,
+            dataLabel, data, dataErrorLabel,
+            oraLabel,  ora,  oraErrorLabel,
             partLabel, numeroPartecipanti, numeroPartecipantiErrorLabel,
-            nomeLabel, nomePrenotazione, NomePrenotazioneErrorLabel,
-            emailLabel, Email, emailErrorLabel,
+            nomeLabel, nomePrenotazione, nomePrenotazioneErrorLabel,
+            emailLabel, email, emailErrorLabel,
             confirmButton, cancelButton
         );
     }
@@ -125,31 +125,31 @@ public class BookingView {
     	return nomePrenotazione.getText().trim();
     	}
     public String getConfirmationEmail() {
-    	return Email.getText().trim();
+    	return email.getText().trim();
     	}
 
     /* ===============================================================
                            ERROR-HANDLING METHODS
        ===============================================================*/
     public void hideAllErrors() {
-        DataErrorLabel.setVisible(false);
-        OraErrorLabel.setVisible(false);
+    	dataErrorLabel.setVisible(false);
+    	oraErrorLabel.setVisible(false);
         numeroPartecipantiErrorLabel.setVisible(false);
-        NomePrenotazioneErrorLabel.setVisible(false);
+        nomePrenotazioneErrorLabel.setVisible(false);
         emailErrorLabel.setVisible(false);
     }
 
     public void setDataError(String m)  { 
-    	showErr(DataErrorLabel, m); 
+    	showErr(dataErrorLabel, m); 
     	}
     public void setOraError(String m)  { 
-    	showErr(OraErrorLabel,  m);
+    	showErr(oraErrorLabel,  m);
     	}
     public void setPartecipantiError(String m)  {
     	showErr(numeroPartecipantiErrorLabel, m); 
     	}
     public void setNomeError(String m) {
-    	showErr(NomePrenotazioneErrorLabel, m); 
+    	showErr(nomePrenotazioneErrorLabel, m); 
     	}
     public void setEmailError(String m)  {
     	showErr(emailErrorLabel, m); 

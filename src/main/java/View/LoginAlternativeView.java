@@ -28,7 +28,7 @@ public  class LoginAlternativeView {
         root.getStyleClass().add("root");
 
         titleLabel = new Label("Benventuto accedi con le tue credenziali");
-        //titleLabel.getStyleClass().add("label");
+        
 
         emailField = new TextField();
         emailField.setPromptText("Email");

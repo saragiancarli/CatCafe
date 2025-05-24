@@ -7,9 +7,9 @@ import javafx.scene.layout.VBox;
 public class HomePageAlternative {
     protected VBox root;
     private final RadioButton bookSeatOption;
-    private final RadioButton AdoptOption;
-    private final RadioButton MenageBookOption;
-    private final RadioButton CatOption;
+    private final RadioButton adoptOption;
+    private final RadioButton menageBookOption;
+    private final RadioButton catOption;
     private final Button confirmButton;
     private final ToggleGroup selectionGroup;
     private final Label selectionError;
@@ -37,20 +37,20 @@ public class HomePageAlternative {
         selectionGroup = new ToggleGroup();
 
         bookSeatOption = new RadioButton("Prenota Tavolo");
-        AdoptOption = new RadioButton("Adotta");
-        MenageBookOption = new RadioButton("Gestisci prenotazioni");
-        CatOption = new RadioButton("Gestisci Gatti");
+        adoptOption = new RadioButton("Adotta");
+        menageBookOption = new RadioButton("Gestisci prenotazioni");
+        catOption = new RadioButton("Gestisci Gatti");
 
         bookSeatOption.setToggleGroup(selectionGroup);
-        AdoptOption.setToggleGroup(selectionGroup);
-        MenageBookOption.setToggleGroup(selectionGroup);
-        CatOption.setToggleGroup(selectionGroup);
+        adoptOption.setToggleGroup(selectionGroup);
+        menageBookOption.setToggleGroup(selectionGroup);
+        catOption.setToggleGroup(selectionGroup);
 
         bookSeatOption .setDisable(!isUser);
-        AdoptOption    .setDisable(!isUser);
+        adoptOption    .setDisable(!isUser);
 
-        MenageBookOption.setDisable(!isStaf);
-        CatOption .setDisable(!isStaf);
+        menageBookOption.setDisable(!isStaf);
+        catOption .setDisable(!isStaf);
         // Messaggio di errore nascosto inizialmente
         selectionError = new Label("Seleziona un'opzione prima di confermare.");
         selectionError.setStyle("-fx-text-fill: red;");
@@ -64,9 +64,9 @@ public class HomePageAlternative {
                 title,
                
                 bookSeatOption,
-                AdoptOption,
-                MenageBookOption,
-                CatOption,
+                adoptOption,
+                menageBookOption,
+                catOption,
                 selectionError,
                 confirmButton
         );
@@ -77,14 +77,14 @@ public class HomePageAlternative {
     }
 
     public RadioButton getAdoptOption() {
-        return AdoptOption;
+        return adoptOption;
     }
 
     public RadioButton getMenageBookOption() {
-        return MenageBookOption;
+        return menageBookOption;
     }
     public RadioButton getCatOption() {
-        return CatOption;
+        return catOption;
     }
 
     public Button getConfirmButton() {

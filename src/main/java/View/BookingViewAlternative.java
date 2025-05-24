@@ -16,22 +16,22 @@ public class BookingViewAlternative {
     /* ---------- nodi principali (NOMI INVARIATI) ------------------ */
     protected VBox root;                       // contenitore radice
 
-    private final DatePicker       Data;       // giorno
-    private final Spinner<Integer> OraHour;    // ora  0-23
-    private final Spinner<Integer> OraMin;     // min  0-45 step 15
+    private final DatePicker       data;       // giorno
+    private final Spinner<Integer> oraHour;    // ora  0-23
+    private final Spinner<Integer> oraMin;     // min  0-45 step 15
 
     private final TextField  numeroPartecipanti;
-    private final TextField  NomePrenotazione;
-    private final TextField  Email;
+    private final TextField  nomePrenotazione;
+    private final TextField  email;
 
     private final Button confirmButton;
     private final Button cancelButton;
 
     /* ---------- label di errore ----------------------------------- */
-    private final Label DataErrorLabel;
-    private final Label OraErrorLabel;
+    private final Label dataErrorLabel;
+    private final Label oraErrorLabel;
     private final Label numeroPartecipantiErrorLabel;
-    private final Label NomePrenotazioneErrorLabel;
+    private final Label nomePrenotazioneErrorLabel;
     private final Label emailErrorLabel;
 
     private static final String ERR_STYLE = "error-message";  // css class
@@ -54,20 +54,20 @@ public class BookingViewAlternative {
 
         /* --- data --- */
         grid.add(new Label("Giorno"), 0, ++row);
-        Data = new DatePicker();
-        grid.add(Data, 1, row);
-        DataErrorLabel = makeErrLabel();
-        grid.add(DataErrorLabel, 2, row);
+        data = new DatePicker();
+        grid.add(data, 1, row);
+        dataErrorLabel = makeErrLabel();
+        grid.add(dataErrorLabel, 2, row);
 
         /* --- ora (spinner) --- */
         grid.add(new Label("Ora di arrivo"), 0, ++row);
-        OraHour = new Spinner<>(0, 23, 8);
-        OraHour.setPrefWidth(70);
-        OraMin  = new Spinner<>(0, 45, 0, 15);
-        OraMin.setPrefWidth(70);
-        grid.add(new HBox(5, OraHour, new Label(":"), OraMin), 1, row);
-        OraErrorLabel = makeErrLabel();
-        grid.add(OraErrorLabel, 2, row);
+        oraHour = new Spinner<>(0, 23, 8);
+        oraHour.setPrefWidth(70);
+        oraMin  = new Spinner<>(0, 45, 0, 15);
+        oraMin.setPrefWidth(70);
+        grid.add(new HBox(5, oraHour, new Label(":"), oraMin), 1, row);
+        oraErrorLabel = makeErrLabel();
+        grid.add(oraErrorLabel, 2, row);
 
         /* --- n. partecipanti --- */
         grid.add(new Label("Partecipanti"), 0, ++row);
@@ -79,15 +79,15 @@ public class BookingViewAlternative {
 
         /* --- nome prenotazione --- */
         grid.add(new Label("Nome prenotazione"), 0, ++row);
-        NomePrenotazione = new TextField();
-        grid.add(NomePrenotazione, 1, row);
-        NomePrenotazioneErrorLabel = makeErrLabel();
-        grid.add(NomePrenotazioneErrorLabel, 2, row);
+        nomePrenotazione = new TextField();
+        grid.add(nomePrenotazione, 1, row);
+        nomePrenotazioneErrorLabel = makeErrLabel();
+        grid.add(nomePrenotazioneErrorLabel, 2, row);
 
         /* --- email --- */
         grid.add(new Label("E-mail conferma"), 0, ++row);
-        Email = new TextField();
-        grid.add(Email, 1, row);
+        email = new TextField();
+        grid.add(email, 1, row);
         emailErrorLabel = makeErrLabel();
         grid.add(emailErrorLabel, 2, row);
 
@@ -108,41 +108,41 @@ public class BookingViewAlternative {
     public Button    getConfirmButton()   { return confirmButton; }
     public Button    getCancelButton()    { return cancelButton; }
 
-    public LocalDate getDate()            { return Data.getValue(); }
+    public LocalDate getDate()            { return data.getValue(); }
 
     public LocalTime getTime() {                // calcola dal doppio spinner
-        return LocalTime.of(OraHour.getValue(), OraMin.getValue());
+        return LocalTime.of(oraHour.getValue(), oraMin.getValue());
     }
 
     public int getParticipants() {
         try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
         catch (NumberFormatException e) { return 0; }
     }
-    public String getNomePrenotazione()  { return NomePrenotazione.getText().trim(); }
-    public String getConfirmationEmail() { return Email.getText().trim(); }
+    public String getNomePrenotazione()  { return nomePrenotazione.getText().trim(); }
+    public String getConfirmationEmail() { return email.getText().trim(); }
 
     /* ===============================================================
                        ERROR-HANDLING (uguali alla view base)
        ===============================================================*/
     public void hideAllErrors() {
-        DataErrorLabel.setVisible(false);
-        OraErrorLabel.setVisible(false);
+    	dataErrorLabel.setVisible(false);
+        oraErrorLabel.setVisible(false);
         numeroPartecipantiErrorLabel.setVisible(false);
-        NomePrenotazioneErrorLabel.setVisible(false);
+        nomePrenotazioneErrorLabel.setVisible(false);
         emailErrorLabel.setVisible(false);
     }
 
     public void setDataError(String m){
-    	showErr(DataErrorLabel, m);
+    	showErr(dataErrorLabel, m);
     	}
     public void setOraError(String m)    {
-    	showErr(OraErrorLabel,  m); 
+    	showErr(oraErrorLabel,  m); 
     	}
     public void setPartecipantiError(String m) {
     	showErr(numeroPartecipantiErrorLabel, m); 
     	}
     public void setNomeError(String m) { 
-    	showErr(NomePrenotazioneErrorLabel, m); 
+    	showErr(nomePrenotazioneErrorLabel, m); 
     	}
     public void setEmailError(String m)   {
     	showErr(emailErrorLabel, m); 
