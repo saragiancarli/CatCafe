@@ -17,7 +17,7 @@ public class BookingDaoFile implements GenericDao<Booking> {
     private static final String FILE_PATH = "bookings.json";
     private final Gson gson;
     private List<Booking> list;
-    private final AtomicInteger COUNTER;              // per id auto-increment
+    private final AtomicInteger cOUNTER;              // per id auto-increment
 
     public BookingDaoFile() {
         gson = new GsonBuilder()
@@ -25,7 +25,7 @@ public class BookingDaoFile implements GenericDao<Booking> {
                 .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
                 .setPrettyPrinting().create();
         list = load();
-        COUNTER = new AtomicInteger(list.stream()
+        cOUNTER = new AtomicInteger(list.stream()
                                         .mapToInt(Booking::getId)
                                         .max().orElse(0));
     }
@@ -44,7 +44,7 @@ public class BookingDaoFile implements GenericDao<Booking> {
 
     /* ---------- CRUD ---------- */
     @Override public void create(Booking b){
-        b.setId(COUNTER.incrementAndGet());
+        b.setId(cOUNTER.incrementAndGet());
         list.add(b); save();
     }
     @Override public Booking read(Object...k){ 

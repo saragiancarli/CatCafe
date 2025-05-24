@@ -16,10 +16,10 @@ public class BookingView {
     /* ---------- nodi principali (nomi richiesti) ------------------ */
     protected VBox root;                             // contenitore radice
 
-    private final DatePicker       Data;             // giorno
-    private final ComboBox<LocalTime> Ora;           // ora (slot da 15')
+    private final DatePicker       data;             // giorno
+    private final ComboBox<LocalTime> ora;           // ora (slot da 15')
     private final TextField  numeroPartecipanti;     // n. posti
-    private final TextField  NomePrenotazione;       // titolo
+    private final TextField  nomePrenotazione;       // titolo
     private final TextField  Email;                  // e-mail di conferma
 
     private final Button confirmButton;
@@ -47,15 +47,15 @@ public class BookingView {
 
         /* ----- Data (DatePicker) ----- */
         Label dataLabel = new Label("Giorno");
-        Data = new DatePicker();
-        Data.setPromptText("Seleziona la data");
+        data = new DatePicker();
+        data.setPromptText("Seleziona la data");
         DataErrorLabel = makeErrLabel();
 
         /* ----- Ora (ComboBox) ----- */
         Label oraLabel = new Label("Ora di arrivo");
-        Ora = new ComboBox<>();
+        ora = new ComboBox<>();
         populateTimeBox();                      // slot 15-min 08:00-23:45
-        Ora.setPromptText("Seleziona l'ora");
+        ora.setPromptText("Seleziona l'ora");
         OraErrorLabel = makeErrLabel();
 
         /* ----- Numero partecipanti ----- */
@@ -67,9 +67,9 @@ public class BookingView {
 
         /* ----- Nome prenotazione ----- */
         Label nomeLabel = new Label("Nome prenotazione");
-        NomePrenotazione = new TextField();
-        NomePrenotazione.setPromptText("Es. 'Luca'");
-        NomePrenotazione.setMaxWidth(200);
+        nomePrenotazione = new TextField();
+        nomePrenotazione.setPromptText("Es. 'Luca'");
+        nomePrenotazione.setMaxWidth(200);
         NomePrenotazioneErrorLabel = makeErrLabel();
 
         /* ----- E-mail ----- */
@@ -86,10 +86,10 @@ public class BookingView {
         /* ----- composizione ----- */
         root.getChildren().addAll(
             title,
-            dataLabel, Data, DataErrorLabel,
-            oraLabel,  Ora,  OraErrorLabel,
+            dataLabel, data, DataErrorLabel,
+            oraLabel,  ora,  OraErrorLabel,
             partLabel, numeroPartecipanti, numeroPartecipantiErrorLabel,
-            nomeLabel, NomePrenotazione, NomePrenotazioneErrorLabel,
+            nomeLabel, nomePrenotazione, NomePrenotazioneErrorLabel,
             emailLabel, Email, emailErrorLabel,
             confirmButton, cancelButton
         );
@@ -109,10 +109,10 @@ public class BookingView {
     	}
 
     public LocalDate getDate()            { 
-    	return Data.getValue(); 
+    	return data.getValue(); 
     	}
     public LocalTime getTime()            {
-    	return Ora.getValue(); 
+    	return ora.getValue(); 
     	}
 
     public int getParticipants() {
@@ -122,7 +122,7 @@ public class BookingView {
         	}
     }
     public String getNomePrenotazione()  { 
-    	return NomePrenotazione.getText().trim();
+    	return nomePrenotazione.getText().trim();
     	}
     public String getConfirmationEmail() {
     	return Email.getText().trim();
@@ -170,13 +170,13 @@ public class BookingView {
 
     /** Popola il ComboBox con slot di 15 minuti (08:00-23:45). */
     private void populateTimeBox() {
-        Ora.setItems(FXCollections.observableArrayList(
+    	ora.setItems(FXCollections.observableArrayList(
             IntStream.rangeClosed(32, 95)               // 08:00 → 23:45
                      .mapToObj(i -> LocalTime.of(i/4, (i%4)*15))
                      .collect(Collectors.toList())
         ));
-        Ora.setButtonCell(timeCell());
-        Ora.setCellFactory(list -> timeCell());
+    	ora.setButtonCell(timeCell());
+    	ora.setCellFactory(list -> timeCell());
     }
     private ListCell<LocalTime> timeCell() {
         return new ListCell<>() {
