@@ -49,7 +49,7 @@ if(bean== null || bean.getEmail() == null || bean.getEmail().isBlank()){return n
                 case "user" -> {
                     User u = userDao.read(bean.getEmail());
                     if (match(bean.getPassword(), u.getPassword())) yield u;
-                    System.out.println(u.getPassword());
+                    
                     throw new WrongLoginCredentialsException("Password errata");
                 }
                 case "staf" -> {

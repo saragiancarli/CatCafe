@@ -5,14 +5,14 @@ public class HomePageController {
     
     private final NavigationService navigationService;
 	private String typeOfLogin;
-	private HomePageView HomeView;
+	private HomePageView homeView;
    
     
 
     public HomePageController(NavigationService navigationService,String typeOfLogin) {
         this.navigationService = navigationService;
         this.typeOfLogin=typeOfLogin;
-        this.HomeView = new HomePageView(typeOfLogin);
+        this.homeView = new HomePageView(typeOfLogin);
         addEventHandlers();
         
     }
@@ -21,9 +21,9 @@ public class HomePageController {
 
     private void addEventHandlers() {
        
-    	HomeView.getBookButton().setOnAction(e -> goToBooking());
-    	HomeView.getMenageBookingButton().setOnAction(e -> goToMenageBooking());
-    	HomeView.getLogoutButton().setOnAction(e ->goToLogin());
+    	homeView.getBookButton().setOnAction(e -> goToBooking());
+    	homeView.getMenageBookingButton().setOnAction(e -> goToMenageBooking());
+    	homeView.getLogoutButton().setOnAction(e ->goToLogin());
     	
     }
 
@@ -38,6 +38,6 @@ public class HomePageController {
         }
 
     public VBox getRoot() {
-    	return this.HomeView.getRoot();
+    	return this.homeView.getRoot();
     }
 }

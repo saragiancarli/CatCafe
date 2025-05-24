@@ -1,13 +1,13 @@
 package Bean;
 
 
-import java.util.regex.Pattern;
+
 
 public class LoginBean {
     private String email;
     private String password;
     private String userType;
-    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    
 
     public LoginBean() {
         // Costruttore vuoto per inizializzazione graduale

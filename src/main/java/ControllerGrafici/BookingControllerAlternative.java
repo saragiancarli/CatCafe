@@ -17,15 +17,18 @@ import View.BookingViewAlternative;
 public class BookingControllerAlternative {
 
     /* --------------------- campi --------------------------------- */
-    private final Logger LOG = Logger.getLogger(getClass().getName());
+    private final Logger lOG = Logger.getLogger(getClass().getName());
 
     private final BookingViewAlternative view;
     private final NavigationService navigation;
     private final BookingService    service   = new BookingService();
 
+	private String typeOfLogin;
+
     /* ============================================================= */
     public BookingControllerAlternative(NavigationService navigation,String typeOfLogin) {
         this.navigation = navigation;
+        this.typeOfLogin=typeOfLogin;
         this.view = new BookingViewAlternative();
         addEventHandlers();
     }
@@ -91,7 +94,7 @@ public class BookingControllerAlternative {
                         "Errore DB", "Impossibile salvare la prenotazione",
                         "Riprova più tardi.");
 
-            default -> LOG.warning("Esito inatteso: " + esito);
+            default -> lOG.warning("Esito inatteso");
         }
     }
 }

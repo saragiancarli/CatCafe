@@ -22,14 +22,14 @@ public class BookingController {
     /* ------------------------------------------------------------ */
     private final NavigationService nav;
     private final BookingView   view;
-    private  String TypeOfLogin;
+    private  String typeOfLogin;
     private final BookingService    service = new BookingService();
 
     /* ------------------------------------------------------------ */
-    public BookingController(NavigationService nav,String TypeOfLogin) {
+    public BookingController(NavigationService nav,String typeOfLogin) {
         this.nav  = nav;
         this.view = new BookingView();
-        this.TypeOfLogin=TypeOfLogin;
+        this.typeOfLogin=typeOfLogin;
         addEventHandlers();
     }
 

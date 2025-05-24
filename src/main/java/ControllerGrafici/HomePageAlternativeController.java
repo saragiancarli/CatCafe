@@ -11,33 +11,33 @@ public class HomePageAlternativeController {
 
     private String typeOfLogin;
     
-    private HomePageAlternative HomeView;
+    private HomePageAlternative homeView;
 	
     public HomePageAlternativeController(NavigationService navigationService,String typeOfLogin) {
         this.navigationService = navigationService;
-        this.HomeView = new HomePageAlternative(typeOfLogin);
+        this.homeView = new HomePageAlternative(typeOfLogin);
         this.typeOfLogin=typeOfLogin;
         addEventHandlers();
     }
 
     
     private void addEventHandlers() {
-    	HomeView.getConfirmButton().setOnAction(e -> {
+    	homeView.getConfirmButton().setOnAction(e -> {
 
-        Toggle sel = HomeView.getSelectionGroup().getSelectedToggle();
+        Toggle sel = homeView.getSelectionGroup().getSelectedToggle();
         if (sel == null) {                    // nessuna scelta
-        	HomeView.showSelectionError();
+        	homeView.showSelectionError();
             return;
         }
         /* Radio-button  ➜  navigazione corrispondente */
-        if (sel == HomeView.getBookSeatOption()) {
+        if (sel == homeView.getBookSeatOption()) {
         	navigationService.navigateToBooking(navigationService, typeOfLogin);
 
         } //else if (sel == view.getAdoptOption()) {
-            //navigationService.navigateToAdoption(navigationService, typeOfLogin);      
+            //navigationService.navigateToAdoption(navigationService, typeOfLogin);}     
 
-        //} 
-    else if (sel == HomeView.getMenageBookOption()) {
+         
+    else if (sel == homeView.getMenageBookOption()) {
     	navigationService.navigateToMenageBooking(navigationService, typeOfLogin);       
 
         } //else if (sel == view.getCatOption()) {
@@ -56,6 +56,6 @@ public class HomePageAlternativeController {
 	   	navigationService.navigateToBooking(navigationService,typeOfLogin);
 	    }
     public VBox getRoot() {
-    	return this.HomeView.getRoot();}
+    	return this.homeView.getRoot();}
        
 }
