@@ -35,8 +35,8 @@ public class BookingController {
 
     /* -------------------------- eventi GUI ---------------------- */
     private void addEventHandlers() {
-        view.getConfirmButton().setOnAction(e -> handleConfirm());
-        view.getCancelButton() .setOnAction(e -> handleCancel());
+        view.getConfirmButton().setOnAction(_ -> handleConfirm());
+        view.getCancelButton() .setOnAction(_ -> handleCancel());
     }
 
     /* --------------------- conferma prenotazione ---------------- */
