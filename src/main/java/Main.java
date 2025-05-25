@@ -38,7 +38,7 @@ public class Main extends Application {
 
         /* ---------------- pulsante conferma ---------------------- */
         Button confirmBtn = new Button("Conferma");
-        confirmBtn.setOnAction(e -> {
+        confirmBtn.setOnAction(_ -> {
 
             /* 1 · inizializza ApplicationFacade (UNA SOLA VOLTA) */
             Store selectedMode = rbDatabase.isSelected() ? Store.DATABASE : Store.STATELESS;
