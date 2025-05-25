@@ -1,4 +1,4 @@
-package controllerGrafici;
+package controller_grafici;
 
 
 import javafx.scene.layout.VBox;

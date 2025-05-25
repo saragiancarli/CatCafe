@@ -1,7 +1,7 @@
 
-import controllerGrafici.NavigationManager;
-import controllerGrafici.NavigationManagerAlternative;
-import controllerGrafici.NavigationService;
+import controller_grafici.NavigationManager;
+import controller_grafici.NavigationManagerAlternative;
+import controller_grafici.NavigationService;
 import dao.DaoFactory.Store;
 import facade.ApplicationFacade;
 import javafx.application.Application;
