@@ -3,8 +3,8 @@ package ControllerGrafici;
 import javafx.scene.layout.VBox;
 import java.util.logging.Logger;
 
-import Bean.LoginBean;
-import Bean.ModelBeanFactory;
+import bean.LoginBean;
+import bean.ModelBeanFactory;
 import DAO.SessionManager;
 
 import Exception.WrongLoginCredentialsException;

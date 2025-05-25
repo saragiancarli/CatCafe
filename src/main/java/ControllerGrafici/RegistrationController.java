@@ -4,8 +4,8 @@ import javafx.scene.layout.VBox;
 
 
 
-import Bean.ClientRegistrationBean;
-import Bean.ModelBeanFactory;
+import bean.ClientRegistrationBean;
+import bean.ModelBeanFactory;
 import ControllerApplicativi.ClientRegistrationController;
 import DAO.SessionManager;
 

@@ -4,8 +4,8 @@ import javafx.scene.layout.VBox;
 
 import java.util.logging.Logger;
 
-import Bean.BookingBean;
-import Bean.ModelBeanFactory;
+import bean.BookingBean;
+import bean.ModelBeanFactory;
 import ControllerApplicativi.BookingService;
 import Entity.Client;
 import Facade.ApplicationFacade;

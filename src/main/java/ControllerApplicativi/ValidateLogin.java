@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Bean.LoginBean;
+import bean.LoginBean;
 import DAO.DaoFactory;
 import DAO.GenericDao;
 import Entity.Client;

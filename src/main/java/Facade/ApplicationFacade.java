@@ -5,8 +5,8 @@ import javafx.scene.control.Alert;
 
 import java.util.logging.Logger;
 
-import Bean.LoginBean;
-import Bean.ModelBeanFactory;
+import bean.LoginBean;
+import bean.ModelBeanFactory;
 import ControllerApplicativi.ValidateLogin;
 import DAO.DaoFactory;
 import DAO.DaoFactory.Store;

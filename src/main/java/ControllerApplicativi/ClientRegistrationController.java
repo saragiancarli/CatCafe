@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Bean.ClientRegistrationBean;
+import bean.ClientRegistrationBean;
 import DAO.DaoFactory;
 import DAO.GenericDao;
 import DAO.SessionManager;

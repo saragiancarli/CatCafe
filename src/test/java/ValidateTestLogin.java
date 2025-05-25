@@ -1,6 +1,6 @@
 
 
-import Bean.LoginBean;
+import bean.LoginBean;
 import DAO.GenericDao;
 import Entity.User;
 import Entity.Client;

@@ -1,6 +1,6 @@
 package DAO;
 
-import Bean.LoginBean;
+import bean.LoginBean;
 
 public class SessionManager {
     private static SessionManager instance;

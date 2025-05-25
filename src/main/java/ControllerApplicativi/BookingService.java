@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Bean.BookingBean;
+import bean.BookingBean;
 import DAO.BookingDaoDB;
 import DAO.DaoFactory;
 import DAO.GenericDao;
