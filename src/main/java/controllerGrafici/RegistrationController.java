@@ -9,7 +9,7 @@ import bean.ModelBeanFactory;
 import controllerApplicativi.ClientRegistrationController;
 import dao.SessionManager;
 
-import View.RegistrationView;
+import view.RegistrationView;
 
 public class RegistrationController {
 

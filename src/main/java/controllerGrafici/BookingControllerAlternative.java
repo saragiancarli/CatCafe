@@ -8,7 +8,7 @@ import bean.BookingBean;
 import controllerApplicativi.BookingService;
 import entity.Client;
 import facade.ApplicationFacade;
-import View.BookingViewAlternative;
+import view.BookingViewAlternative;
 
 /** Controller grafico che gestisce la BookingRoomViewAlternative. */
 public class BookingControllerAlternative {

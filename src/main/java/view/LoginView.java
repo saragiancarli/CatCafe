@@ -1,34 +1,40 @@
-package View;
+package view;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public  class LoginAlternativeView {
+public  class LoginView {
     private VBox root;
     private Label titleLabel;
     private TextField emailField;
     private Label emailErrorLabel;
     private PasswordField passwordField;
     private Label passwordErrorLabel;
-    private RadioButton clientLoginOption;
-    private RadioButton stafLoginOption;
-    private ToggleGroup loginTypeGroup;
-    private Button confirmButton;
-   
+    private Button loginButton;
+    
     private Text errorMessage;
     private Text registrationPrompt;
     private Button registerButton;
+	private String typeOfLogin;
+	
 
-    public LoginAlternativeView() {
+    public LoginView(String typeOfLogin) {
+    	this.typeOfLogin= typeOfLogin;
         root = new VBox(15);
         root.setPrefSize(1280, 720);
-        root.setAlignment(Pos.CENTER);
         root.getStyleClass().add("root");
+        //risolve code smell
+        String button ="button";
+        if(typeOfLogin.equals("user")) {
 
         titleLabel = new Label("Benventuto accedi con le tue credenziali");
-        
+        }
+        else {
+        titleLabel = new Label("Stai accedendo come membro del nostro staff, inserisci le tue credenziali");}
 
         emailField = new TextField();
         emailField.setPromptText("Email");
@@ -40,29 +46,28 @@ public  class LoginAlternativeView {
         passwordErrorLabel = new Label("La password non può essere vuota");
         passwordErrorLabel.setVisible(false);
 
-        // Gruppo di selezione del tipo di login
-        loginTypeGroup = new ToggleGroup();
-        clientLoginOption = new RadioButton("User");
-        stafLoginOption = new RadioButton("Staf");
-        clientLoginOption.setToggleGroup(loginTypeGroup);
-        stafLoginOption.setToggleGroup(loginTypeGroup);
-
         this.errorMessage = new Text("Email o password non corrispondono a un account");
         this.errorMessage.setVisible(false);
         this.errorMessage.setManaged(false);
 
-        confirmButton = new Button("Conferma");
-        
+        loginButton = new Button("Conferma");
+        loginButton.getStyleClass().add(button);
 
+       
         registrationPrompt = new Text("Se non ti sei mai prenotato, puoi registrarti.");
         registrationPrompt.getStyleClass().add("registration-prompt");
 
         registerButton = new Button("Registrati");
+        registerButton.getStyleClass().add(button);
+        
+        
 
-        root.getChildren().addAll(titleLabel, emailField, emailErrorLabel, passwordField, passwordErrorLabel, clientLoginOption, stafLoginOption, errorMessage, confirmButton,  registrationPrompt, registerButton);
+        root.getChildren().addAll(titleLabel, emailField, emailErrorLabel, passwordField, passwordErrorLabel, errorMessage, loginButton,  registrationPrompt, registerButton);
     }
 
-   
+    
+    public  String getType(){
+    return typeOfLogin;}
 
     public void hideErrorMessages() {
         emailErrorLabel.setVisible(false);
@@ -86,20 +91,8 @@ public  class LoginAlternativeView {
         return passwordField;
     }
 
-    public RadioButton getClientLoginOption() {
-        return clientLoginOption;
-    }
-
-    public RadioButton getReceptionistLoginOption() {
-        return stafLoginOption;
-    }
-
-    public ToggleGroup getLoginTypeGroup() {
-        return loginTypeGroup;
-    }
-
-    public Button getConfirmButton() {
-        return confirmButton;
+    public Button getLoginButton() {
+        return loginButton;
     }
 
     
@@ -118,9 +111,5 @@ public  class LoginAlternativeView {
 
     public Button getRegisterButton() {
         return registerButton;
-    }
-    public void hideUserTypeToggle() {
-        root.getChildren().remove(clientLoginOption);
-        root.getChildren().remove(stafLoginOption);
     }
 }

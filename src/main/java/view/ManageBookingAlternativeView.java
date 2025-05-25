@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import entity.Booking;
 import javafx.collections.FXCollections;

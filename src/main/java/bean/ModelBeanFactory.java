@@ -7,11 +7,11 @@ import java.util.List;
 
 import dao.SessionManager;
 import entity.Booking;
-import View.BookingView;
-import View.LoginAlternativeView;
-import View.LoginView;
-import View.RegistrationView;
-import View.RegistrationViewAlternative;
+import view.BookingView;
+import view.LoginAlternativeView;
+import view.LoginView;
+import view.RegistrationView;
+import view.RegistrationViewAlternative;
 
 public final class ModelBeanFactory {
 

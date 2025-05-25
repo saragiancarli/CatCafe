@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;

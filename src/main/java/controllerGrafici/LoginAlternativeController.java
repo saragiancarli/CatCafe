@@ -11,7 +11,7 @@ import dao.SessionManager;
 import exception.WrongLoginCredentialsException;
 import facade.ApplicationFacade;
 
-import View.LoginAlternativeView;
+import view.LoginAlternativeView;
 
 public class LoginAlternativeController {
 

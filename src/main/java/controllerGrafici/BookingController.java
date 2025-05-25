@@ -10,7 +10,7 @@ import controllerApplicativi.BookingService;
 import entity.Client;
 import facade.ApplicationFacade;
 
-import View.BookingView;
+import view.BookingView;
 
 public class BookingController {
 

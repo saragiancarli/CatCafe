@@ -10,7 +10,7 @@ import dao.SessionManager;
 import exception.WrongLoginCredentialsException;
 import facade.ApplicationFacade;
 
-import View.LoginView;
+import view.LoginView;
 
 public class LoginController {
 

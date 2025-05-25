@@ -1,6 +1,6 @@
 package controllerGrafici;
 
-import View.HomePageAlternative;
+import view.HomePageAlternative;
 import javafx.scene.control.Toggle;
 import javafx.scene.layout.VBox;
 

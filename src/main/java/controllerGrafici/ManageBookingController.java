@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
 import controllerApplicativi.ManageBookingService;
 import entity.Booking;
 import entity.BookingStatus;
-import View.ManageBookingView;
+import view.ManageBookingView;
 
 public class ManageBookingController {
 

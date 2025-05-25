@@ -1,5 +1,5 @@
 package controllerGrafici;
-import View.HomePageView;
+import view.HomePageView;
 import javafx.scene.layout.VBox;
 public class HomePageController {
     

@@ -8,7 +8,7 @@ import java.util.List;
 import controllerApplicativi.ManageBookingService;
 import entity.Booking;
 import entity.BookingStatus;
-import View.ManageBookingAlternativeView;
+import view.ManageBookingAlternativeView;
 
 public class ManageBookingAlternativeController {
 
