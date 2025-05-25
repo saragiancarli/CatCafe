@@ -24,7 +24,7 @@ public class Main extends Application {
         rbDatabase.setSelected(true);                        // default
 
         RadioButton rbStateless = new RadioButton("Interfaccia Secondaria (Stateless)");
-        rbStateless.setToggleGroup(storageGroup) ;
+        rbStateless.setToggleGroup(storageGroup);
 
         /* ---------------- scelta tipo utente --------------------- */
         ToggleGroup typeGroup = new ToggleGroup();
@@ -38,7 +38,7 @@ public class Main extends Application {
 
         /* ---------------- pulsante conferma ---------------------- */
         Button confirmBtn = new Button("Conferma");
-        confirmBtn.setOnAction(_ -> {
+        confirmBtn.setOnAction(e -> {
 
             /* 1 · inizializza ApplicationFacade (UNA SOLA VOLTA) */
             Store selectedMode = rbDatabase.isSelected() ? Store.DATABASE : Store.STATELESS;
