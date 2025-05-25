@@ -11,7 +11,7 @@ import dao.GenericDao;
 import entity.Client;
 import entity.Staf;
 import entity.User;
-import Exception.WrongLoginCredentialsException;
+import exception.WrongLoginCredentialsException;
 
 public class ValidateLogin {
 

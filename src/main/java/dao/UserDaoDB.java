@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.User;
-import Exception.UserAlreadyInsertedException;
-import Exception.WrongLoginCredentialsException;
+import exception.UserAlreadyInsertedException;
+import exception.WrongLoginCredentialsException;
 
 
 public class UserDaoDB implements GenericDao<User> {

@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 public class UserAlreadyInsertedException extends RuntimeException {
     public UserAlreadyInsertedException(String message, Throwable cause) {

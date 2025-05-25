@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import Exception.DatabaseConnectionException;
+import exception.DatabaseConnectionException;
 
 public class DatabaseConnectionManager {
     private static final Logger logger = Logger.getLogger(DatabaseConnectionManager.class.getName());

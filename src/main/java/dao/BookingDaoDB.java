@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import entity.Booking;
 import entity.BookingStatus;
-import Exception.DataAccessException;
+import exception.DataAccessException;
 
 /** DAO JDBC per la tabella <code>bookings</code>. */
 public class BookingDaoDB implements GenericDao<Booking> {

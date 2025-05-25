@@ -5,7 +5,7 @@ import dao.GenericDao;
 import entity.User;
 import entity.Client;
 import entity.Staf;
-import Exception.WrongLoginCredentialsException;
+import exception.WrongLoginCredentialsException;
 
 import controllerApplicativi.ValidateLogin;
 

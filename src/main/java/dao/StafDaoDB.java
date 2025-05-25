@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.Staf;
-import Exception.UserAlreadyInsertedException;
-import Exception.WrongLoginCredentialsException;
+import exception.UserAlreadyInsertedException;
+import exception.WrongLoginCredentialsException;
 
 public class StafDaoDB implements GenericDao<Staf> {
     private final Connection connection;

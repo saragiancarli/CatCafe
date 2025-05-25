@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.Staf;
-import Exception.UserAlreadyInsertedException;
-import Exception.WrongLoginCredentialsException;
+import exception.UserAlreadyInsertedException;
+import exception.WrongLoginCredentialsException;
 
 public class StafDaoMemory implements GenericDao<Staf> {
     private final List<Staf> storage = new ArrayList<>();

@@ -13,7 +13,7 @@ import dao.SessionManager;
 import entity.Client;
 import entity.Staf;
 import entity.User;
-import Exception.UserAlreadyInsertedException;
+import exception.UserAlreadyInsertedException;
 
 public class ClientRegistrationController {
 

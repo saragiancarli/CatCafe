@@ -12,7 +12,7 @@ import dao.DaoFactory;
 import dao.DaoFactory.Store;
 import entity.Booking;
 import entity.Client;
-import Exception.WrongLoginCredentialsException;
+import exception.WrongLoginCredentialsException;
 
 public final class ApplicationFacade {
 
