@@ -43,7 +43,7 @@ public class BookingView {
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-padding: 32;");
 
-        Label title = new Label("Prenota un tavolo immerso nei gatti 🐾");
+        Label title = new Label("Prenota un tavolo immerso tra i gatti 🐾");
 
         /* ----- Data (DatePicker) ----- */
         Label dataLabel = new Label("Giorno");
