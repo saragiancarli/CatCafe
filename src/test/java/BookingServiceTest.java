@@ -73,7 +73,7 @@ class BookingServiceTest {
 
     /* ════════════════════════════════════════════════════ */
     @Test
-    void testPrenotazione() throws SQLException {
+    void testPrenotazione()  {
         /* given – nessuna prenotazione esistente */
     	lenient().when(bookingDao.readAll()).thenReturn(List.of());     // lista vuota
 
