@@ -112,14 +112,5 @@ public class UserDaoDB implements GenericDao<User> {
         return users;
     }
 
-    /* ---------- helper ---------- */
-    private boolean phoneNumberExists(String phoneNumber) throws SQLException {
-        String sql = "SELECT 1 FROM " + TABLE + " WHERE phone_number = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, phoneNumber);
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
+ 
 }

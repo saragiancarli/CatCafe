@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import Entity.Booking;
 import Entity.BookingStatus;
+import Exception.DataAccessException;
 
 /** DAO JDBC per la tabella <code>bookings</code>. */
 public class BookingDaoDB implements GenericDao<Booking> {
@@ -122,7 +123,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
             while (rs.next()) list.add(map(rs));
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+        	throw new  DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
         }
         return list;
     }
@@ -138,7 +139,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
             ps.setDate  (2, Date.valueOf(in));
             return ps.executeQuery().next();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new  DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
         }
     }
 
@@ -153,7 +154,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
                 return rs.next() ? Optional.of(map(rs)) : Optional.empty();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new  DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
         }
     }
 

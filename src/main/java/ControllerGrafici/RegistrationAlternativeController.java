@@ -29,19 +29,22 @@ public class RegistrationAlternativeController {
         this.view = new RegistrationViewAlternative() {
             
             protected String getTitleText() {
-                return "Registrazione " + (userType == null
-                        ? "" : userType.equals("user") ? "User" : "Staf");
+            	return "Registrazione " + title(userType);
             }
-             public void hideSpecificErrors() { /* se serve */ }
+             
         };
 
         addEventHandlers();
+       
     }
-
+    private static String title(String type) {
+        if (type == null) return "";
+        return type.equalsIgnoreCase("user") ? "User" : "Staf";
+    }
     /* ------------------------------------------------------------ */
     private void addEventHandlers() {
-        view.getConfirmButton().setOnAction(e -> handleRegistration());
-        view.getLoginButton().setOnAction(e  -> navigationService
+        view.getConfirmButton().setOnAction(_ -> handleRegistration());
+        view.getLoginButton().setOnAction(_  -> navigationService
                 .navigateToLogin(navigationService, userType));
     }
 
