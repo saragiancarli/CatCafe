@@ -1,7 +1,7 @@
 package DAO;
 
 import Entity.Booking;
-import DAO.GenericDao;
+
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 

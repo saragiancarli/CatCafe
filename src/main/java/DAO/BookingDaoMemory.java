@@ -1,6 +1,7 @@
 package DAO;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,6 +18,8 @@ public class BookingDaoMemory implements GenericDao<Booking> {
     /* ---------------- storage condiviso fra tutte le istanze ----- */
     private static final Map<Integer, Booking> STORE   = new ConcurrentHashMap<>();
     private static final AtomicInteger         COUNTER = new AtomicInteger(0);
+    
+
 
     /* ---------------- CRUD --------------------------------------- */
     @Override
@@ -79,7 +82,7 @@ public class BookingDaoMemory implements GenericDao<Booking> {
     private int keyToId(Object... keys) {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
             throw new IllegalArgumentException("Key must be int id");
-        return (Integer) keys[0];
+        return id;
     }
 
     /** Copia difensiva per evitare modifiche esterne allo storage. */

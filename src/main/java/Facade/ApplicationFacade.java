@@ -27,9 +27,9 @@ public final class ApplicationFacade {
     
     /* ============================================================ */
     public static void init(Store storageMode) {
-        DaoFactory   factory;
+        
 
-        factory = DaoFactory.getInstance();
+        DaoFactory.getInstance();
         DaoFactory.setStorageOption(storageMode);
 
         validator = new ValidateLogin();

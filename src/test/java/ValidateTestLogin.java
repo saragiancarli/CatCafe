@@ -94,7 +94,7 @@ class ValidateTestLogin {
     /* ------------------------------------------------
        TEST #1  : credenziali corrette                 */
     @Test
-    void testValidCredentials() throws WrongLoginCredentialsException, SQLException {
+    void testValidCredentials() throws WrongLoginCredentialsException, Exception{
 
        Client result = validator.authenticate(validUserLogin);
 

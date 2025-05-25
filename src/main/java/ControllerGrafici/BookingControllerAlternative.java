@@ -6,9 +6,6 @@ import java.util.logging.Logger;
 
 import Bean.BookingBean;
 import ControllerApplicativi.BookingService;
-import DAO.DaoFactory;
-import DAO.GenericDao;
-import Entity.Booking;
 import Entity.Client;
 import Facade.ApplicationFacade;
 import View.BookingViewAlternative;
@@ -76,7 +73,7 @@ public class BookingControllerAlternative {
                 ApplicationFacade.getUserFromLogin();       // utente loggato
 
         String esito = service.book(currentUser, bean);
-        GenericDao<Booking> dao = DaoFactory.getInstance().getBookingDao();
+        
         
         switch (esito) {
             case "success" ->
