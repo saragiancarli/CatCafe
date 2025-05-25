@@ -3,7 +3,7 @@ package ControllerGrafici;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 import ControllerApplicativi.ManageBookingService;
 import Entity.Booking;
@@ -12,7 +12,7 @@ import View.ManageBookingAlternativeView;
 
 public class ManageBookingAlternativeController {
 
-    private final Logger LOG = Logger.getLogger(getClass().getName());
+    
 
     /* view + service */
     private final ManageBookingAlternativeView view =
@@ -30,7 +30,7 @@ public class ManageBookingAlternativeController {
 
         refresh();                                         // carica iniziale
         /* --- pulsante Conferma --- */
-        view.getBtnConfirm().setOnAction(e -> {
+        view.getBtnConfirm().setOnAction(_ -> {
             Booking sel = view.getList().getSelectionModel().getSelectedItem();
             if (sel == null)           { view.showError(); return; }
             if (sel.getStatus()!= BookingStatus.PENDING)  { return; }
@@ -40,7 +40,7 @@ public class ManageBookingAlternativeController {
         });
 
         /* --- pulsante Cancella --- */
-        view.getBtnCancel().setOnAction(e -> {
+        view.getBtnCancel().setOnAction(_ -> {
             Booking sel = view.getList().getSelectionModel().getSelectedItem();
             if (sel == null)           { view.showError(); return; }
             if (sel.getStatus()!= BookingStatus.PENDING)  { return; }

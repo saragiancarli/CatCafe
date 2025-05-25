@@ -32,8 +32,8 @@ public class LoginAlternativeController {
 
     /* ---------------------------------------------------------- */
     private void addEventHandlers() {
-        loginView.getConfirmButton().setOnAction(e -> handleLogin());
-        loginView.getRegisterButton().setOnAction(e -> goToRegistration());
+        loginView.getConfirmButton().setOnAction(_ -> handleLogin());
+        loginView.getRegisterButton().setOnAction(_ -> goToRegistration());
     }
 
     /* ---------------------------------------------------------- */

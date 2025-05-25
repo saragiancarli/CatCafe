@@ -2,7 +2,7 @@ package ControllerGrafici;
 
 import javafx.scene.layout.VBox;
 
-import java.util.logging.Logger;
+
 
 import Bean.ClientRegistrationBean;
 import Bean.ModelBeanFactory;
@@ -13,8 +13,7 @@ import View.RegistrationView;
 
 public class RegistrationController {
 
-    private static final Logger LOG =
-            Logger.getLogger(RegistrationController.class.getName());
+   
 
     /* ------------------------------------------------------------ */
     private final NavigationService navigationService;
@@ -34,8 +33,8 @@ public class RegistrationController {
 
     /* ------------------------------------------------------------ */
     private void addEventHandlers() {
-        view.getRegisterButton().setOnAction(e -> handleRegistration());
-        view.getLoginButton().setOnAction(e     -> navigationService
+        view.getRegisterButton().setOnAction(_ -> handleRegistration());
+        view.getLoginButton().setOnAction(_     -> navigationService
                 .navigateToLogin(navigationService, fixedUserType));
         
         

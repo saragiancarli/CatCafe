@@ -170,13 +170,14 @@ public class BookingView {
 
     /** Popola il ComboBox con slot di 15 minuti (08:00-23:45). */
     private void populateTimeBox() {
-    	ora.setItems(FXCollections.observableArrayList(
-            IntStream.rangeClosed(32, 95)               // 08:00 → 23:45
-                     .mapToObj(i -> LocalTime.of(i/4, (i%4)*15))
-                     .collect(Collectors.toList())
-        ));
-    	ora.setButtonCell(timeCell());
-    	ora.setCellFactory(list -> timeCell());
+        // 08:00 → 23:45 (slot di 15')
+        var times = IntStream.rangeClosed(32, 95)          // 32 * 15′ = 08:00
+                             .mapToObj(i -> LocalTime.of(i / 4, (i % 4) * 15))
+                             .toList();                    // ← niente Collectors
+
+        ora.setItems(FXCollections.observableArrayList(times));
+        ora.setButtonCell(timeCell());
+        ora.setCellFactory(_ -> timeCell());
     }
     private ListCell<LocalTime> timeCell() {
         return new ListCell<>() {

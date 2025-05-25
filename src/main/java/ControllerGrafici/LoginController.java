@@ -31,8 +31,8 @@ public class LoginController {
 
     /* ---------------------------------------------------------- */
     private void addEventHandlers() {
-        loginView.getLoginButton().setOnAction(e -> handleLogin());
-        loginView.getRegisterButton().setOnAction(e -> goToRegistration());
+        loginView.getLoginButton().setOnAction(_ -> handleLogin());
+        loginView.getRegisterButton().setOnAction(_ -> goToRegistration());
     }
 
     /* ---------------------------------------------------------- */

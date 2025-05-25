@@ -37,8 +37,8 @@ public class BookingControllerAlternative {
 
     /* --------------------- HANDLERS ------------------------------ */
     private void addEventHandlers() {
-        view.getConfirmButton().setOnAction(e -> handleConfirm());
-        view.getCancelButton() .setOnAction(e ->
+        view.getConfirmButton().setOnAction(_ -> handleConfirm());
+        view.getCancelButton() .setOnAction(_ ->
                 navigation.navigateToHomePage(navigation, "user"));
     }
 

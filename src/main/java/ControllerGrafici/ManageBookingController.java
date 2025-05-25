@@ -3,7 +3,7 @@ package ControllerGrafici;
 
 import javafx.collections.*;
 import javafx.scene.layout.VBox;
-import java.util.logging.Logger;
+
 
 import ControllerApplicativi.ManageBookingService;
 import Entity.Booking;
@@ -12,7 +12,7 @@ import View.ManageBookingView;
 
 public class ManageBookingController {
 
-    private final Logger LOG = Logger.getLogger(getClass().getName());
+    
 
     private final ManageBookingView    view    = new ManageBookingView();
     private final ManageBookingService service = new ManageBookingService();
@@ -32,12 +32,12 @@ public class ManageBookingController {
 
         /* selezione riga -> abilita/disabilita bottoni */
         view.getTable().getSelectionModel().selectedItemProperty().addListener(
-            (obs, oldSel, sel) -> updateButtonState(sel)
+            (_, _, sel) -> updateButtonState(sel)
         );
         updateButtonState(null);                // stato iniziale
 
         /* CONFERMA */
-        view.getBtnConfirm().setOnAction(e -> {
+        view.getBtnConfirm().setOnAction(_ -> {
             Booking sel = view.getTable().getSelectionModel().getSelectedItem();
             if (sel != null) {
                 service.confirm(sel.getId());
@@ -47,7 +47,7 @@ public class ManageBookingController {
         });
 
         /* CANCELLA */
-        view.getBtnCancel().setOnAction(e -> {
+        view.getBtnCancel().setOnAction(_ -> {
             Booking sel = view.getTable().getSelectionModel().getSelectedItem();
             if (sel != null) {
                 service.cancel(sel.getId());
@@ -55,7 +55,7 @@ public class ManageBookingController {
                 view.getTable().refresh();
             }
         });
-        view.getBtnBack().setOnAction(e -> {
+        view.getBtnBack().setOnAction(_ -> {
         	navigationService.navigateToHomePage(navigationService, typeOfLogin); 
         });
     }

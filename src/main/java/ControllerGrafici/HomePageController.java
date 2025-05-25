@@ -21,9 +21,9 @@ public class HomePageController {
 
     private void addEventHandlers() {
        
-    	homeView.getBookButton().setOnAction(e -> goToBooking());
-    	homeView.getMenageBookingButton().setOnAction(e -> goToMenageBooking());
-    	homeView.getLogoutButton().setOnAction(e ->goToLogin());
+    	homeView.getBookButton().setOnAction(_ -> goToBooking());
+    	homeView.getMenageBookingButton().setOnAction(_ -> goToMenageBooking());
+    	homeView.getLogoutButton().setOnAction(_ ->goToLogin());
     	
     }
 

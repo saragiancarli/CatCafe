@@ -3,7 +3,7 @@ package ControllerGrafici;
 
 import javafx.scene.layout.VBox;
 
-import java.util.logging.Logger;
+
 
 import Bean.ClientRegistrationBean;
 import Bean.ModelBeanFactory;
@@ -12,8 +12,7 @@ import View.RegistrationViewAlternative;
 
 public class RegistrationAlternativeController {
 
-    private static final Logger LOG =
-            Logger.getLogger(RegistrationAlternativeController.class.getName());
+    
 
     private final NavigationService navigationService;
     private final String            userType;          // "user" | "staf" o null
