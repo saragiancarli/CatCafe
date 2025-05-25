@@ -5,7 +5,7 @@ package bean;
 import java.util.List;
 
 
-import DAO.SessionManager;
+import dao.SessionManager;
 import Entity.Booking;
 import View.BookingView;
 import View.LoginAlternativeView;

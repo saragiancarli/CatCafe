@@ -1,4 +1,4 @@
-package DAO;
+package dao;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

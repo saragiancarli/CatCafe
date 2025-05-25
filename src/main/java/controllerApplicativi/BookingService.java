@@ -6,9 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import bean.BookingBean;
-import DAO.BookingDaoDB;
-import DAO.DaoFactory;
-import DAO.GenericDao;
+import dao.BookingDaoDB;
+import dao.DaoFactory;
+import dao.GenericDao;
 import Entity.Booking;
 import Entity.Client;
 

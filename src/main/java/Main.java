@@ -2,7 +2,7 @@
 import controllerGrafici.NavigationManager;
 import controllerGrafici.NavigationManagerAlternative;
 import controllerGrafici.NavigationService;
-import DAO.DaoFactory.Store;
+import dao.DaoFactory.Store;
 import Facade.ApplicationFacade;
 import javafx.application.Application;
 import javafx.geometry.Insets;

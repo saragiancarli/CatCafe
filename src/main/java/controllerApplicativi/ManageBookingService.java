@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import DAO.DaoFactory;
-import DAO.GenericDao;
+import dao.DaoFactory;
+import dao.GenericDao;
 import Entity.Booking;
 import Entity.BookingStatus;
 import Facade.ApplicationFacade;

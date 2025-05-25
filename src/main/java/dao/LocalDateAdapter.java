@@ -1,28 +1,27 @@
-package DAO;
+package dao;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/* ---------- LocalDate ---------- */
+public final class LocalDateAdapter
+        implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
 
-
-
-/* ---------- LocalTime ---------- */
-public final class LocalTimeAdapter
-        implements JsonSerializer<LocalTime>, JsonDeserializer<LocalTime> {
-
-    @Override                                   // HH:mm:ss
-    public JsonElement serialize(LocalTime src,
+    @Override                                   // yyyy-MM-dd
+    public JsonElement serialize(LocalDate src,
                                   Type t,
                                   JsonSerializationContext c) {
         return new JsonPrimitive(src.toString());
     }
 
     @Override
-    public LocalTime deserialize(JsonElement je,
+    public LocalDate deserialize(JsonElement je,
                                  Type t,
                                  JsonDeserializationContext c) {
-        return LocalTime.parse(je.getAsString());
+        return LocalDate.parse(je.getAsString());
     }
 }
+
+

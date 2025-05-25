@@ -1,4 +1,4 @@
-package DAO;
+package dao;
 
 import Entity.Booking;
 import Entity.Staf;

@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import bean.LoginBean;
 import bean.ModelBeanFactory;
-import DAO.SessionManager;
+import dao.SessionManager;
 
 import Exception.WrongLoginCredentialsException;
 import Facade.ApplicationFacade;

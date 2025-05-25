@@ -3,15 +3,15 @@
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 
-import DAO.BookingDaoDB;
-import DAO.BookingDaoMemory;
-import DAO.DaoFactory;
-import DAO.DaoFactory.Store;
-import DAO.DatabaseConnectionManager;
-import DAO.StafDaoDB;
-import DAO.StafDaoMemory;
-import DAO.UserDaoDB;
-import DAO.UserDaoMemory;
+import dao.BookingDaoDB;
+import dao.BookingDaoMemory;
+import dao.DaoFactory;
+import dao.DaoFactory.Store;
+import dao.DatabaseConnectionManager;
+import dao.StafDaoDB;
+import dao.StafDaoMemory;
+import dao.UserDaoDB;
+import dao.UserDaoMemory;
 
 import java.sql.Connection;
 
