@@ -1,5 +1,3 @@
-
-
 import bean.LoginBean;
 import dao.GenericDao;
 import entity.User;
@@ -29,7 +27,7 @@ import static org.mockito.Mockito.*;
  * Usiamo DAO mockati, così NON tocchiamo il DB vero.
  */
 @ExtendWith(MockitoExtension.class)
-class ValidateTestLogin {
+class ValidateLoginTest {
 
     /* =========== MOCK =========== */
     @Mock  private GenericDao<User>  userDao;
