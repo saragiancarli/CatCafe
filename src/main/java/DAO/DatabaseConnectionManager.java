@@ -37,7 +37,7 @@ public class DatabaseConnectionManager {
     	    password = p.getProperty("db.password");
 
     	    
-    	}  catch (IOException e) {
+    	}  catch (IOException _) {
     		logger.info("Attenzione: impossibile caricare la configurazione del database, usando valori di default.");
         }
     }
