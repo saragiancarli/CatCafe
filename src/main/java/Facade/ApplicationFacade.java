@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import bean.LoginBean;
 import bean.ModelBeanFactory;
-import ControllerApplicativi.ValidateLogin;
+import controllerApplicativi.ValidateLogin;
 import DAO.DaoFactory;
 import DAO.DaoFactory.Store;
 import Entity.Booking;

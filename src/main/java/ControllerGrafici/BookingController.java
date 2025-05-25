@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import bean.BookingBean;
 import bean.ModelBeanFactory;
-import ControllerApplicativi.BookingService;
+import controllerApplicativi.BookingService;
 import Entity.Client;
 import Facade.ApplicationFacade;
 

@@ -5,7 +5,7 @@ import javafx.collections.*;
 import javafx.scene.layout.VBox;
 
 
-import ControllerApplicativi.ManageBookingService;
+import controllerApplicativi.ManageBookingService;
 import Entity.Booking;
 import Entity.BookingStatus;
 import View.ManageBookingView;

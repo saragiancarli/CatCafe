@@ -1,4 +1,4 @@
-package ControllerApplicativi;
+package controllerApplicativi;
 
 
 import java.sql.SQLException;

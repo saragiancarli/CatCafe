@@ -5,7 +5,7 @@ import javafx.scene.layout.VBox;
 import java.util.logging.Logger;
 
 import bean.BookingBean;
-import ControllerApplicativi.BookingService;
+import controllerApplicativi.BookingService;
 import Entity.Client;
 import Facade.ApplicationFacade;
 import View.BookingViewAlternative;

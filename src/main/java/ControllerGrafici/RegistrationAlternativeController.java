@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 
 import bean.ClientRegistrationBean;
 import bean.ModelBeanFactory;
-import ControllerApplicativi.ClientRegistrationController;
+import controllerApplicativi.ClientRegistrationController;
 import View.RegistrationViewAlternative;
 
 public class RegistrationAlternativeController {
