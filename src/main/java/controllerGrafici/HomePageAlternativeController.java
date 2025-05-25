@@ -1,4 +1,4 @@
-package ControllerGrafici;
+package controllerGrafici;
 
 import View.HomePageAlternative;
 import javafx.scene.control.Toggle;

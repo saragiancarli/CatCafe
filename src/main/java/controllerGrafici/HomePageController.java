@@ -1,4 +1,4 @@
-package ControllerGrafici;
+package controllerGrafici;
 import View.HomePageView;
 import javafx.scene.layout.VBox;
 public class HomePageController {

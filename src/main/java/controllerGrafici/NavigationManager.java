@@ -1,4 +1,4 @@
-package ControllerGrafici;
+package controllerGrafici;
 
 
 import javafx.scene.Scene;
