@@ -25,7 +25,7 @@ public class StafDaoDB implements GenericDao<Staf> {
             
             ps.setString(4, staf.getPassword());
             ps.executeUpdate();
-        } catch (SQLIntegrityConstraintViolationException e) {
+        } catch (SQLIntegrityConstraintViolationException _) {
             throw new UserAlreadyInsertedException("Esiste già un staffer con questa email");
         }
     }

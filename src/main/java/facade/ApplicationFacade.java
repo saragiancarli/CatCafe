@@ -44,7 +44,7 @@ public final class ApplicationFacade {
         ensureInit();
         try {
             return validator.authenticate(bean) != null;
-        } catch (WrongLoginCredentialsException e) {
+        } catch (WrongLoginCredentialsException _) {
             return false;
         }
     }
@@ -54,7 +54,7 @@ public final class ApplicationFacade {
         ensureInit();
         try {
             return validator.authenticate(ModelBeanFactory.loadLoginBean());
-        } catch (WrongLoginCredentialsException e) {
+        } catch (WrongLoginCredentialsException _) {
             return null;
         }
     }
@@ -67,7 +67,7 @@ public final class ApplicationFacade {
             if (bean == null) return null;
             if (validator.authenticate(bean) == null) return null;
             return bean.getUserType();
-        } catch (WrongLoginCredentialsException e) {
+        } catch (WrongLoginCredentialsException _) {
             LOG.info("Credenziali non valide in sessione"); return null;
         }
     }

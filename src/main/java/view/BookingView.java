@@ -117,7 +117,7 @@ public class BookingView {
 
     public int getParticipants() {
         try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
-        catch (NumberFormatException e) { 
+        catch (NumberFormatException _) { 
         	return 0; 
         	}
     }
