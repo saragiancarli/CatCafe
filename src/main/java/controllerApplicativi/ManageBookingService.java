@@ -9,7 +9,7 @@ import dao.DaoFactory;
 import dao.GenericDao;
 import entity.Booking;
 import entity.BookingStatus;
-import Facade.ApplicationFacade;
+import facade.ApplicationFacade;
 
 public class ManageBookingService {
 

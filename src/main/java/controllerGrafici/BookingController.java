@@ -8,7 +8,7 @@ import bean.BookingBean;
 import bean.ModelBeanFactory;
 import controllerApplicativi.BookingService;
 import entity.Client;
-import Facade.ApplicationFacade;
+import facade.ApplicationFacade;
 
 import View.BookingView;
 

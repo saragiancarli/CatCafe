@@ -1,4 +1,4 @@
-package Facade;
+package facade;
 
 
 import javafx.scene.control.Alert;

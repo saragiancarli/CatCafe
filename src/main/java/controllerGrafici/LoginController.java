@@ -8,7 +8,7 @@ import bean.ModelBeanFactory;
 import dao.SessionManager;
 
 import exception.WrongLoginCredentialsException;
-import Facade.ApplicationFacade;
+import facade.ApplicationFacade;
 
 import View.LoginView;
 

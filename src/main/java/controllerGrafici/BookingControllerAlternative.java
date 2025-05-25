@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import bean.BookingBean;
 import controllerApplicativi.BookingService;
 import entity.Client;
-import Facade.ApplicationFacade;
+import facade.ApplicationFacade;
 import View.BookingViewAlternative;
 
 /** Controller grafico che gestisce la BookingRoomViewAlternative. */
