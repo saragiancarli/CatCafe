@@ -1,6 +1,6 @@
 
 import bean.BookingBean;
-import controllerApplicativi.BookingService;
+import controller_applicativi.BookingService;
 import dao.GenericDao;
 import entity.Booking;
 

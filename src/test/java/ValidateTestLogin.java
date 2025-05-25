@@ -7,7 +7,7 @@ import entity.Client;
 import entity.Staf;
 import exception.WrongLoginCredentialsException;
 
-import controllerApplicativi.ValidateLogin;
+import controller_applicativi.ValidateLogin;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 
 import bean.ClientRegistrationBean;
 import bean.ModelBeanFactory;
-import controllerApplicativi.ClientRegistrationController;
+import controller_applicativi.ClientRegistrationController;
 import dao.SessionManager;
 
 import view.RegistrationView;
