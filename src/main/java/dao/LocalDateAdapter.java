@@ -3,7 +3,7 @@ package dao;
 import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
-import java.time.LocalTime;
+
 
 /* ---------- LocalDate ---------- */
 public final class LocalDateAdapter

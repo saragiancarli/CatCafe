@@ -1,8 +1,7 @@
 package entity;
 
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 
 public abstract class Client implements Serializable {
     private String firstName;

@@ -1,7 +1,7 @@
 package dao;
 
 import entity.Staf;
-import dao.GenericDao;
+
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 

@@ -1,7 +1,7 @@
 package controller_grafici;
 
 
-import javafx.scene.layout.VBox;
+
 import javafx.stage.Stage;
 
 

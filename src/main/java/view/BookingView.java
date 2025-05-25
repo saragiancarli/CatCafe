@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.stream.Collectors;
+
 import java.util.stream.IntStream;
 
 /** View per prenotare un tavolo “immerso nei gatti”. */
