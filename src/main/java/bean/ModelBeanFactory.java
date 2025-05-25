@@ -6,7 +6,7 @@ import java.util.List;
 
 
 import dao.SessionManager;
-import Entity.Booking;
+import entity.Booking;
 import View.BookingView;
 import View.LoginAlternativeView;
 import View.LoginView;

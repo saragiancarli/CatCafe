@@ -8,9 +8,9 @@ import java.util.logging.Logger;
 import bean.LoginBean;
 import dao.DaoFactory;
 import dao.GenericDao;
-import Entity.Client;
-import Entity.Staf;
-import Entity.User;
+import entity.Client;
+import entity.Staf;
+import entity.User;
 import Exception.WrongLoginCredentialsException;
 
 public class ValidateLogin {

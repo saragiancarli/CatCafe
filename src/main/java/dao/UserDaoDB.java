@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import Entity.User;
+import entity.User;
 import Exception.UserAlreadyInsertedException;
 import Exception.WrongLoginCredentialsException;
 

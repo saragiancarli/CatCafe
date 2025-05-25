@@ -2,9 +2,9 @@
 import bean.BookingBean;
 import controllerApplicativi.BookingService;
 import dao.GenericDao;
-import Entity.Booking;
+import entity.Booking;
 
-import Entity.User;
+import entity.User;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

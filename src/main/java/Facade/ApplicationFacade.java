@@ -10,8 +10,8 @@ import bean.ModelBeanFactory;
 import controllerApplicativi.ValidateLogin;
 import dao.DaoFactory;
 import dao.DaoFactory.Store;
-import Entity.Booking;
-import Entity.Client;
+import entity.Booking;
+import entity.Client;
 import Exception.WrongLoginCredentialsException;
 
 public final class ApplicationFacade {

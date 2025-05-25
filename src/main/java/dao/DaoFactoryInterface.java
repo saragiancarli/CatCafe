@@ -1,6 +1,6 @@
 package dao;
 
-import Entity.User;
+import entity.User;
 
 public interface DaoFactoryInterface {
     

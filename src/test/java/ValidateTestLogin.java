@@ -2,9 +2,9 @@
 
 import bean.LoginBean;
 import dao.GenericDao;
-import Entity.User;
-import Entity.Client;
-import Entity.Staf;
+import entity.User;
+import entity.Client;
+import entity.Staf;
 import Exception.WrongLoginCredentialsException;
 
 import controllerApplicativi.ValidateLogin;

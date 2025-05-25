@@ -1,8 +1,8 @@
 package dao;
 
-import Entity.Booking;
-import Entity.Staf;
-import Entity.User;
+import entity.Booking;
+import entity.Staf;
+import entity.User;
 
 public class DaoFactory implements DaoFactoryInterface {
 

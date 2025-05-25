@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 
 import javafx.beans.property.*;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import Entity.Booking;
+import entity.Booking;
 
 
 public class ManageBookingBean {

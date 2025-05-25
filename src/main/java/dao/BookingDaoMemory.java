@@ -6,8 +6,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import Entity.Booking;
-import Entity.BookingStatus;
+import entity.Booking;
+import entity.BookingStatus;
 
 /**
  * DAO in-memory (thread-safe): tiene le prenotazioni dentro una mappa

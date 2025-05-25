@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Entity.Staf;
+import entity.Staf;
 import Exception.UserAlreadyInsertedException;
 import Exception.WrongLoginCredentialsException;
 

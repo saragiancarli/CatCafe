@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import Entity.Booking;
-import Entity.BookingStatus;
+import entity.Booking;
+import entity.BookingStatus;
 import Exception.DataAccessException;
 
 /** DAO JDBC per la tabella <code>bookings</code>. */

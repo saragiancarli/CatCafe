@@ -10,9 +10,9 @@ import bean.ClientRegistrationBean;
 import dao.DaoFactory;
 import dao.GenericDao;
 import dao.SessionManager;
-import Entity.Client;
-import Entity.Staf;
-import Entity.User;
+import entity.Client;
+import entity.Staf;
+import entity.User;
 import Exception.UserAlreadyInsertedException;
 
 public class ClientRegistrationController {

@@ -1,6 +1,6 @@
 package View;
 
-import Entity.Booking;
+import entity.Booking;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

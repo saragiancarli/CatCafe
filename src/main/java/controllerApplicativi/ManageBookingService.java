@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 
 import dao.DaoFactory;
 import dao.GenericDao;
-import Entity.Booking;
-import Entity.BookingStatus;
+import entity.Booking;
+import entity.BookingStatus;
 import Facade.ApplicationFacade;
 
 public class ManageBookingService {

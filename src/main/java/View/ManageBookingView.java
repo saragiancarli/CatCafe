@@ -4,8 +4,8 @@ package View;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import Entity.Booking;
-import Entity.BookingStatus;
+import entity.Booking;
+import entity.BookingStatus;
 import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.control.*;

@@ -9,8 +9,8 @@ import bean.BookingBean;
 import dao.BookingDaoDB;
 import dao.DaoFactory;
 import dao.GenericDao;
-import Entity.Booking;
-import Entity.Client;
+import entity.Booking;
+import entity.Client;
 
 
 import java.time.LocalDate;

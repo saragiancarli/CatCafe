@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 /** Stati possibili di una prenotazione. */
 public enum BookingStatus {
