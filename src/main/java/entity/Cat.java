@@ -7,8 +7,8 @@ public class Cat {
     private final StringProperty race = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
     private final IntegerProperty age = new SimpleIntegerProperty();
-    //private final ObjectProperty<AdoptionStatus> adoptionStatus =
-           // new SimpleObjectProperty<>(AdoptionStatus.AVAILABLE);
+    private final BooleanProperty stateAdoption = new SimpleBooleanProperty(false);
+
     /* ---------------- Getters/Setters/Properties ---------------- */
     public String getNameCat() {
         return nameCat.get();
@@ -28,7 +28,9 @@ public class Cat {
 
     public void setRace(String race) {
         this.race.set(race);
-    }public StringProperty raceProperty() {
+    }
+
+    public StringProperty raceProperty() {
         return race;
     }
 
@@ -49,21 +51,37 @@ public class Cat {
     }
 
     public void setAge(int age) {
-        this.age.set(age); }
+        this.age.set(age);
+    }
 
     public IntegerProperty ageProperty() {
         return age;
     }
 
-    //public AdoptionStatus getAdoptionStatus() {
-      //  return adoptionStatus.get();
+    public boolean isStateAdoption() {
+        return stateAdoption.get();
     }
 
-   // public void setAdoptionStatus(AdoptionStatus status) {
-      //  this.adoptionStatus.set(status);}
+    public void setStateAdoption(boolean stateAdoption) {
+        this.stateAdoption.set(stateAdoption);
+    }
 
-  //  public ObjectProperty<AdoptionStatus> adoptionStatusProperty() {
-       // return adoptionStatus;}
+    public BooleanProperty stateAdoptionProperty() {
+        return stateAdoption;
+    }
+    /* ---------------- Debug ---------------- */
+    @Override
+    public String toString() {
+        return "Cat[" +
+                "name='" + nameCat.get() + '\'' +
+                ", race='" + race.get() + '\'' +
+                ", age=" + age.get() +
+                ", adopted=" + stateAdoption.get() +
+                ", description=" + description.get() + '\'' +
+                ", status=" + (isStateAdoption() ? "Adottato" : "Da adottare") +
+                ']';
+    }
+}
 
 
 
