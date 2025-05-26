@@ -1,4 +1,4 @@
-package exe;
+
 
 import controller_grafici.NavigationManager;
 import controller_grafici.NavigationManagerAlternative;
