@@ -1,9 +1,5 @@
 package bean;
 
-import entity.Client;
-import entity.User;
-
-import java.util.List;
 
 public class RequestAdoptionBean {
 
@@ -72,6 +68,7 @@ public class RequestAdoptionBean {
     public void setStateAdoption(boolean stateAdoption) {
         this.stateAdoption = stateAdoption;
     }
+
     // =================== Coerenza e correttezza dati =================== //
     public boolean hasValidName() {
         return name != null && !name.trim().isEmpty();
@@ -82,7 +79,7 @@ public class RequestAdoptionBean {
     }
 
     public boolean hasValidPhoneNumber() {
-        return String.valueOf(phoneNumber).length() >= 8; // puoi aggiustare a seconda del formato
+        return String.valueOf(phoneNumber).length() >= 10;
     }
 
     public boolean hasValidEmail() {
@@ -92,14 +89,8 @@ public class RequestAdoptionBean {
     public boolean hasValidAddress() {
         return address != null && !address.isBlank();
     }
-    //esiste effettvamente lo user
-    public boolean matchesExistingUser(List<Client> clients) {
-        if (!hasValidName() || !hasValidSurname()) return false;
-        return clients.stream()
-                .filter(client -> client instanceof User)
-                .filter(client -> client.getFirstName() != null && client.getLastName() != null)
-                .anyMatch(client ->
-                        client.getFirstName().equalsIgnoreCase(name) &&
-                                client.getLastName().equalsIgnoreCase(surname));
+
+    private boolean hasValidStatus() {
+        return stateAdoption; //
     }
 }

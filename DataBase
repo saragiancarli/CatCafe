@@ -51,3 +51,15 @@ CREATE TABLE IF NOT EXISTS `bookings` (
 
     UNIQUE KEY uk_email_data (email, data)   -- evita doppie prenotazioni
 ) ENGINE = InnoDB;
+*------------------------------------------------------------------
+  3. TABELLA Cat  (id, nameCat, race, description, age, stateAdoption)
+------------------------------------------------------------------*/
+CREATE TABLE IF NOT EXISTS `Cat` (
+    id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nameCat         VARCHAR(50) NOT NULL,
+    race            VARCHAR(50) NOT NULL,
+    description     TEXT,
+    age             INT UNSIGNED NOT NULL,
+    stateAdoption   BOOLEAN NOT NULL DEFAULT 0, /* 0 = da_adottare, 1 = adottato*/
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB;

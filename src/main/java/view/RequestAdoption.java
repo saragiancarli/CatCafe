@@ -130,7 +130,7 @@ public class RequestAdoption {
         if (text.matches("\\d+")) {
             try {
                 return Integer.parseInt(text);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException _) {
                 return -1;
             }
         } else {
