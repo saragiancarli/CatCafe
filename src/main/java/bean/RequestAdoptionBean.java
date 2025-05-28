@@ -90,7 +90,7 @@ public class RequestAdoptionBean {
         return address != null && !address.isBlank();
     }
 
-    private boolean hasValidStatus() {
-        return stateAdoption; //
+    public boolean hasValidStatus() {
+        return !stateAdoption; //
     }
 }

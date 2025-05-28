@@ -1,5 +1,6 @@
 package dao;
 
+import bean.RequestAdoptionBean;
 import entity.Booking;
 import entity.Staf;
 import entity.User;
@@ -8,48 +9,55 @@ public class DaoFactory implements DaoFactoryInterface {
 
     /* ---------- singleton ---------- */
     private static final DaoFactory INSTANCE = new DaoFactory();
-    public  static DaoFactory getInstance() { return INSTANCE; }
+
+    public static DaoFactory getInstance() {
+        return INSTANCE;
+    }
 
     /* ---------- configurazione ---------- */
-    public enum Store { DATABASE, FILE, STATELESS }
+    public enum Store {DATABASE, FILE, STATELESS}
+
     private static Store storageOption = Store.STATELESS;      // default
-    public static void setStorageOption(Store opt) { storageOption = opt; }
+
+    public static void setStorageOption(Store opt) {
+        storageOption = opt;
+    }
 
     /* ---------- cache DAO in-memory ---------- */
     private static UserDaoMemory userDaoMemoryInstance;
     private static StafDaoMemory stafDaoMemoryInstance;
     private static BookingDaoMemory bookingDaoMemoryInstance;
-    
+
     private static GenericDao<User> userDaoFileInstance;
     private static GenericDao<Staf> stafDaoFileInstance;
     private static GenericDao<Booking> bookingDaoFileInstance;
 
     /* ---------- costruttore privato ---------- */
-    public DaoFactory() { 
-    	
-    	// Costruttore privato per nascondere quello pubblico implicito
+    public DaoFactory() {
+
+        // Costruttore privato per nascondere quello pubblico implicito
     }
 
     /* ---------- DAO di istanza ---------- */
     public GenericDao<User> getUserDao() {
         return switch (storageOption) {
             case DATABASE -> new UserDaoDB(DatabaseConnectionManager.getConnection());
-            case FILE   -> getUserFileInstance();
-            default       -> getUserMemoryInstance();
+            case FILE -> getUserFileInstance();
+            default -> getUserMemoryInstance();
         };
     }
 
     public GenericDao<Staf> getStafDao() {
         return switch (storageOption) {
             case DATABASE -> new StafDaoDB(DatabaseConnectionManager.getConnection());
-            case FILE   -> getStafFileInstance();
-            default       -> getStafMemoryInstance();
+            case FILE -> getStafFileInstance();
+            default -> getStafMemoryInstance();
         };
     }
-    
+
     private static GenericDao<User> getUserFileInstance() {
         if (userDaoFileInstance == null)
-        	userDaoFileInstance = new UserDaoFile();
+            userDaoFileInstance = new UserDaoFile();
         return userDaoFileInstance;
     }
 
@@ -59,40 +67,41 @@ public class DaoFactory implements DaoFactoryInterface {
             userDaoMemoryInstance = new UserDaoMemory();
         return userDaoMemoryInstance;
     }
-    
+
     private static GenericDao<Staf> getStafFileInstance() {
         if (stafDaoFileInstance == null)
-        	stafDaoFileInstance = new StafDaoFile();
+            stafDaoFileInstance = new StafDaoFile();
         return stafDaoFileInstance;
     }
-    
+
     private static StafDaoMemory getStafMemoryInstance() {
         if (stafDaoMemoryInstance == null)
             stafDaoMemoryInstance = new StafDaoMemory();
         return stafDaoMemoryInstance;
     }
+
     public GenericDao<Booking> getBookingDao() {
-    	
+
         switch (storageOption) {
 
             case DATABASE -> {
-               return new BookingDaoDB( DatabaseConnectionManager.getConnection());
-                
+                return new BookingDaoDB(DatabaseConnectionManager.getConnection());
+
             }
 
-             case FILE -> {
-            	 return getBookingFileInstance();
-             }
+            case FILE -> {
+                return getBookingFileInstance();
+            }
 
-            default  -> {                              // STATELESS
+            default -> {                              // STATELESS
                 return getBookingMemoryInstance();
             }
         }
     }
-    
+
     private static GenericDao<Booking> getBookingFileInstance() {
         if (bookingDaoFileInstance == null)
-        	bookingDaoFileInstance = new BookingDaoFile();
+            bookingDaoFileInstance = new BookingDaoFile();
         return bookingDaoFileInstance;
     }
 
@@ -102,5 +111,34 @@ public class DaoFactory implements DaoFactoryInterface {
             bookingDaoMemoryInstance = new BookingDaoMemory();
         return bookingDaoMemoryInstance;
     }
-    
+
+    public BeanDao<RequestAdoptionBean> getRequestAdoptionDao() {
+        switch (storageOption) {
+            case DATABASE -> {
+                return new RequestAdoptionDaoDB(DatabaseConnectionManager.getConnection());
+            }
+            case FILE -> {
+                return getRequestAdoptionFileInstance();
+            }
+            default -> {
+                return getRequestAdoptionMemoryInstance();
+            }
+        }
+    }
+
+    private static BeanDao<RequestAdoptionBean> requestAdoptionDaoFileInstance;
+
+    private static BeanDao<RequestAdoptionBean> getRequestAdoptionFileInstance() {
+        if (requestAdoptionDaoFileInstance == null)
+            requestAdoptionDaoFileInstance = new RequestAdoptionDaoFile();
+        return requestAdoptionDaoFileInstance;
+    }
+
+    private static RequestAdoptionDaoMemory requestAdoptionMemoryInstance;
+
+    private static RequestAdoptionDaoMemory getRequestAdoptionMemoryInstance() {
+        if (requestAdoptionMemoryInstance == null)
+            requestAdoptionMemoryInstance = new RequestAdoptionDaoMemory();
+        return requestAdoptionMemoryInstance;
+    }
 }
