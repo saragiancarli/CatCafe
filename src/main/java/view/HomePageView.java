@@ -56,13 +56,13 @@ public class HomePageView {
     public Button getBookButton()  {
     	return bookSeatButton; 
     	}
-    public Button getBookActivityButton() {
+    public Button getAdoptionButton() {
     	return adoptionButton; 
     	}
     public Button getMenageBookingButton(){
     	return menageBookingButton;
     	}
-    public Button getReceptionistAccessButton() {
+    public Button getMenageCatButton() {
     	return menageCatButton; 
     	}
     public Button getLogoutButton() {

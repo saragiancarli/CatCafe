@@ -24,7 +24,7 @@ public class HomePageController {
     	homeView.getBookButton().setOnAction(_ -> goToBooking());
     	homeView.getMenageBookingButton().setOnAction(_ -> goToMenageBooking());
     	homeView.getLogoutButton().setOnAction(_ ->goToLogin());
-    	
+    	homeView.getAdoptionButton().setOnAction(_ ->goToAdoption());
     }
 
     public void goToBooking() {
@@ -32,6 +32,9 @@ public class HomePageController {
     }
     public void goToMenageBooking() {
        	navigationService.navigateToMenageBooking(navigationService,typeOfLogin);
+        }
+    public void goToAdoption() {
+       	navigationService.navigateToAdopt(navigationService,typeOfLogin);
         }
     public void goToLogin() {
        	navigationService.navigateToLogin(navigationService,typeOfLogin);

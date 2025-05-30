@@ -44,6 +44,10 @@ public class NavigationManager implements NavigationService {
     	ManageBookingController controller = new ManageBookingController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Booking Page");
     }
+    public void navigateToAdopt(NavigationService navigationService,String typeOfLogin) {
+    	RequestAdoptionGUIController controller = new RequestAdoptionGUIController(navigationService,typeOfLogin);
+        this.display(controller.getRoot(), "Booking Page");
+    }
     
     public void display(VBox root, String title) {
         try {
