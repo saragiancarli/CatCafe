@@ -40,6 +40,10 @@ public class NavigationManager implements NavigationService {
         BookingController controller = new BookingController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Booking Page");
     }
+    public void navigateToAdopt(NavigationService navigationService,String typeOfLogin) {
+        RequestAdoptionGUIController controller= new RequestAdoptionGUIController(navigationService,typeOfLogin);
+        this.display(controller.getRoot(), "Adoption Page");
+    }
     public void navigateToMenageBooking(NavigationService navigationService,String typeOfLogin) {
     	ManageBookingController controller = new ManageBookingController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Booking Page");

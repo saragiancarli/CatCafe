@@ -68,6 +68,10 @@ public class NavigationManagerAlternative implements NavigationService {
     	BookingControllerAlternative controller = new BookingControllerAlternative(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Booking Page");
     }
+    public void navigateToAdopt(NavigationService navigationService,String typeOfLogin) {
+        BookingControllerAlternative controller = new BookingControllerAlternative(navigationService,typeOfLogin);
+        this.display(controller.getRoot(), "Booking Page");
+    }
     public void navigateToMenageBooking(NavigationService navigationService,String typeOfLogin) {
     	ManageBookingAlternativeController controller = new ManageBookingAlternativeController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Menage Booking Page");

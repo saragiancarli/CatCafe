@@ -56,7 +56,7 @@ public class HomePageView {
     public Button getBookButton()  {
     	return bookSeatButton; 
     	}
-    public Button getBookActivityButton() {
+    public Button getAdoptionButton() {
     	return adoptionButton; 
     	}
     public Button getMenageBookingButton(){
@@ -65,6 +65,8 @@ public class HomePageView {
     public Button getReceptionistAccessButton() {
     	return menageCatButton; 
     	}
+
+
     public Button getLogoutButton() {
     	return logoutButton; 
     	}
