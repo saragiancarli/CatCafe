@@ -1,12 +1,15 @@
 package view;
 
+import entity.Cat;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
+import java.util.List;
 
 /** View alternativa per la richiesta di adozione */
 public class RequestAdoptionAlternative {
@@ -15,7 +18,7 @@ public class RequestAdoptionAlternative {
 
     protected VBox root;
 
-    private final ComboBox<String> nomeGatto;
+    private final ComboBox<Cat> nomeGatto;  // <-- qui il tipo Cat
     private final TextField nome;
     private final TextField cognome;
     private final TextField emailConferma;
@@ -58,13 +61,11 @@ public class RequestAdoptionAlternative {
         nomeGattoErrorLabel = makeErrLabel();
         grid.add(nomeGattoErrorLabel, 2, row++);
 
-
         grid.add(new Label("Nome"), 0, row);
         nome = new TextField();
         grid.add(nome, 1, row);
         nomeErrorLabel = makeErrLabel();
         grid.add(nomeErrorLabel, 2, row++);
-
 
         grid.add(new Label("Cognome"), 0, row);
         cognome = new TextField();
@@ -72,20 +73,17 @@ public class RequestAdoptionAlternative {
         cognomeErrorLabel = makeErrLabel();
         grid.add(cognomeErrorLabel, 2, row++);
 
-
         grid.add(new Label("Email di conferma"), 0, row);
         emailConferma = new TextField();
         grid.add(emailConferma, 1, row);
         emailConfermaErrorLabel = makeErrLabel();
         grid.add(emailConfermaErrorLabel, 2, row++);
 
-
         grid.add(new Label("Indirizzo"), 0, row);
         indirizzo = new TextField();
         grid.add(indirizzo, 1, row);
         indirizzoErrorLabel = makeErrLabel();
         grid.add(indirizzoErrorLabel, 2, row++);
-
 
         grid.add(new Label("Numero di telefono"), 0, row);
         telefono = new TextField();
@@ -101,15 +99,39 @@ public class RequestAdoptionAlternative {
 
     /* ---------- getter ------------------ */
 
-    public VBox   getRoot()     { return root; }
-    public Button getConferma() { return conferma; }
-    public Button getAnnulla()  { return annulla; }
+    public VBox getRoot() {
+        return root;
+    }
 
-    public String getSelectedCatName() { return nomeGatto.getValue(); }
-    public String getName()            { return nome.getText().trim(); }
-    public String getSurname()         { return cognome.getText().trim(); }
-    public String getEmail()           { return emailConferma.getText().trim(); }
-    public String getAddress()         { return indirizzo.getText().trim(); }
+    public Button getConferma() {
+        return conferma;
+    }
+
+    public Button getAnnulla() {
+        return annulla;
+    }
+
+    public String getSelectedCatName() {
+        Cat selected = nomeGatto.getValue();
+        return (selected != null) ? selected.getNameCat() : null;
+    }
+
+    public String getName() {
+        return nome.getText().trim();
+    }
+
+    public String getSurname() {
+        return cognome.getText().trim();
+    }
+
+    public String getEmail() {
+        return emailConferma.getText().trim();
+    }
+
+    public String getAddress() {
+        return indirizzo.getText().trim();
+    }
+
     public int getPhoneNumber() {
         String text = telefono.getText().trim();
         if (text.matches("\\d+")) {
@@ -134,12 +156,29 @@ public class RequestAdoptionAlternative {
         telefonoErrorLabel.setVisible(false);
     }
 
-    public void setnomeGattoError(String m) { showErr(nomeGattoErrorLabel, m); }
-    public void setNomeError(String m) { showErr(nomeErrorLabel, m); }
-    public void setCognomeError(String m) { showErr(cognomeErrorLabel, m); }
-    public void setEmailError(String m) { showErr(emailConfermaErrorLabel, m); }
-    public void setIndirizzoError(String m) { showErr(indirizzoErrorLabel, m); }
-    public void setTelefonoError(String m) { showErr(telefonoErrorLabel, m); }
+    public void setnomeGattoError(String m) {
+        showErr(nomeGattoErrorLabel, m);
+    }
+
+    public void setNomeError(String m) {
+        showErr(nomeErrorLabel, m);
+    }
+
+    public void setCognomeError(String m) {
+        showErr(cognomeErrorLabel, m);
+    }
+
+    public void setEmailError(String m) {
+        showErr(emailConfermaErrorLabel, m);
+    }
+
+    public void setIndirizzoError(String m) {
+        showErr(indirizzoErrorLabel, m);
+    }
+
+    public void setTelefonoError(String m) {
+        showErr(telefonoErrorLabel, m);
+    }
 
     private Label makeErrLabel() {
         Label l = new Label();
@@ -151,6 +190,26 @@ public class RequestAdoptionAlternative {
     private void showErr(Label l, String msg) {
         l.setText(msg);
         l.setVisible(true);
+    }
+
+    public void setAvailableCats(List<Cat> cats) {
+        nomeGatto.getItems().clear();
+        nomeGatto.getItems().addAll(cats);
+
+        nomeGatto.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Cat cat) {
+                return (cat != null) ? cat.getNameCat() : "";
+            }
+
+            @Override
+            public Cat fromString(String name) {
+                return cats.stream()
+                        .filter(c -> c.getNameCat().equals(name))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
     }
 }
 

@@ -3,10 +3,15 @@ package controller_grafici;
 import bean.RequestAdoptionBean;
 import bean.ModelBeanFactory;
 import controller_applicativi.RequestAdoptionController;
+import dao.CatDaoDB;
+import dao.DatabaseConnectionManager;
+import entity.Cat;
 import entity.Client;
 import facade.ApplicationFacade;
+import javafx.collections.FXCollections;
 import javafx.scene.layout.VBox;
 import view.RequestAdoption;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class RequestAdoptionGUIController {
@@ -17,11 +22,16 @@ public class RequestAdoptionGUIController {
     private final RequestAdoption view;
     private final String typeOfLogin;
     private final RequestAdoptionController request = new RequestAdoptionController();
+    private final CatDaoDB catDAO;
+
+
 
     public RequestAdoptionGUIController(NavigationService nav, String typeOfLogin) {
         this.nav = nav;
         this.view = new RequestAdoption();
         this.typeOfLogin = typeOfLogin;
+        this.catDAO = new CatDaoDB(DatabaseConnectionManager.getConnection());
+        loadCatsIntoComboBox();
         addEventHandlers();
     }
     /* -------------------------- eventi GUI ---------------------- */
@@ -85,6 +95,17 @@ public class RequestAdoptionGUIController {
             default ->
                     view.setNomeError("Errore sconosciuto");
         }
+    }
+    private void loadCatsIntoComboBox() {
+        List<Cat> cats = catDAO.readAdoptableCats();
+        populateCatNames(cats);
+    }
+    private void populateCatNames(List<Cat> cats) {
+        List<String> catNames = cats.stream()
+                .map(Cat::getNameCat)
+                .toList();
+        view.getComboBoxCatName().setItems(FXCollections.observableArrayList(catNames));
+        view.getComboBoxCatName().setPromptText("Seleziona un gatto");
     }
 
     /* ----------------------- annulla ---------------------------- */

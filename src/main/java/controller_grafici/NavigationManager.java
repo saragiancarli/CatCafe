@@ -17,18 +17,18 @@ public class NavigationManager implements NavigationService {
         this.stage = stage;
     }
 
-   
-    
+
+
     public void navigateToLogin(NavigationService navigationService,String typeOfLogin) {
         LoginController controller = new LoginController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Login");
     }
     public void navigateToRegistration(NavigationService navigationService,  String userType) {
         RegistrationController controller = new RegistrationController(navigationService,  userType);
-        
+
         this.display(controller.getRoot(), "Registrazione");
     }
-  
+
 
 
     @Override
@@ -45,17 +45,17 @@ public class NavigationManager implements NavigationService {
         this.display(controller.getRoot(), "Adoption Page");
     }
     public void navigateToMenageBooking(NavigationService navigationService,String typeOfLogin) {
-    	ManageBookingController controller = new ManageBookingController(navigationService,typeOfLogin);
+        ManageBookingController controller = new ManageBookingController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Booking Page");
     }
-    
+
     public void display(VBox root, String title) {
         try {
             Scene scene = new Scene(root);
             scene.getStylesheets().clear();
             String styleCSS = getCSSStyle();
             scene.getStylesheets().add(getClass().getResource(styleCSS).toExternalForm());
-            
+
             stage.setScene(scene);
             stage.setTitle(title);
             stage.show();
@@ -64,7 +64,7 @@ public class NavigationManager implements NavigationService {
         }
     }
 
-   
+
 
     public void setInterfaceOption(String interfaceOption) {
         this.interfaceOption = interfaceOption;
