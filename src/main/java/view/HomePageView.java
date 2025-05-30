@@ -65,6 +65,8 @@ public class HomePageView {
     public Button getMenageCatButton() {
     	return menageCatButton; 
     	}
+
+
     public Button getLogoutButton() {
     	return logoutButton; 
     	}
