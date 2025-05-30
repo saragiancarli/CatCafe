@@ -7,11 +7,7 @@ import java.util.List;
 
 import dao.SessionManager;
 import entity.Booking;
-import view.BookingView;
-import view.LoginAlternativeView;
-import view.LoginView;
-import view.RegistrationView;
-import view.RegistrationViewAlternative;
+import view.*;
 
 public final class ModelBeanFactory {
 
@@ -110,4 +106,20 @@ public final class ModelBeanFactory {
                        .map(ManageBookingBean::new)   // usa il costruttore ❶
                        .toList();                     // disponibile da Java 16
     }
+    public static RequestAdoptionBean getRequestAdoptionBean(RequestAdoption a) {
+        RequestAdoptionBean bean = new RequestAdoptionBean();
+        bean.setName(a.getName());
+        bean.setSurname(a.getSurname());
+        int phoneNumber = a.getPhoneNumber();
+        if (phoneNumber == -1) {
+            throw new IllegalArgumentException("Numero di telefono non valido");
+        }
+        bean.setPhoneNumber(phoneNumber);
+        bean.setEmail(a.getEmail());
+        bean.setAddress(a.getAddress());
+        bean.setNameCat(a.getSelectedCatName());
+        bean.setStateAdoption(false); // di default
+        return bean;
+    }
+
 }

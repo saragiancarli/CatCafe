@@ -8,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import java.util.List;
-import java.util.stream.Collectors;
 import entity.Cat;
 
 public class RequestAdoption {
@@ -148,7 +147,7 @@ public class RequestAdoption {
         indirizzoErrorLabel.setVisible(false);
         telefonoErrorLabel.setVisible(false);
     }
-    public void setnomeGattoError(String m)  {
+    public void setNomeGattoError(String m)  {
         showError(nomeGattoErrorLabel, m);
     }
     public void setNomeError(String m)  {
@@ -186,7 +185,7 @@ public class RequestAdoption {
     private void populateCatNames(List<Cat> cats) {
         List<String> catNames = cats.stream()
                 .map(Cat::getNameCat)
-                .collect(Collectors.toList());
+                .toList();
         nomeGatto.setItems(FXCollections.observableArrayList(catNames));
         nomeGatto.setPromptText("Seleziona un gatto");
     }
