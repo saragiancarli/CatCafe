@@ -132,18 +132,10 @@ public class RequestAdoptionAlternative {
         return indirizzo.getText().trim();
     }
 
-    public int getPhoneNumber() {
-        String text = telefono.getText().trim();
-        if (text.matches("\\d+")) {
-            try {
-                return Integer.parseInt(text);
-            } catch (NumberFormatException _) {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
+    public String getPhoneNumber() {
+        return telefono.getText().trim();
     }
+
 
     /* ---------- gestione-errori ------------------ */
 

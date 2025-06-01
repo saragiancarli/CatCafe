@@ -122,17 +122,8 @@ public class RequestAdoption {
     public String getSurname() {return cognome.getText().trim();}
     public String getEmail() {return emailConferma.getText().trim();}
     public String getAddress() {return indirizzo.getText().trim();}
-    public int getPhoneNumber() {
-        String text = telefono.getText().trim();
-        if (text.matches("\\d+")) {
-            try {
-                return Integer.parseInt(text);
-            } catch (NumberFormatException _) {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
+    public String getPhoneNumber() {
+        return telefono.getText().trim();
     }
 
     /* ---------- gestione-errori------------------ */
@@ -175,7 +166,7 @@ public class RequestAdoption {
 
     private void showError(Label l, String msg) {
         l.setText(msg);
-        l.setVisible(true);
+        l.setVisible(msg != null && !msg.isEmpty());
     }
 }
 
