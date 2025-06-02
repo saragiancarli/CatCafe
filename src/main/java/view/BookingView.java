@@ -18,7 +18,7 @@ public class BookingView {
 
     private final DatePicker       data;             // giorno
     private final ComboBox<LocalTime> ora;           // ora (slot da 15')
-    private final TextField  numeroPartecipanti;     // n. posti
+    private final TextField  numeroPartecipanti;     // numero posti
     private final TextField  nomePrenotazione;       // titolo
     private final TextField  email;                  // e-mail di conferma
 
