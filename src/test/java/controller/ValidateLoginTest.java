@@ -30,6 +30,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ValidateLoginTest {
 
+
     /* =========== MOCK =========== */
     @Mock  private GenericDao<User>  userDao;
     @Mock  private GenericDao<Staf>  stafDao;
@@ -93,7 +94,7 @@ class ValidateLoginTest {
     /* ------------------------------------------------
        TEST #1  : credenziali corrette                 */
     @Test
-    void testValidCredentials() throws WrongLoginCredentialsException, Exception{
+    void testValidCredentials() throws WrongLoginCredentialsException, SQLException {
 
        Client result = validator.authenticate(validUserLogin);
 

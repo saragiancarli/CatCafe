@@ -1,5 +1,6 @@
 package controller;
 
+
 import bean.BookingBean;
 import controller_applicativi.BookingService;
 import dao.GenericDao;
@@ -54,7 +55,7 @@ class BookingServiceTest {
         /*  • prenotazione valida  */
         validBean = new BookingBean();
         validBean.setTitle("Tavolo Alice");
-        validBean.setDate(LocalDate.of(2025, 5, 30));
+        validBean.setDate(LocalDate.of(2025, 8, 30));
         validBean.setTime(LocalTime.of(18, 30));
         validBean.setSeats(2);
         validBean.setConfirmationEmail("alice@example.com");
@@ -82,8 +83,7 @@ class BookingServiceTest {
         String esito = service.book(user, validBean);
 
         /* then */
-        assertEquals("success", esito);
-        
+        assertEquals("success", esito);       
     }
 
     @Test
