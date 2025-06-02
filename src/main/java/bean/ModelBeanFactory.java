@@ -110,16 +110,14 @@ public final class ModelBeanFactory {
         RequestAdoptionBean bean = new RequestAdoptionBean();
         bean.setName(a.getName());
         bean.setSurname(a.getSurname());
-        int phoneNumber = a.getPhoneNumber();
-        if (phoneNumber == -1) {
-            throw new IllegalArgumentException("Numero di telefono non valido");
-        }
+        String phoneNumber = a.getPhoneNumber();
         bean.setPhoneNumber(phoneNumber);
+
         bean.setEmail(a.getEmail());
         bean.setAddress(a.getAddress());
         bean.setNameCat(a.getSelectedCatName());
-        bean.setStateAdoption(false); // di default
+        bean.setStateAdoption(false); // default
+
         return bean;
     }
-
 }

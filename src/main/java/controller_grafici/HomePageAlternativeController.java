@@ -34,8 +34,8 @@ public class HomePageAlternativeController {
         	navigationService.navigateToBooking(navigationService, typeOfLogin);
 
         } 
-        /*else if (sel == view.getAdoptOption()) {
-            navigationService.navigateToAdoption(navigationService, typeOfLogin);}     */
+        else if (sel == homeView.getAdoptOption()) {
+            navigationService.navigateToAdopt(navigationService, typeOfLogin);}
 
          
     else if (sel == homeView.getMenageBookOption()) {
@@ -57,6 +57,10 @@ public class HomePageAlternativeController {
    public void goToMenageBooking() {
 	   	navigationService.navigateToBooking(navigationService,typeOfLogin);
 	    }
+    public void goToAdopt() {
+        navigationService.navigateToBooking(navigationService,typeOfLogin);
+    }
+
     public VBox getRoot() {
     	return this.homeView.getRoot();}
        

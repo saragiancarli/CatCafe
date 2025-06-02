@@ -28,7 +28,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, bean.getNameCat());
-            ps.setInt(2, bean.getPhoneNumber());
+            ps.setString(2, bean.getPhoneNumber());
             ps.setString(3, bean.getName());
             ps.setString(4, bean.getSurname());
             ps.setString(5, bean.getEmail());
@@ -69,13 +69,14 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
 """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, bean.getPhoneNumber());
+            ps.setString(1, bean.getPhoneNumber());
             ps.setString(2, bean.getName());
             ps.setString(3, bean.getSurname());
             ps.setString(4, bean.getAddress());
             ps.setBoolean(5, bean.isStateAdoption());
             ps.setString(6, bean.getEmail());
             ps.setString(7, bean.getNameCat());
+            ps.executeUpdate();
         }
     }
 
@@ -118,7 +119,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
         return list;
     }
     public boolean existsByEmailAndCat(String email, String nameCat) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM request_adoption WHERE email = ? AND name_cat = ?";
+        String sql = "SELECT COUNT(*) FROM adoption_requests WHERE email = ? AND nameCat = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setString(2, nameCat);
@@ -136,7 +137,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
     private RequestAdoptionBean map(ResultSet rs) throws SQLException {
         RequestAdoptionBean bean = new RequestAdoptionBean();
         bean.setNameCat(rs.getString("nameCat"));
-        bean.setPhoneNumber(rs.getInt("phoneNumber"));
+        bean.setPhoneNumber(rs.getString("phoneNumber"));
         bean.setName(rs.getString("name"));
         bean.setSurname(rs.getString("surname"));
         bean.setEmail(rs.getString("email"));

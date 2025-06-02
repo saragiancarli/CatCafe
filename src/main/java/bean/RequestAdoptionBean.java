@@ -4,7 +4,7 @@ package bean;
 public class RequestAdoptionBean {
 
     private String nameCat;
-    private int phoneNumber;
+    private String phoneNumber;
     private String name;
     private String surname;
     private String email;
@@ -21,11 +21,11 @@ public class RequestAdoptionBean {
         this.nameCat = nameCat;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -79,7 +79,7 @@ public class RequestAdoptionBean {
     }
 
     public boolean hasValidPhoneNumber() {
-        return String.valueOf(phoneNumber).length() >= 10;
+        return phoneNumber != null && phoneNumber.matches("\\d{10,}");
     }
 
     public boolean hasValidEmail() {

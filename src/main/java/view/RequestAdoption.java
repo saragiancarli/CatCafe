@@ -6,9 +6,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.collections.FXCollections;
-import java.util.List;
-import entity.Cat;
 
 public class RequestAdoption {
 
@@ -120,21 +117,13 @@ public class RequestAdoption {
     }
 
     public String getSelectedCatName() {return nomeGatto.getValue();}
+    public ComboBox<String> getComboBoxCatName() {return nomeGatto;}
     public String getName() {return nome.getText().trim();}
     public String getSurname() {return cognome.getText().trim();}
     public String getEmail() {return emailConferma.getText().trim();}
     public String getAddress() {return indirizzo.getText().trim();}
-    public int getPhoneNumber() {
-        String text = telefono.getText().trim();
-        if (text.matches("\\d+")) {
-            try {
-                return Integer.parseInt(text);
-            } catch (NumberFormatException _) {
-                return -1;
-            }
-        } else {
-            return -1;
-        }
+    public String getPhoneNumber() {
+        return telefono.getText().trim();
     }
 
     /* ---------- gestione-errori------------------ */
@@ -177,17 +166,7 @@ public class RequestAdoption {
 
     private void showError(Label l, String msg) {
         l.setText(msg);
-        l.setVisible(true);
-    }
-
-    /** Popola il ComboBox con i gatti adottabili. */
-
-    private void populateCatNames(List<Cat> cats) {
-        List<String> catNames = cats.stream()
-                .map(Cat::getNameCat)
-                .toList();
-        nomeGatto.setItems(FXCollections.observableArrayList(catNames));
-        nomeGatto.setPromptText("Seleziona un gatto");
+        l.setVisible(msg != null && !msg.isEmpty());
     }
 }
 
