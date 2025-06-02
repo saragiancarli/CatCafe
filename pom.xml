@@ -1,16 +1,12 @@
-<!-- pom.xml - Java 24 + JavaFX 24 + MySQL -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <!-- coordinate del tuo progetto -->
-  <groupId>com.test</groupId>
-  <artifactId>test-app</artifactId>
+  <groupId>com.ISPW</groupId>
+  <artifactId>ISPWCATCAFE</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>catISPW</name>
-
+  <name>CatCafe</name>
   <!-- ===== PROPRIETÀ GENERALI ===== -->
   <properties>
     <!-- Java 24 -->
@@ -112,7 +108,7 @@
         <version>0.0.8</version>                 <!-- plugin ufficiale :contentReference[oaicite:3]{index=3} -->
         <configuration>
           <!-- cambia con la tua classe principale -->
-          <mainClass>com.test.Main</mainClass>
+          <mainClass>com.ISPW.Main</mainClass>
         </configuration>
       </plugin>
     </plugins>
