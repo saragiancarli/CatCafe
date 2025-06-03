@@ -6,8 +6,8 @@ US matteo
 
 FR matteo
 1) Il sistema deve inviare un’e-mail di conferma a chi ha prenotato un tavolo.
- 2)Il sistema deve fornire la possibilit`a di prenotare un tavolo dopo il login.
- 3)Il sistema deve permettere allo staf di visualizzare tutte le prenotazioi effettuate e selezionarne una per
+ 2)Il sistema deve fornire la possibilità di prenotare un tavolo dopo il login.
+ 3)Il sistema deve permettere allo staff di visualizzare tutte le prenotazioi effettuate e selezionarne una per
  vedere i dettagli.
 internal steps matteo
  Name: Prenota tavolo (Book seat)
@@ -25,3 +25,24 @@ US Sara
 1 )As a member of the cat cafe staff, I want to update the cat gallery, so that it is updated on the cats that are in the cafe.
 2) As a user, I want to read info about the cats in the cafe, so that I can learn about their lifestyle and character.
 3) As a member of the cat cafe staff, I want to write cats descriptions, so that people are more likely to adopt.
+
+FR Sara
+1)The system shall provide a list* of cats present taht can be adopted.
+2)The system shall send an email confirming the request of adoption has been registered.
+3)The system shall prevent the request of adoption of the same cat at the same time.
+
+Internal steps Sara
+
+1 The system asks for the name of the cat to be adopted.
+2 The user selects the cat.
+3 The system asks for first and last name.
+4 The user enters their first and last name.
+5 The system asks for the phone number
+6 The user enters their phone number
+7 The system asks for a confirmation email.
+8 The user enters their email.
+9 The system asks for the address.
+10 The user enters their address.
+11 The user confirms the entered data.
+12 The system saves the adoption request in the database.
+
