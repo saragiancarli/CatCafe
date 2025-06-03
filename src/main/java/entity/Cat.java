@@ -3,6 +3,8 @@ package entity;
 import javafx.beans.property.*;
 
 public class Cat {
+
+    private final IntegerProperty idCat = new SimpleIntegerProperty(); // 👈 ID aggiunto
     private final StringProperty nameCat = new SimpleStringProperty();
     private final StringProperty race = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
@@ -10,6 +12,19 @@ public class Cat {
     private final BooleanProperty stateAdoption = new SimpleBooleanProperty(false);
 
     /* ---------------- Getters/Setters/Properties ---------------- */
+
+    public int getIdCat() {
+        return idCat.get();
+    }
+
+    public void setIdCat(int idCat) {
+        this.idCat.set(idCat);
+    }
+
+    public IntegerProperty idCatProperty() {
+        return idCat;
+    }
+
     public String getNameCat() {
         return nameCat.get();
     }
@@ -69,11 +84,13 @@ public class Cat {
     public BooleanProperty stateAdoptionProperty() {
         return stateAdoption;
     }
+
     /* ---------------- Debug ---------------- */
     @Override
     public String toString() {
         return "Cat[" +
-                "name='" + nameCat.get() + '\'' +
+                "id=" + idCat.get() +
+                ", name='" + nameCat.get() + '\'' +
                 ", race='" + race.get() + '\'' +
                 ", age=" + age.get() +
                 ", adopted=" + stateAdoption.get() +
@@ -82,18 +99,3 @@ public class Cat {
                 ']';
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

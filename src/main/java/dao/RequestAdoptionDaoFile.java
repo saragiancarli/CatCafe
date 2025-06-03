@@ -1,6 +1,6 @@
 package dao;
 
-import bean.RequestAdoptionBean;
+import entity.Adoption;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
@@ -11,11 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class RequestAdoptionDaoFile implements BeanDao<RequestAdoptionBean> {
+public class RequestAdoptionDaoFile implements BeanDao<Adoption> {
 
     private static final String FILE_PATH = "request_adoptions.json";
     private final Gson gson;
-    private List<RequestAdoptionBean> list;
+    private List<Adoption> list;
 
     public RequestAdoptionDaoFile() {
         gson = new GsonBuilder()
@@ -27,12 +27,12 @@ public class RequestAdoptionDaoFile implements BeanDao<RequestAdoptionBean> {
     /* ---------- I/O ---------- */
     private static final Logger LOG = Logger.getLogger(RequestAdoptionDaoFile.class.getName());
 
-    private List<RequestAdoptionBean> load() {
+    private List<Adoption> load() {
         File f = new File(FILE_PATH);
         if (!f.exists()) return new ArrayList<>();
         try (Reader r = new FileReader(f)) {
-            Type t = new TypeToken<List<RequestAdoptionBean>>() {}.getType();
-            List<RequestAdoptionBean> l = gson.fromJson(r, t);
+            Type t = new TypeToken<List<Adoption>>() {}.getType();
+            List<Adoption> l = gson.fromJson(r, t);
             return l != null ? l : new ArrayList<>();
         } catch (IOException e) {
             LOG.log(Level.SEVERE, "Errore caricamento file " + FILE_PATH, e);
@@ -50,7 +50,7 @@ public class RequestAdoptionDaoFile implements BeanDao<RequestAdoptionBean> {
 
     /* ---------- CRUD ---------- */
     @Override
-    public void create(RequestAdoptionBean bean) {
+    public void create(Adoption bean) {
         // Prima verifica che non esista già una richiesta con la stessa chiave composta
         if (exists(bean.getNameCat(), bean.getEmail())) {
             throw new IllegalArgumentException("Request with same nomeGatto and email already exists");
@@ -60,7 +60,7 @@ public class RequestAdoptionDaoFile implements BeanDao<RequestAdoptionBean> {
     }
 
     @Override
-    public RequestAdoptionBean read(Object... keys) {
+    public Adoption read(Object... keys) {
         if (keys.length < 2) throw new IllegalArgumentException("Two keys required: nomeGatto and email");
         String nomeGatto = (String) keys[0];
         String email = (String) keys[1];
@@ -72,7 +72,7 @@ public class RequestAdoptionDaoFile implements BeanDao<RequestAdoptionBean> {
     }
 
     @Override
-    public void update(RequestAdoptionBean bean) {
+    public void update(Adoption bean) {
         // Trova ed elimina la vecchia richiesta con la stessa chiave composta
         list = list.stream()
                 .filter(b -> !(b.getNameCat().equalsIgnoreCase(bean.getNameCat()) &&
@@ -94,7 +94,7 @@ public class RequestAdoptionDaoFile implements BeanDao<RequestAdoptionBean> {
     }
 
     @Override
-    public List<RequestAdoptionBean> readAll() {
+    public List<Adoption> readAll() {
         return new ArrayList<>(list);
     }
 

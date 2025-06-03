@@ -1,11 +1,9 @@
 package view;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 
 public class RequestAdoption {
 
@@ -19,10 +17,9 @@ public class RequestAdoption {
     private final TextField indirizzo;
     private final TextField telefono;
 
+    private final Button modifica;
     private final Button conferma;
     private final Button annulla;
-
-    /* ---------- gestione-errori ------------------ */
 
     private final Label nomeGattoErrorLabel;
     private final Label nomeErrorLabel;
@@ -32,7 +29,7 @@ public class RequestAdoption {
     private final Label telefonoErrorLabel;
     private static final String ERROR_MESSAGE = "error";
 
-    /* ---------- costruttore-classe ------------------ */
+    /* ---------- costruttore ------------------ */
 
     public RequestAdoption() {
         root = new VBox(15);
@@ -42,56 +39,63 @@ public class RequestAdoption {
 
         Label title = new Label(" 🐾 Zampette in cerca di casa 🐾 ");
 
-        /* ---------- nome-gatto ------------------ */
-
+        // Sezione nome gatto
         Label nomeGattoLabel = new Label(" Scegli gatto da adottare ");
         nomeGatto = new ComboBox<>();
         nomeGatto.setPromptText(" Seleziona un gatto ");
         nomeGattoErrorLabel = makeErrLabel();
 
-        /* ---------- nome------------------ */
-
+        // Nome
         Label nomeLabel = new Label(" Nome ");
         nome = new TextField();
         nome.setPromptText(" ");
         nome.setMaxWidth(150);
         nomeErrorLabel = makeErrLabel();
 
-        /* ---------- cognome------------------ */
-
+        // Cognome
         Label cognomeLabel = new Label(" Cognome ");
         cognome = new TextField();
         cognome.setPromptText(" ");
         cognome.setMaxWidth(150);
         cognomeErrorLabel = makeErrLabel();
 
-        /* ---------- email------------------ */
-
+        // Email
         Label emailConfermaLabel = new Label(" Email di conferma ");
         emailConferma = new TextField();
         emailConferma.setPromptText(" ");
         emailConferma.setMaxWidth(150);
         emailConfermaErrorLabel = makeErrLabel();
 
-        /* ---------- indirizzo------------------ */
-
+        // Indirizzo
         Label indirizzoLabel = new Label(" Indirizzo ");
         indirizzo = new TextField();
         indirizzo.setPromptText(" ");
         indirizzo.setMaxWidth(150);
         indirizzoErrorLabel = makeErrLabel();
 
-        /* ---------- numero------------------ */
+        // Telefono
         Label telefonoLabel = new Label(" Numero di telefono ");
         telefono = new TextField();
         telefono.setPromptText(" ");
         telefono.setMaxWidth(150);
         telefonoErrorLabel = makeErrLabel();
 
+        // Bottoni
+        modifica = new Button("Modifica richieste adozione");
         conferma = new Button("Conferma");
         annulla = new Button("Annulla");
 
-        /* ---------- aggiungo-componenti-alla-vbox------------------ */
+        // Layout bottone "Modifica" in basso a sinistra
+        HBox modificaBox = new HBox(modifica);
+        modificaBox.setAlignment(Pos.CENTER_LEFT);
+        modificaBox.setPadding(new Insets(20, 0, 0, 0));
+
+        // Layout bottoni "Conferma" e "Annulla" centrati
+        HBox azioniBox = new HBox(15, conferma, annulla);
+        azioniBox.setAlignment(Pos.CENTER);
+        azioniBox.setPadding(new Insets(10, 0, 0, 0));
+
+        // Aggiunta componenti al root
         root.getChildren().addAll(
                 title,
                 nomeGattoLabel, nomeGatto, nomeGattoErrorLabel,
@@ -100,33 +104,58 @@ public class RequestAdoption {
                 emailConfermaLabel, emailConferma, emailConfermaErrorLabel,
                 indirizzoLabel, indirizzo, indirizzoErrorLabel,
                 telefonoLabel, telefono, telefonoErrorLabel,
-                conferma, annulla
+                modificaBox,
+                azioniBox
         );
     }
 
-    /* ---------- getter------------------ */
+    /* ---------- getter ------------------ */
 
-    public VBox      getRoot()            {
+    public VBox getRoot() {
         return root;
     }
-    public Button    getConferma()   {
+
+    public Button getModifica() {
+        return modifica;
+    }
+
+    public Button getConferma() {
         return conferma;
     }
-    public Button    getAnnulla()    {
+
+    public Button getAnnulla() {
         return annulla;
     }
 
-    public String getSelectedCatName() {return nomeGatto.getValue();}
-    public ComboBox<String> getComboBoxCatName() {return nomeGatto;}
-    public String getName() {return nome.getText().trim();}
-    public String getSurname() {return cognome.getText().trim();}
-    public String getEmail() {return emailConferma.getText().trim();}
-    public String getAddress() {return indirizzo.getText().trim();}
+    public String getSelectedCatName() {
+        return nomeGatto.getValue();
+    }
+
+    public ComboBox<String> getComboBoxCatName() {
+        return nomeGatto;
+    }
+
+    public String getName() {
+        return nome.getText().trim();
+    }
+
+    public String getSurname() {
+        return cognome.getText().trim();
+    }
+
+    public String getEmail() {
+        return emailConferma.getText().trim();
+    }
+
+    public String getAddress() {
+        return indirizzo.getText().trim();
+    }
+
     public String getPhoneNumber() {
         return telefono.getText().trim();
     }
 
-    /* ---------- gestione-errori------------------ */
+    /* ---------- gestione errori ------------------ */
 
     public void hideAllErrors() {
         nomeGattoErrorLabel.setVisible(false);
@@ -136,26 +165,32 @@ public class RequestAdoption {
         indirizzoErrorLabel.setVisible(false);
         telefonoErrorLabel.setVisible(false);
     }
-    public void setNomeGattoError(String m)  {
+
+    public void setNomeGattoError(String m) {
         showError(nomeGattoErrorLabel, m);
     }
-    public void setNomeError(String m)  {
-        showError(nomeErrorLabel,  m);
+
+    public void setNomeError(String m) {
+        showError(nomeErrorLabel, m);
     }
-    public void setCognomeError(String m)  {
+
+    public void setCognomeError(String m) {
         showError(cognomeErrorLabel, m);
     }
+
     public void setEmailError(String m) {
         showError(emailConfermaErrorLabel, m);
     }
-    public void setIndirizzoError(String m)  {
+
+    public void setIndirizzoError(String m) {
         showError(indirizzoErrorLabel, m);
     }
-    public void setTelefonoError(String m)  {
+
+    public void setTelefonoError(String m) {
         showError(telefonoErrorLabel, m);
     }
 
-    /* ---------- gestione-errori------------------ */
+    /* ---------- metodi utili ------------------ */
 
     private Label makeErrLabel() {
         Label l = new Label();
@@ -169,5 +204,3 @@ public class RequestAdoption {
         l.setVisible(msg != null && !msg.isEmpty());
     }
 }
-
-

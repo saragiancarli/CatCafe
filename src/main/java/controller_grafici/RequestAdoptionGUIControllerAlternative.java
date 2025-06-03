@@ -1,6 +1,6 @@
 package controller_grafici;
 
-import bean.RequestAdoptionBean;
+import entity.Adoption;
 import controller_applicativi.RequestAdoptionController;
 import dao.CatDaoMemory;
 import entity.Client;
@@ -29,10 +29,11 @@ public class RequestAdoptionGUIControllerAlternative {
     private void addEventHandlers() {
         view.getConferma().setOnAction(_ -> handleConfirm());
         view.getAnnulla().setOnAction(_ -> handleCancel());
+        view.getModifica().setOnAction(_ -> handleModify());
     }
     private void handleConfirm() {
 
-        RequestAdoptionBean bean = new RequestAdoptionBean();
+        Adoption bean = new Adoption();
         bean.setName(view.getName());
         bean.setSurname(view.getSurname());
         bean.setPhoneNumber(view.getPhoneNumber());
@@ -98,6 +99,12 @@ public class RequestAdoptionGUIControllerAlternative {
     }
 
     private void handleCancel() {
+        nav.navigateToHomePage(nav, typeOfLogin);
+    }
+
+    /* ----------------------- modifica ---------------------------- */
+
+    private void handleModify() {
         nav.navigateToHomePage(nav, typeOfLogin);
     }
 }

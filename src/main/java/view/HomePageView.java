@@ -11,7 +11,7 @@ public class HomePageView {
     private final Button bookSeatButton     = new Button("Prenota un tavolo");
     private final Button adoptionButton     = new Button("Adotta un gatto!!");
     private final Button menageBookingButton= new Button("Gestisci prenotazioni");
-    private final Button menageCatButton    = new Button("Gestisci gatti");
+    private final Button menageCatButton    = new Button("Gestisci i gatti del cat cafè");
     private final Button logoutButton       = new Button("Logout");
 
     /* ------------------------------------------------------------ */
@@ -60,7 +60,7 @@ public class HomePageView {
     public Button getMenageBookingButton(){
     	return menageBookingButton;
     	}
-    public Button getReceptionistAccessButton() {
+    public Button getManageCat() {
     	return menageCatButton; 
     	}
 

@@ -1,6 +1,6 @@
 package controller_applicativi;
 
-import bean.RequestAdoptionBean;
+import entity.Adoption;
 import dao.BeanDao;
 import dao.DaoFactory;
 
@@ -14,14 +14,14 @@ public class RequestAdoptionController{
 
     private static final Logger LOG = Logger.getLogger(RequestAdoptionController.class.getName());
 
-    private final BeanDao<RequestAdoptionBean> beanDao = DaoFactory.getInstance().getRequestAdoptionDao();
+    private final BeanDao<Adoption> beanDao = DaoFactory.getInstance().getRequestAdoptionDao();
 
     /**
      * Crea una richiesta di adozione.
      * @param bean dati della richiesta
      * @return "success" | "error:validation" | "error:duplicate" | "error:database_error"
      */
-    public String requestAdoption(RequestAdoptionBean bean) {
+    public String requestAdoption(Adoption bean) {
 
         /* ---------- validation ---------- */
         if (!bean.hasValidName() ||

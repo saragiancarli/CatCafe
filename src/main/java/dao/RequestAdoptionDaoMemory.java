@@ -1,6 +1,6 @@
 package dao;
 
-import bean.RequestAdoptionBean;
+import entity.Adoption;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,13 +9,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * DAO in-memory (thread-safe) per RequestAdoptionBean,
  * usa come chiave composta nomeGatto + email concatenati.
  */
-public class RequestAdoptionDaoMemory implements BeanDao<RequestAdoptionBean> {
+public class RequestAdoptionDaoMemory implements BeanDao<Adoption> {
 
-    private static final Map<String, RequestAdoptionBean> STORE = new ConcurrentHashMap<>();
+    private static final Map<String, Adoption> STORE = new ConcurrentHashMap<>();
 
     /* ---------------- CRUD --------------------------------------- */
     @Override
-    public void create(RequestAdoptionBean bean) {
+    public void create(Adoption bean) {
         String key = keyOf(bean.getNameCat(), bean.getEmail());
         if (STORE.containsKey(key)) {
             throw new IllegalArgumentException("RequestAdoption already exists for this nomeGatto and email");
@@ -24,13 +24,13 @@ public class RequestAdoptionDaoMemory implements BeanDao<RequestAdoptionBean> {
     }
 
     @Override
-    public RequestAdoptionBean read(Object... keys) {
+    public Adoption read(Object... keys) {
         String key = keyFromKeys(keys);
         return cloneOf(STORE.get(key));
     }
 
     @Override
-    public void update(RequestAdoptionBean bean) {
+    public void update(Adoption bean) {
         String key = keyOf(bean.getNameCat(), bean.getEmail());
         if (!STORE.containsKey(key)) {
             throw new IllegalArgumentException("RequestAdoption not found");
@@ -45,9 +45,9 @@ public class RequestAdoptionDaoMemory implements BeanDao<RequestAdoptionBean> {
     }
 
     @Override
-    public List<RequestAdoptionBean> readAll() {
-        List<RequestAdoptionBean> list = new ArrayList<>();
-        for (RequestAdoptionBean bean : STORE.values()) {
+    public List<Adoption> readAll() {
+        List<Adoption> list = new ArrayList<>();
+        for (Adoption bean : STORE.values()) {
             list.add(cloneOf(bean));
         }
         return list;
@@ -69,16 +69,16 @@ public class RequestAdoptionDaoMemory implements BeanDao<RequestAdoptionBean> {
         return keyOf((String) keys[0], (String) keys[1]);
     }
 
-    private RequestAdoptionBean cloneOf(RequestAdoptionBean src) {
+    private Adoption cloneOf(Adoption src) {
         if (src == null) return null;
-        RequestAdoptionBean copy = new RequestAdoptionBean();
+        Adoption copy = new Adoption();
         copy.setNameCat(src.getNameCat());
         copy.setPhoneNumber(src.getPhoneNumber());
         copy.setName(src.getName());
         copy.setSurname(src.getSurname());
         copy.setEmail(src.getEmail());
         copy.setAddress(src.getAddress());
-        copy.setStateAdoption(src.isStateAdoption());
+        copy.setStateAdoption(src.getStateAdoption());
         return copy;
     }
 }

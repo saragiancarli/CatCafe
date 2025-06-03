@@ -1,6 +1,6 @@
 package controller_grafici;
 
-import bean.RequestAdoptionBean;
+import entity.Adoption;
 import bean.ModelBeanFactory;
 import controller_applicativi.RequestAdoptionController;
 import dao.CatDaoDB;
@@ -39,11 +39,12 @@ public class RequestAdoptionGUIController {
     private void addEventHandlers() {
         view.getConferma().setOnAction(_ -> handleConfirm());
         view.getAnnulla().setOnAction(_ -> handleCancel());
+        view.getModifica().setOnAction(_ -> handleModify());
     }
     private void handleConfirm() {
         view.hideAllErrors();
 
-        RequestAdoptionBean bean;
+        Adoption bean;
         try {
             bean = ModelBeanFactory.getRequestAdoptionBean(view);
         } catch (IllegalArgumentException e) {
@@ -131,5 +132,11 @@ public class RequestAdoptionGUIController {
     }
     /* -------------------- root per il NavigationManager --------- */
     public VBox getRoot() { return view.getRoot(); }
+
+    /* ----------------------- modifica ---------------------------- */
+
+    private void handleModify() {
+        nav.navigateToHomePage(nav, typeOfLogin);
+    }
 
 }

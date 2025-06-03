@@ -1,6 +1,6 @@
 package dao;
 
-import bean.RequestAdoptionBean;
+import entity.Adoption;
 import entity.Booking;
 import entity.Staf;
 import entity.User;
@@ -99,6 +99,7 @@ public class DaoFactory implements DaoFactoryInterface {
         }
     }
 
+
     private static GenericDao<Booking> getBookingFileInstance() {
         if (bookingDaoFileInstance == null)
             bookingDaoFileInstance = new BookingDaoFile();
@@ -112,7 +113,7 @@ public class DaoFactory implements DaoFactoryInterface {
         return bookingDaoMemoryInstance;
     }
 
-    public BeanDao<RequestAdoptionBean> getRequestAdoptionDao() {
+    public BeanDao<Adoption> getRequestAdoptionDao() {
         switch (storageOption) {
             case DATABASE -> {
                 return new RequestAdoptionDaoDB(DatabaseConnectionManager.getConnection());
@@ -126,9 +127,9 @@ public class DaoFactory implements DaoFactoryInterface {
         }
     }
 
-    private static BeanDao<RequestAdoptionBean> requestAdoptionDaoFileInstance;
+    private static BeanDao<Adoption> requestAdoptionDaoFileInstance;
 
-    private static BeanDao<RequestAdoptionBean> getRequestAdoptionFileInstance() {
+    private static BeanDao<Adoption> getRequestAdoptionFileInstance() {
         if (requestAdoptionDaoFileInstance == null)
             requestAdoptionDaoFileInstance = new RequestAdoptionDaoFile();
         return requestAdoptionDaoFileInstance;

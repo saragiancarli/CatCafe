@@ -1,6 +1,6 @@
 package dao;
 
-import bean.RequestAdoptionBean;
+import entity.Adoption;
 import exception.DataAccessException;
 
 import java.sql.*;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** DAO JDBC per la tabella <code>adoption_requests</code>. */
-public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
+public class RequestAdoptionDaoDB implements BeanDao<Adoption> {
 
     private final Connection conn;
 
@@ -19,7 +19,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
     /* --------------------------create------------------------------ */
 
     @Override
-    public void create(RequestAdoptionBean bean) throws SQLException {
+    public void create(Adoption bean) throws SQLException {
         final String sql = """
             INSERT INTO adoption_requests
               (nameCat, phoneNumber, name, surname, email, address, stateAdoption)
@@ -33,7 +33,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
             ps.setString(4, bean.getSurname());
             ps.setString(5, bean.getEmail());
             ps.setString(6, bean.getAddress());
-            ps.setBoolean(7, bean.isStateAdoption());
+            ps.setBoolean(7, bean.getStateAdoption());
             ps.executeUpdate();
         }
     }
@@ -41,7 +41,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
     /* -------------------------read------------------------------- */
 
     @Override
-    public RequestAdoptionBean read(Object... keys) throws SQLException {
+    public Adoption read(Object... keys) throws SQLException {
         if (keys.length != 2 || !(keys[0] instanceof String email) || !(keys[1] instanceof String nameCat)) {
             throw new IllegalArgumentException("Keys must be email and nameCat");
         }
@@ -61,7 +61,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
     /* -------------------------update------------------------------- */
 
     @Override
-    public void update(RequestAdoptionBean bean) throws SQLException {
+    public void update(Adoption bean) throws SQLException {
         final String sql = """
             UPDATE adoption_requests
     SET phoneNumber = ?, name = ?, surname = ?, address = ?, stateAdoption = ?
@@ -73,7 +73,7 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
             ps.setString(2, bean.getName());
             ps.setString(3, bean.getSurname());
             ps.setString(4, bean.getAddress());
-            ps.setBoolean(5, bean.isStateAdoption());
+            ps.setBoolean(5, bean.getStateAdoption());
             ps.setString(6, bean.getEmail());
             ps.setString(7, bean.getNameCat());
             ps.executeUpdate();
@@ -100,8 +100,8 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
     /* ------------------------show-details---------------------------- */
 
     @Override
-    public List<RequestAdoptionBean> readAll() {
-        List<RequestAdoptionBean> list = new ArrayList<>();
+    public List<Adoption> readAll() {
+        List<Adoption> list = new ArrayList<>();
 
         final String sql = "SELECT * " + "FROM adoption_requests";
 
@@ -134,8 +134,8 @@ public class RequestAdoptionDaoDB implements BeanDao<RequestAdoptionBean> {
 
     /* -----------------------helper-method------------------------------- */
 
-    private RequestAdoptionBean map(ResultSet rs) throws SQLException {
-        RequestAdoptionBean bean = new RequestAdoptionBean();
+    private Adoption map(ResultSet rs) throws SQLException {
+        Adoption bean = new Adoption();
         bean.setNameCat(rs.getString("nameCat"));
         bean.setPhoneNumber(rs.getString("phoneNumber"));
         bean.setName(rs.getString("name"));

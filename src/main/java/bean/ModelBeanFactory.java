@@ -7,6 +7,7 @@ import java.util.List;
 
 import dao.SessionManager;
 import entity.Booking;
+import entity.Adoption;
 import view.*;
 
 public final class ModelBeanFactory {
@@ -106,8 +107,8 @@ public final class ModelBeanFactory {
                        .map(ManageBookingBean::new)   // usa il costruttore ❶
                        .toList();                     // disponibile da Java 16
     }
-    public static RequestAdoptionBean getRequestAdoptionBean(RequestAdoption a) {
-        RequestAdoptionBean bean = new RequestAdoptionBean();
+    public static Adoption getRequestAdoptionBean(RequestAdoption a) {
+        Adoption bean = new Adoption();
         bean.setName(a.getName());
         bean.setSurname(a.getSurname());
         String phoneNumber = a.getPhoneNumber();

@@ -1,6 +1,7 @@
 package controller_grafici;
 
 
+import controller_applicativi.ManageCatController;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -31,6 +32,7 @@ public class NavigationManager implements NavigationService {
 
 
 
+
     @Override
     public void navigateToHomePage(NavigationService navigationService,String typeOfLogin) {
         HomePageController controller = new HomePageController(navigationService,typeOfLogin);
@@ -44,7 +46,11 @@ public class NavigationManager implements NavigationService {
         RequestAdoptionGUIController controller= new RequestAdoptionGUIController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Adoption Page");
     }
-    public void navigateToMenageBooking(NavigationService navigationService,String typeOfLogin) {
+    public void navigateToManageCat(NavigationService navigationService, String typeOfLogin) {
+        ManageCatGUIController controller = new ManageCatGUIController(navigationService, typeOfLogin);
+        this.display(controller.getRoot(), "Cat Page");
+    }
+        public void navigateToMenageBooking(NavigationService navigationService,String typeOfLogin) {
         ManageBookingController controller = new ManageBookingController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Booking Page");
     }

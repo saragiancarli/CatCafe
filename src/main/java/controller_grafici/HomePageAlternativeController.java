@@ -22,7 +22,7 @@ public class HomePageAlternativeController {
 
     
     private void addEventHandlers() {
-    	homeView.getConfirmButton().setOnAction(e -> {
+    	homeView.getConfirmButton().setOnAction(_ -> {
 
         Toggle sel = homeView.getSelectionGroup().getSelectedToggle();
         if (sel == null) {                    // nessuna scelta
@@ -42,9 +42,9 @@ public class HomePageAlternativeController {
     	navigationService.navigateToMenageBooking(navigationService, typeOfLogin);       
 
         } 
-        /*else if (sel == view.getCatOption()) {
-            //navigationService.navigateToManageCats(navigationService);              
-        }*/
+        else if (sel == homeView.getCatOption()) {
+            navigationService.navigateToManageCat(navigationService, typeOfLogin);
+        }
     });
 }
 
@@ -60,6 +60,10 @@ public class HomePageAlternativeController {
     public void goToAdopt() {
         navigationService.navigateToBooking(navigationService,typeOfLogin);
     }
+    public void goToManageCat() {
+        navigationService.navigateToManageCat(navigationService,typeOfLogin);
+    }
+
 
     public VBox getRoot() {
     	return this.homeView.getRoot();}
