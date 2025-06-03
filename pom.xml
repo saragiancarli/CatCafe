@@ -15,7 +15,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- librerie -->
-    <javafx.version>24.0.1</javafx.version>        <!-- JavaFX GA per JDK 24 :contentReference[oaicite:0]{index=0} -->
+    <javafx.version>24.0.1</javafx.version>        <!-- JavaFX GA per JDK 24 :contentReference[oaicite:0]{index=0 } -->
     <mysql.version>9.3.0</mysql.version>           <!-- ultimo driver JDBC :contentReference[oaicite:1]{index=1} -->
     <javafx.platform>${os.detected.classifier}</javafx.platform>
       <kotlin.version>1.9.24</kotlin.version>

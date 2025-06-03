@@ -84,6 +84,10 @@ public class NavigationManagerAlternative implements NavigationService {
         RegistrationAlternativeController controller = new RegistrationAlternativeController(navigationService, typeOfLogin);
         this.display(controller.getRoot(), "Registrazione (secondaria)");
     }
-
+  /*public void navigateToAdopt(NavigationService navigationService,String typeOfLogin) {
+  	RequestAdoptionGUIControllerAlternative controller = new RequestAdoptionGUIControllerAlternative(navigationService,typeOfLogin);
+      this.display(controller.getRoot(), "Booking Page");
+  }*/
+  
  
 }
