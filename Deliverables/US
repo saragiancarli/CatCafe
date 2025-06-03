@@ -3,6 +3,13 @@ US matteo
 2) come cliente voglio ricevere una mail di conferma sia per la mia richiesta di prenotazione sia per l'adozione , in modo da avere
  certezza della mie richieste siano andate a buon fine
 3) come staffer voglio poter gestire le richieste dei clienti, in modo da poterle rifiutare se non conformi.
+
+FR matteo
+1) Il sistema deve inviare un’e-mail di conferma a chi ha prenotato un tavolo.
+ 2)Il sistema deve fornire la possibilit`a di prenotare un tavolo dopo il login.
+ 3)Il sistema deve permettere allo staf di visualizzare tutte le prenotazioi effettuate e selezionarne una per
+ vedere i dettagli.
+
 US Sara
 1 )As a member of the cat cafe staff, I want to update the cat gallery, so that it is updated on the cats that are in the cafe.
 2) As a user, I want to read info about the cats in the cafe, so that I can learn about their lifestyle and character.
