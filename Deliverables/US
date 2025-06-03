@@ -9,6 +9,17 @@ FR matteo
  2)Il sistema deve fornire la possibilit`a di prenotare un tavolo dopo il login.
  3)Il sistema deve permettere allo staf di visualizzare tutte le prenotazioi effettuate e selezionarne una per
  vedere i dettagli.
+internal steps matteo
+ Name: Prenota tavolo (Book seat)
+ 1 Il sistema chiede il numero di partecipanti.
+ 2 L’utente inserisce il numero di partecipanti.
+ 3 Il sistema chiede il giorno della prenotazione.
+ 4 L’utente inserisce il giorno della prenotazione.
+ 5 Il sistema chiede l'orario della prenotazione.
+ 6 L’utente inserisce l'orario della prenotazione.
+ 7 Il sistema mostra i dati inseriti.
+ 8 L’utente conferma i dati.
+ 9 Il sistema salva la prenotazione nel database
 
 US Sara
 1 )As a member of the cat cafe staff, I want to update the cat gallery, so that it is updated on the cats that are in the cafe.
