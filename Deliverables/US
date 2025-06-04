@@ -36,16 +36,12 @@ FR Sara
 
 Internal steps Sara
 
-1 The system asks for the name of the cat to be adopted.
-2 The user selects the cat.
-3 The system asks for first and last name.
-4 The user enters their first and last name.
-5 The system asks for the phone number
-6 The user enters their phone number
-7 The system asks for a confirmation email.
-8 The user enters their email.
-9 The system asks for the address.
-10 The user enters their address.
-11 The user confirms the entered data.
-12 The system saves the adoption request in the database.
+1 The user logs in.
+2 The system opens the home page displaying various buttons.
+3 The user clicks on the "Adopt" button.
+4 The system opens the adoption page showing the form to be filled out.
+5 The user enters their information.
+6 The system verifies there isn't already an adoption request for that cat and that user.
+7 The user confirms the entered data.
+8 The system saves the adoption request in the database.
 
