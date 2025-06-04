@@ -11,15 +11,18 @@ FR matteo
  vedere i dettagli.
 internal steps matteo
  Name: Prenota tavolo (Book seat)
- 1 Il sistema chiede il numero di partecipanti.
- 2 L’utente inserisce il numero di partecipanti.
- 3 Il sistema chiede il giorno della prenotazione.
- 4 L’utente inserisce il giorno della prenotazione.
- 5 Il sistema chiede l'orario della prenotazione.
- 6 L’utente inserisce l'orario della prenotazione.
- 7 Il sistema mostra i dati inseriti.
+ 1 L'utente effettua il Login
+ 2 Il sistema apre la pagina home mostrando i vari bottoni
+ 3 L'utente clicca sul bottone "prenota"
+ 4 Il sistema apre la pagina di prenotazione mostrando il form da compilare
+ 5 L'utente compila il form
+ 6 Il sistema verifica che ci sia il numero di posti liberi indicato dall'utente per quel giorno a quell'ora.
+ 7 Il sistema mostra il repilogo dei dati inseriti.
  8 L’utente conferma i dati.
  9 Il sistema salva la prenotazione nel database
+
+6a il sistema rileva che non è disponibile il numero dei posti richiesto, rimanda al punto 4
+8a il sistema rileva che i dati inseriti non sono conformi, rimanda al punto 4
 
 US Sara
 1 )As a member of the cat cafe staff, I want to update the cat gallery, so that it is updated on the cats that are in the cafe.
