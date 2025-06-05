@@ -22,6 +22,7 @@ public class HomePageAlternativeController {
 
     
     private void addEventHandlers() {
+    	
     	homeView.getConfirmButton().setOnAction(_ -> {
 
         Toggle sel = homeView.getSelectionGroup().getSelectedToggle();
@@ -45,6 +46,13 @@ public class HomePageAlternativeController {
         else if (sel == homeView.getCatOption()) {
             navigationService.navigateToManageCat(navigationService, typeOfLogin);
         }
+        else if (sel == homeView.getChangeToStafButton()) {
+        	 navigationService.navigateToLogin(navigationService, "staf");
+        }
+        else if (sel == homeView.getChangeToUserButton()) {
+       	 navigationService.navigateToLogin(navigationService, "user");
+       }
+        
     });
 }
 

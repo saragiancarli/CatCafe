@@ -48,6 +48,9 @@ public class ManageBookingAlternativeController {
             service.cancel(sel.getId());
             refresh();
         });
+        view.getBtnBack().setOnAction(_ -> {
+        	nav.navigateToHomePage(nav, typeOfLogin); 
+        });
     }
 
     /* ------------------------------------------------------------ */

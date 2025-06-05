@@ -26,7 +26,7 @@ public class LoginAlternativeController {
         this.navigationService = nav;
         this.userType = userType;
 
-        this.loginView = new LoginAlternativeView();      // sottoclasse NON astratta
+        this.loginView = new LoginAlternativeView();     
         addEventHandlers();
     }
 
@@ -53,7 +53,7 @@ public class LoginAlternativeController {
         if (userType != null)
             bean.setUserType(userType);              // prefissato dal costruttore
 
-        /* -------- VALIDAZIONE GUI -------- */
+        
         boolean ok = true;
         loginView.hideErrorMessages();
 

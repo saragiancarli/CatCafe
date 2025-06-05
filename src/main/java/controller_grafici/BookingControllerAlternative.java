@@ -37,6 +37,7 @@ public class BookingControllerAlternative {
         view.getConfirmButton().setOnAction(_ -> handleConfirm());
         view.getCancelButton() .setOnAction(_ ->
                 navigation.navigateToHomePage(navigation, "user"));
+        
     }
 
     private void handleConfirm() {

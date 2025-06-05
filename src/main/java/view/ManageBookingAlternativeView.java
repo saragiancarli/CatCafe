@@ -18,6 +18,7 @@ public class ManageBookingAlternativeView {
     private final ListView<Booking> listView  = new ListView<>();
     private final Button    btnConfirm = new Button("Conferma");
     private final Button    btnCancel  = new Button("Cancella");
+    private final Button    btnBack = new Button("Indietro");
     private final Label     errLabel   = new Label("Seleziona prima una prenotazione.");
 
     public ManageBookingAlternativeView() {
@@ -39,7 +40,7 @@ public class ManageBookingAlternativeView {
         });
 
         /* ---------- bottoni + label errore ---------- */
-        HBox buttons = new HBox(10, btnConfirm, btnCancel);
+        HBox buttons = new HBox(10, btnConfirm, btnCancel,btnBack);
         buttons.setAlignment(Pos.CENTER);
 
         errLabel.setStyle("-fx-text-fill:red;");
@@ -69,6 +70,10 @@ public class ManageBookingAlternativeView {
     public Button    getBtnCancel() {
     	return btnCancel;
     	}
+    public Button    getBtnBack() {
+    	return btnBack;
+    	}
+    
     public void      showError()  { 
     	errLabel.setVisible(true);
     	}

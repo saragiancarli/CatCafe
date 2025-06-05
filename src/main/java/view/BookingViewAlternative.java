@@ -9,20 +9,23 @@ import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
-/** View “alternativa” (compact + dark) per la schermata di prenotazione. */
+/** View “alternativa” (compact + dark) con data inserita manualmente. */
 public class BookingViewAlternative {
 
-    /* ---------- nodi principali (NOMI INVARIATI) ------------------ */
-    protected VBox root;                       // contenitore radice
+    /* ---------- nodi principali (nomi invariati) ------------------ */
+    protected final VBox root;
 
-    private final DatePicker       data;       // giorno
-    private final Spinner<Integer> oraHour;    // ora  0-23
-    private final Spinner<Integer> oraMin;     // min  0-45 step 15
+    /* sostituito DatePicker → TextField */
+    private final TextField dataField;
 
-    private final TextField  numeroPartecipanti;
-    private final TextField  nomePrenotazione;
-    private final TextField  email;
+    private final Spinner<Integer> oraHour;
+    private final Spinner<Integer> oraMin;
+
+    private final TextField numeroPartecipanti;
+    private final TextField nomePrenotazione;
+    private final TextField email;
 
     private final Button confirmButton;
     private final Button cancelButton;
@@ -34,7 +37,7 @@ public class BookingViewAlternative {
     private final Label nomePrenotazioneErrorLabel;
     private final Label emailErrorLabel;
 
-    private static final String ERR_STYLE = "error-message";  // css class
+    private static final String ERR_STYLE = "error-message";
 
     /* ===============================================================*/
     public BookingViewAlternative() {
@@ -43,23 +46,24 @@ public class BookingViewAlternative {
         root.setPadding(new Insets(24));
         root.setAlignment(Pos.TOP_CENTER);
 
-        /* grid compatta a due colonne */
         GridPane grid = new GridPane();
-        grid.setVgap(8); grid.setHgap(10);
+        grid.setVgap(8);
+        grid.setHgap(10);
         grid.setAlignment(Pos.CENTER_LEFT);
 
         int row = 0;
 
         Label title = new Label("Prenotazione (Modalità compatta)");
 
-        /* --- data --- */
-        grid.add(new Label("Giorno"), 0, ++row);
-        data = new DatePicker();
-        grid.add(data, 1, row);
+        /* --- data (campo testo) --- */
+        grid.add(new Label("Giorno (yyyy-MM-dd)"), 0, ++row);
+        dataField = new TextField();
+        dataField.setPromptText("2025-05-30");
+        grid.add(dataField, 1, row);
         dataErrorLabel = makeErrLabel();
         grid.add(dataErrorLabel, 2, row);
 
-        /* --- ora (spinner) --- */
+        /* --- ora (spinner hh:mm) --- */
         grid.add(new Label("Ora di arrivo"), 0, ++row);
         oraHour = new Spinner<>(0, 23, 8);
         oraHour.setPrefWidth(70);
@@ -97,20 +101,24 @@ public class BookingViewAlternative {
 
         root.getChildren().addAll(title, grid,
                                   new HBox(10, confirmButton, cancelButton));
-
-        
     }
 
     /* ===============================================================
-                            GETTER (identici)
+                            GETTER IDENTICI
        ===============================================================*/
-    public VBox      getRoot()            { return root; }
-    public Button    getConfirmButton()   { return confirmButton; }
-    public Button    getCancelButton()    { return cancelButton; }
+    public VBox   getRoot()          { return root; }
+    public Button getConfirmButton() { return confirmButton; }
+    public Button getCancelButton()  { return cancelButton; }
 
-    public LocalDate getDate()            { return data.getValue(); }
+    /** Converte il testo in LocalDate; ritorna null se il parsing fallisce. */
+    public LocalDate getDate() {
+        String txt = dataField.getText().trim();
+        if (txt.isEmpty()) return null;
+        try { return LocalDate.parse(txt); }
+        catch (DateTimeParseException _) { return null; }
+    }
 
-    public LocalTime getTime() {                // calcola dal doppio spinner
+    public LocalTime getTime() {
         return LocalTime.of(oraHour.getValue(), oraMin.getValue());
     }
 
@@ -118,40 +126,36 @@ public class BookingViewAlternative {
         try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
         catch (NumberFormatException _) { return 0; }
     }
+
     public String getNomePrenotazione()  { return nomePrenotazione.getText().trim(); }
     public String getConfirmationEmail() { return email.getText().trim(); }
 
     /* ===============================================================
-                       ERROR-HANDLING (uguali alla view base)
+                           ERROR-HANDLING
        ===============================================================*/
     public void hideAllErrors() {
-    	dataErrorLabel.setVisible(false);
+        dataErrorLabel.setVisible(false);
         oraErrorLabel.setVisible(false);
         numeroPartecipantiErrorLabel.setVisible(false);
         nomePrenotazioneErrorLabel.setVisible(false);
         emailErrorLabel.setVisible(false);
     }
 
-    public void setDataError(String m){
-    	showErr(dataErrorLabel, m);
-    	}
-    public void setOraError(String m)    {
-    	showErr(oraErrorLabel,  m); 
-    	}
-    public void setPartecipantiError(String m) {
-    	showErr(numeroPartecipantiErrorLabel, m); 
-    	}
-    public void setNomeError(String m) { 
-    	showErr(nomePrenotazioneErrorLabel, m); 
-    	}
-    public void setEmailError(String m)   {
-    	showErr(emailErrorLabel, m); 
-    	}
+    public void setDataError(String m)          { showErr(dataErrorLabel, m); }
+    public void setOraError(String m)           { showErr(oraErrorLabel, m); }
+    public void setPartecipantiError(String m)  { showErr(numeroPartecipantiErrorLabel, m); }
+    public void setNomeError(String m)          { showErr(nomePrenotazioneErrorLabel, m); }
+    public void setEmailError(String m)         { showErr(emailErrorLabel, m); }
 
     /* ===============================================================*/
     private Label makeErrLabel() {
-        Label l = new Label(); l.getStyleClass().add(ERR_STYLE); l.setVisible(false);
+        Label l = new Label();
+        l.getStyleClass().add(ERR_STYLE);
+        l.setVisible(false);
         return l;
     }
-    private void showErr(Label l, String msg) { l.setText(msg); l.setVisible(true); }
+    private void showErr(Label l, String msg) {
+        l.setText(msg);
+        l.setVisible(true);
+    }
 }

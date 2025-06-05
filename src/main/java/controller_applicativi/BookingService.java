@@ -47,7 +47,7 @@ public class BookingService {
        
         LocalDate giorno = bean.getDate();
 
-        // pattern-matching cast – funziona solo se il DAO reale è BookingDaoDB
+       
         if (genericDao instanceof BookingDaoDB db &&
             db.existsByUserAndCheckIn(user.getEmail(), giorno))
         {
