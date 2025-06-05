@@ -39,7 +39,8 @@
     -fx-max-width: 300; /* Larghezza massima */
 }
 
-.text-field:focused, .password-field:focused {
+.text-field:focus,
+.password-field:focus {
     -fx-border-color: #333333;
     -fx-border-width: 2;
 }

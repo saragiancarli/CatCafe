@@ -13,6 +13,8 @@ public class HomePageAlternative {
     private final Button confirmButton;
     private final ToggleGroup selectionGroup;
     private final Label selectionError;
+    private final RadioButton changeToStaftOption;
+    private final RadioButton changeToUserOption;
 	private String typeOfLogin;
 	  String role;
     
@@ -40,24 +42,31 @@ public class HomePageAlternative {
         adoptOption = new RadioButton("Adotta");
         menageBookOption = new RadioButton("Gestisci prenotazioni");
         catOption = new RadioButton("Gestisci Gatti");
-
+        changeToStaftOption= new RadioButton("Vuoi passare al pannello di controllo dello Staf?");
+        changeToUserOption= new RadioButton("Vuoi passare alla schermata da Utente?");
+        
         bookSeatOption.setToggleGroup(selectionGroup);
         adoptOption.setToggleGroup(selectionGroup);
         menageBookOption.setToggleGroup(selectionGroup);
         catOption.setToggleGroup(selectionGroup);
-
+        changeToStaftOption.setToggleGroup(selectionGroup);
+        changeToUserOption.setToggleGroup(selectionGroup);
+        
         bookSeatOption .setDisable(!isUser);
         adoptOption    .setDisable(!isUser);
+        changeToStaftOption.setDisable(!isUser);
 
         menageBookOption.setDisable(!isStaf);
         catOption .setDisable(!isStaf);
+        changeToUserOption.setDisable(!isStaf);
         // Messaggio di errore nascosto inizialmente
         selectionError = new Label("Seleziona un'opzione prima di confermare.");
         selectionError.setStyle("-fx-text-fill: red;");
         selectionError.setVisible(false);
-
+        
         // Bottone di conferma
         confirmButton = new Button("Conferma Scelta");
+        
 
         // Aggiunta degli elementi alla root
         root.getChildren().addAll(
@@ -68,7 +77,9 @@ public class HomePageAlternative {
                 menageBookOption,
                 catOption,
                 selectionError,
-                confirmButton
+                confirmButton,
+                changeToStaftOption,
+                changeToUserOption
         );
     }
 
@@ -90,6 +101,13 @@ public class HomePageAlternative {
     public Button getConfirmButton() {
         return confirmButton;
     }
+    public RadioButton getChangeToStafButton() {
+    	return changeToStaftOption; 
+    	}
+    public RadioButton getChangeToUserButton() {
+    	return changeToUserOption; 
+    	}
+    
 
     public ToggleGroup getSelectionGroup() {
         return selectionGroup;
