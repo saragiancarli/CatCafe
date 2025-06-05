@@ -115,7 +115,7 @@ public class BookingViewAlternative {
         String txt = dataField.getText().trim();
         if (txt.isEmpty()) return null;
         try { return LocalDate.parse(txt); }
-        catch (DateTimeParseException ex) { return null; }
+        catch (DateTimeParseException _) { return null; }
     }
 
     public LocalTime getTime() {
@@ -124,7 +124,7 @@ public class BookingViewAlternative {
 
     public int getParticipants() {
         try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
-        catch (NumberFormatException ex) { return 0; }
+        catch (NumberFormatException _) { return 0; }
     }
 
     public String getNomePrenotazione()  { return nomePrenotazione.getText().trim(); }
