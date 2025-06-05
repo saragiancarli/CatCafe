@@ -45,3 +45,7 @@ Internal steps Sara
 7 The user confirms the entered data.
 8 The system saves the adoption request in the database.
 
+
+7a The system detects that there is already an adoption request for the selected cat, return to step 4.
+8a 
+
