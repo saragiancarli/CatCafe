@@ -1,12 +1,15 @@
 package dao;
 
-
 import entity.Cat;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CatDaoDB {
+
+    private static final Logger logger = Logger.getLogger(CatDaoDB.class.getName());
 
     private final Connection conn;
 
@@ -30,43 +33,50 @@ public class CatDaoDB {
             ps.executeUpdate();
         }
     }
+
     public void update(Cat cat) throws SQLException {
         final String sql = """
             UPDATE Cat
-               SET race = ?,
+               SET nameCat = ?,
+                   race = ?,
                    description = ?,
                    age = ?,
                    stateAdoption = ?
-             WHERE nameCat = ?
+             WHERE idCat = ?
             """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, cat.getRace());
-            ps.setString(2, cat.getDescription());
-            ps.setInt(3, cat.getAge());
-            ps.setBoolean(4, cat.isStateAdoption());
-            ps.setString(5, cat.getNameCat());
+            ps.setString(1, cat.getNameCat());       // <-- nameCat prima
+            ps.setString(2, cat.getRace());
+            ps.setString(3, cat.getDescription());
+            ps.setInt(4, cat.getAge());
+            ps.setBoolean(5, cat.isStateAdoption());
+            ps.setInt(6, cat.getIdCat());            // <-- idCat alla fine
             ps.executeUpdate();
         }
     }
+
     public void delete(Object... keys) throws SQLException {
-        if (keys.length != 1 || !(keys[0] instanceof String nameCat)) {
-            throw new IllegalArgumentException("Key must be nameCat String");
+        if (keys.length != 1 || !(keys[0] instanceof Integer idCat)) {
+            throw new IllegalArgumentException("Key must be an Integer idCat");
         }
 
-        final String sql = "DELETE FROM Cat WHERE nameCat = ?";
+        final String sql = "DELETE FROM Cat WHERE idCat = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, nameCat);
-            ps.executeUpdate();
+            ps.setInt(1, idCat);
+            int rowsDeleted = ps.executeUpdate();
+            logger.log(Level.INFO, "Righe eliminate: {0}", rowsDeleted);
+
         }
     }
+
     public Cat read(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof String nameCat)) {
             throw new IllegalArgumentException("Key must be nameCat String");
         }
 
-        final String sql = "SELECT "+"* FROM Cat WHERE nameCat = ?";
+        final String sql = "SELECT *"+" FROM Cat WHERE nameCat = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nameCat);
@@ -75,9 +85,11 @@ public class CatDaoDB {
             }
         }
     }
+
     /* -------------------------- helper map -------------------------- */
     private Cat map(ResultSet rs) throws SQLException {
         Cat cat = new Cat();
+        cat.setIdCat(rs.getInt("idCat"));
         cat.setNameCat(rs.getString("nameCat"));
         cat.setRace(rs.getString("race"));
         cat.setDescription(rs.getString("description"));
@@ -85,28 +97,20 @@ public class CatDaoDB {
         cat.setStateAdoption(rs.getBoolean("stateAdoption"));
         return cat;
     }
+
     public List<Cat> readAdoptableCats() {
         List<Cat> cats = new ArrayList<>();
-        String sql = "SELECT * " + "FROM Cat WHERE stateAdoption = false";  // o 0 se booleano è int
+        String sql = "SELECT *"+" FROM Cat WHERE stateAdoption = false";
 
         try (Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                Cat cat = new Cat();
-                cat.setNameCat(rs.getString("nameCat"));
-                cat.setRace(rs.getString("race"));
-                cat.setAge(rs.getInt("age"));
-                cat.setDescription(rs.getString("description"));
-                cat.setStateAdoption(rs.getBoolean("stateAdoption"));
-                cats.add(cat);
+                cats.add(map(rs));
             }
-
         } catch (SQLException e) {
-            throw new RuntimeException("Errore nel recupero dei gatti adottabili", e);
+            throw new exception.CatDaoException("Errore nel recupero dei gatti adottabili", e);
         }
-
 
         return cats;
     }
 }
-

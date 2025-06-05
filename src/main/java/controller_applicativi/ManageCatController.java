@@ -10,13 +10,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import bean.ManageCatBean;
+import exception.CatDaoException;
 
 public class ManageCatController {
 
     private static final Logger LOG =
             Logger.getLogger(ManageCatController.class.getName());
 
-    
+
     private final CatDaoDB catDao = new CatDaoDB(DatabaseConnectionManager.getConnection());
 
     /* ----- carica tutti i gatti ----- */
@@ -39,30 +40,11 @@ public class ManageCatController {
     }
 
     /* ----- cancellazione gatto ----- */
-    public void cancelCat(ManageCatBean bean) {
-        if (!bean.isSelected()) {
-            LOG.log(Level.WARNING, "Nessun gatto selezionato per la cancellazione.");
-            return;
-        }
-
+    public void cancelCat(Cat cat) {
         try {
-            catDao.delete(bean.getSelected().getIdCat());
+            catDao.delete(cat.getIdCat());
         } catch (SQLException e) {
-            LOG.log(Level.SEVERE, "Errore DB durante la cancellazione del gatto", e);
-        }
-    }
-
-    /* ----- modifica di un gatto ----- */
-    public void makeChanges(ManageCatBean bean) {
-        if (!bean.isSelected()) {
-            LOG.log(Level.WARNING, "Nessun gatto selezionato per la modifica.");
-            return;
-        }
-
-        try {
-            catDao.update(bean.getSelected());
-        } catch (SQLException e) {
-            LOG.log(Level.SEVERE, "Errore DB durante l'aggiornamento del gatto", e);
+            throw new CatDaoException("Errore DB durante la cancellazione del gatto", e);
         }
     }
 }
