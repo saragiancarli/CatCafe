@@ -1,9 +1,6 @@
 package dao;
 
-import entity.Adoption;
-import entity.Booking;
-import entity.Staf;
-import entity.User;
+import entity.*;
 
 public class DaoFactory implements DaoFactoryInterface {
 
@@ -27,10 +24,15 @@ public class DaoFactory implements DaoFactoryInterface {
     private static UserDaoMemory userDaoMemoryInstance;
     private static StafDaoMemory stafDaoMemoryInstance;
     private static BookingDaoMemory bookingDaoMemoryInstance;
+    private static CatDaoMemory catDaoMemoryInstance;
+    private static RequestAdoptionDaoMemory requestAdoptionMemoryInstance;
+
 
     private static GenericDao<User> userDaoFileInstance;
     private static GenericDao<Staf> stafDaoFileInstance;
     private static GenericDao<Booking> bookingDaoFileInstance;
+    private static GenericDao<Cat> catDaoFileInstance;
+    private static BeanDao<Adoption> requestAdoptionDaoFileInstance;
 
     /* ---------- costruttore privato ---------- */
     public DaoFactory() {
@@ -115,19 +117,11 @@ public class DaoFactory implements DaoFactoryInterface {
 
     public BeanDao<Adoption> getRequestAdoptionDao() {
         switch (storageOption) {
-            case DATABASE -> {
-                return new RequestAdoptionDaoDB(DatabaseConnectionManager.getConnection());
-            }
-            case FILE -> {
-                return getRequestAdoptionFileInstance();
-            }
-            default -> {
-                return getRequestAdoptionMemoryInstance();
-            }
+            case DATABASE -> {return new RequestAdoptionDaoDB(DatabaseConnectionManager.getConnection());}
+            case FILE -> {return getRequestAdoptionFileInstance();}
+            default -> {return getRequestAdoptionMemoryInstance();}
         }
     }
-
-    private static BeanDao<Adoption> requestAdoptionDaoFileInstance;
 
     private static BeanDao<Adoption> getRequestAdoptionFileInstance() {
         if (requestAdoptionDaoFileInstance == null)
@@ -135,11 +129,27 @@ public class DaoFactory implements DaoFactoryInterface {
         return requestAdoptionDaoFileInstance;
     }
 
-    private static RequestAdoptionDaoMemory requestAdoptionMemoryInstance;
-
     private static RequestAdoptionDaoMemory getRequestAdoptionMemoryInstance() {
         if (requestAdoptionMemoryInstance == null)
             requestAdoptionMemoryInstance = new RequestAdoptionDaoMemory();
         return requestAdoptionMemoryInstance;
     }
+    public GenericDao<Cat> getCatDao() {
+        return switch (storageOption) {
+            case DATABASE -> new CatDaoDB(DatabaseConnectionManager.getConnection());
+            case FILE -> getCatFileInstance(); // solo se esiste CatDaoFile
+            default -> getCatMemoryInstance();
+        };
+    }
+    private static GenericDao<Cat> getCatFileInstance() {
+        if (catDaoFileInstance == null)
+            catDaoFileInstance = new CatDaoFile(); // implementare se serve
+        return catDaoFileInstance;
+    }
+    private static CatDaoMemory getCatMemoryInstance() {
+        if (catDaoMemoryInstance == null)
+            catDaoMemoryInstance = new CatDaoMemory();
+        return catDaoMemoryInstance;
+    }
+
 }

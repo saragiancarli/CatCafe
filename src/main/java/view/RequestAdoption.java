@@ -10,6 +10,7 @@ public class RequestAdoption {
     /* ---------- campi ------------------ */
 
     protected VBox root;
+
     private final ComboBox<String> nomeGatto;
     private final TextField nome;
     private final TextField cognome;

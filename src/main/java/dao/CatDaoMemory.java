@@ -6,8 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class CatDaoMemory {
+public class CatDaoMemory implements GenericDao<Cat> {
     private final List<Cat> storage;
 
     public CatDaoMemory() {
@@ -31,18 +30,23 @@ public class CatDaoMemory {
         storage.add(c2);
     }
 
+    @Override
     public void create(Cat cat) throws SQLException {
         if (cat == null) throw new SQLException("Cat cannot be null");
         storage.add(cat);
     }
 
-    public Cat read(String name) {
+    @Override
+    public Cat read(Object... keys) {
+        if (keys == null || keys.length == 0) return null;
+        String name = (String) keys[0];
         return storage.stream()
                 .filter(cat -> cat.getNameCat().equals(name))
                 .findFirst()
                 .orElse(null);
     }
 
+    @Override
     public void update(Cat cat) throws SQLException {
         if (cat == null) throw new SQLException("Cat cannot be null");
         Cat existing = read(cat.getNameCat());
@@ -54,7 +58,10 @@ public class CatDaoMemory {
         }
     }
 
-    public void delete(String name) throws SQLException {
+    @Override
+    public void delete(Object... keys) throws SQLException {
+        if (keys == null || keys.length == 0) throw new SQLException("No key provided");
+        String name = (String) keys[0];
         Cat existing = read(name);
         if (existing != null) {
             storage.remove(existing);
@@ -63,6 +70,7 @@ public class CatDaoMemory {
         }
     }
 
+    @Override
     public List<Cat> readAll() {
         return new ArrayList<>(storage);
     }

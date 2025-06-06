@@ -11,7 +11,7 @@ public class ManageCatGUIControllerAlternative {
 
     private final ManageCatAlternative view = new ManageCatAlternative();
     private final ManageCatController service = new ManageCatController();
-    private final ManageCatBean bean = new ManageCatBean();
+
     private final NavigationService nav;
     private final String typeOfLogin;
 
@@ -19,33 +19,50 @@ public class ManageCatGUIControllerAlternative {
         this.nav = nav;
         this.typeOfLogin = typeOfLogin;
 
-        // Configurazione iniziale
-        view.getBtnConfirm().setOnAction(e -> handleConfirm());
-        view.getBtnCancel().setOnAction(e -> handleCancel());
-        view.getBtnBack().setOnAction(e -> nav.navigateToHomePage(nav, typeOfLogin));
+        refresh();
 
-        refreshData();
+        /* --- pulsante Conferma --- */
+        view.getBtnConfirm().setOnAction(_ -> {
+            Cat sel = view.getListView().getSelectionModel().getSelectedItem();
+            if (sel == null) {
+                view.showError("Seleziona un gatto prima di confermare.");
+                return;
+            }
+            try {
+                ManageCatBean bean = new ManageCatBean();
+                bean.setSelected(sel);
+                service.newCat(bean);
+                refresh();
+            } catch (Exception e) {
+                view.showError("Errore nel confermare il gatto: " + e.getMessage());
+            }
+        });
+
+        /* --- pulsante Cancella --- */
+        view.getBtnCancel().setOnAction(_ -> {
+            Cat sel = view.getListView().getSelectionModel().getSelectedItem();
+            if (sel == null) {
+                view.showError("Seleziona un gatto prima di cancellare.");
+                return;
+            }
+            try {
+                service.cancelCat(sel);
+                refresh();
+            } catch (Exception e) {
+                view.showError("Errore nel cancellare il gatto: " + e.getMessage());
+            }
+        });
+
+        view.getBtnBack().setOnAction(_ -> nav.navigateToHomePage(nav, typeOfLogin));
     }
 
-    private void handleConfirm() {
-        Cat selected = view.getListView().getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            bean.setSelected(selected); // Imposta il gatto selezionato nel bean
-            service.newCat(bean);      // Chiama il metodo del controller con il bean
-            refreshData();
+    private void refresh() {
+        view.hideError();
+        try {
+            view.setItems(FXCollections.observableArrayList(service.loadAll()));
+        } catch (Exception e) {
+            view.showError("Errore nel caricamento della lista gatti: " + e.getMessage());
         }
-    }
-
-    private void handleCancel() {
-        Cat selected = view.getListView().getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            service.cancelCat(selected); // Questo accetta Cat direttamente
-            refreshData();
-        }
-    }
-
-    private void refreshData() {
-        view.setItems(FXCollections.observableArrayList(service.loadAll()));
     }
 
     public VBox getRoot() {

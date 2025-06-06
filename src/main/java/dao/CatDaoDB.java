@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CatDaoDB {
+public class CatDaoDB  implements GenericDao<Cat>{
 
     private static final Logger logger = Logger.getLogger(CatDaoDB.class.getName());
 
@@ -17,6 +17,7 @@ public class CatDaoDB {
         this.conn = c;
     }
 
+    @Override
     public void create(Cat cat) throws SQLException {
         final String sql = """
             INSERT INTO Cat
@@ -34,6 +35,7 @@ public class CatDaoDB {
         }
     }
 
+    @Override
     public void update(Cat cat) throws SQLException {
         final String sql = """
             UPDATE Cat
@@ -56,6 +58,7 @@ public class CatDaoDB {
         }
     }
 
+    @Override
     public void delete(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof Integer idCat)) {
             throw new IllegalArgumentException("Key must be an Integer idCat");
@@ -71,6 +74,7 @@ public class CatDaoDB {
         }
     }
 
+    @Override
     public Cat read(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof String nameCat)) {
             throw new IllegalArgumentException("Key must be nameCat String");
@@ -84,6 +88,24 @@ public class CatDaoDB {
                 return rs.next() ? map(rs) : null;
             }
         }
+    }
+    @Override
+    public List<Cat> readAll(){
+        List<Cat> cats = new ArrayList<>();
+        String sql = "SELECT " + "* FROM Cat";
+
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                cats.add(map(rs));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Errore durante il recupero di tutti i gatti", e);
+        }
+
+
+        return cats;
     }
 
     /* -------------------------- helper map -------------------------- */

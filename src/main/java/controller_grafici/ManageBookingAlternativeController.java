@@ -15,8 +15,7 @@ public class ManageBookingAlternativeController {
     
 
     /* view + service */
-    private final ManageBookingAlternativeView view =
-            new ManageBookingAlternativeView();
+    private final ManageBookingAlternativeView view = new ManageBookingAlternativeView();
     private final ManageBookingService service = new ManageBookingService();
 
 	private final NavigationService nav;
