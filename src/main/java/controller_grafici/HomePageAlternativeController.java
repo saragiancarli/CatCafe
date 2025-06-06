@@ -59,14 +59,12 @@ public class HomePageAlternativeController {
   
 
     
-   public void goToBooking() {
-	   	navigationService.navigateToBooking(navigationService,typeOfLogin);
-	    }
+   public void goToBooking() {navigationService.navigateToBooking(navigationService,typeOfLogin);}
    public void goToMenageBooking() {
 	   	navigationService.navigateToBooking(navigationService,typeOfLogin);
 	    }
     public void goToAdopt() {
-        navigationService.navigateToBooking(navigationService,typeOfLogin);
+        navigationService.navigateToAdopt(navigationService,typeOfLogin);
     }
     public void goToManageCat() {
         navigationService.navigateToManageCat(navigationService,typeOfLogin);
