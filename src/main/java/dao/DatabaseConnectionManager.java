@@ -49,7 +49,7 @@ public class DatabaseConnectionManager {
                 logger.info("Connessione al database ristabilita.");
             }
         } catch (SQLException e) {
-        	e.printStackTrace();    
+        	  
             throw new DatabaseConnectionException("Impossibile connettersi al database", e);
         }
         return connection;

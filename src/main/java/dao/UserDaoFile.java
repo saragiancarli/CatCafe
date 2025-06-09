@@ -34,11 +34,11 @@ public class UserDaoFile implements GenericDao<User> {
             Type listType = new TypeToken<List<User>>(){}.getType();
             List<User> loaded = gson.fromJson(r, listType);
             return loaded != null ? loaded : new ArrayList<>();
-        } catch (IOException e) { e.printStackTrace(); return new ArrayList<>(); }
+        } catch (IOException e) {  return new ArrayList<>(); }
     }
     private void save() {
         try (Writer w = new FileWriter(FILE_PATH)) { gson.toJson(users, w); }
-        catch (IOException e) { e.printStackTrace(); }
+        catch (IOException e) {  }
     }
 
     /* ------------- CRUD ------------- */

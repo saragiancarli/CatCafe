@@ -32,7 +32,7 @@ public class CatDaoFile {
             List<Cat> loaded = gson.fromJson(reader, listType);
             return loaded != null ? loaded : new ArrayList<>();
         } catch (IOException e) {
-            e.printStackTrace();
+            
             return new ArrayList<>();
         }
     }
@@ -41,7 +41,7 @@ public class CatDaoFile {
         try (Writer writer = new FileWriter(FILE_PATH)) {
             gson.toJson(cats, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+          
         }
     }
 

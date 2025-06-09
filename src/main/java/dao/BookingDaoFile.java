@@ -38,9 +38,9 @@ public class BookingDaoFile implements GenericDao<Booking> {
             Type t = new TypeToken<List<Booking>>(){}.getType();
             List<Booking> l = gson.fromJson(r,t);
             return l!=null?l:new ArrayList<>();
-        } catch (IOException e){ e.printStackTrace(); return new ArrayList<>(); }
+        } catch (IOException e){  return new ArrayList<>(); }
     }
-    private void save(){ try(Writer w=new FileWriter(FILE_PATH)){ gson.toJson(list,w);}catch(IOException e){e.printStackTrace();}}
+    private void save(){ try(Writer w=new FileWriter(FILE_PATH)){ gson.toJson(list,w);}catch(IOException e){}}
 
     /* ---------- CRUD ---------- */
     @Override public void create(Booking b){
