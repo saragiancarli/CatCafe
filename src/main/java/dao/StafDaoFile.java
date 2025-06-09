@@ -30,9 +30,9 @@ public class StafDaoFile implements GenericDao<Staf> {
             Type t = new TypeToken<List<Staf>>(){}.getType();
             List<Staf> l = gson.fromJson(r,t);
             return l != null ? l : new ArrayList<>();
-        } catch (IOException e){  return new ArrayList<>(); }
+        } catch (IOException e){ e.printStackTrace(); return new ArrayList<>(); }
     }
-    private void save() { try (Writer w=new FileWriter(FILE_PATH)){ gson.toJson(stafList,w);}catch(IOException e){}}
+    private void save() { try (Writer w=new FileWriter(FILE_PATH)){ gson.toJson(stafList,w);}catch(IOException e){e.printStackTrace();}}
 
     @Override public void create(Staf s){
         if(read(s.getEmail())!=null) throw new IllegalArgumentException("Staf esiste: "+s.getEmail());
