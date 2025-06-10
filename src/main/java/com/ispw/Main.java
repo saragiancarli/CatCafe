@@ -43,11 +43,17 @@ public class Main extends Application {
         Button confirmBtn = new Button("Conferma");
         confirmBtn.setOnAction(e -> {
 
-            /* 1 · STORE scelto */
-            Store selectedStore =
-                    rbDatabase.isSelected() ? Store.DATABASE :
-                    rbFile.isSelected()     ? Store.FILE      :
-                                              Store.STATELESS;
+        	Store selectedStore;                // 1. dichiara la variabile
+
+        	if (rbDatabase.isSelected()) {      // 2. primo caso
+        	    selectedStore = Store.DATABASE;
+
+        	} else if (rbFile.isSelected()) {   // 3. secondo caso
+        	    selectedStore = Store.FILE;
+
+        	} else {                            // 4. fallback
+        	    selectedStore = Store.STATELESS;
+        	}
 
             ApplicationFacade.init(selectedStore);
 
