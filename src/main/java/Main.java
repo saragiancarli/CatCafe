@@ -17,19 +17,21 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        /* ---------------- scelta modalità storage ---------------- */
+        /* ===== Selettore storage ===== */
         ToggleGroup storageGroup = new ToggleGroup();
 
-        RadioButton rbDatabase  = new RadioButton("Interfaccia Principale (DB)");
+        RadioButton rbDatabase = new RadioButton("Principale (DB)");
         rbDatabase.setToggleGroup(storageGroup);
-        rbDatabase.setSelected(true);                        // default
+        rbDatabase.setSelected(true);
 
-        RadioButton rbStateless = new RadioButton("Interfaccia Secondaria (Stateless)");
+        RadioButton rbFile = new RadioButton("Principale (File)");
+        rbFile.setToggleGroup(storageGroup);
+
+        RadioButton rbStateless = new RadioButton("Secondaria (Stateless)");
         rbStateless.setToggleGroup(storageGroup);
 
-        /* ---------------- scelta tipo utente --------------------- */
+        /* ===== Selettore tipo utente ===== */
         ToggleGroup typeGroup = new ToggleGroup();
-
         RadioButton rbUser = new RadioButton("User");
         rbUser.setToggleGroup(typeGroup);
         rbUser.setSelected(true);
@@ -37,35 +39,42 @@ public class Main extends Application {
         RadioButton rbStaf = new RadioButton("Staf");
         rbStaf.setToggleGroup(typeGroup);
 
-        /* ---------------- pulsante conferma ---------------------- */
+        /* ===== Pulsante conferma ===== */
         Button confirmBtn = new Button("Conferma");
         confirmBtn.setOnAction(e -> {
 
-            /* 1 · inizializza ApplicationFacade (UNA SOLA VOLTA) */
-            Store selectedMode = rbDatabase.isSelected() ? Store.DATABASE : Store.STATELESS;
-            ApplicationFacade.init(selectedMode);
+            /* 1 · STORE scelto */
+            Store selectedStore =
+                    rbDatabase.isSelected() ? Store.DATABASE :
+                    rbFile.isSelected()     ? Store.FILE      :
+                                              Store.STATELESS;
 
-            /* 2 · scegli il NavigationService */
-            NavigationService nav = rbDatabase.isSelected()
-                    ? new NavigationManager(stage)
-                    : new NavigationManagerAlternative(stage);
+            ApplicationFacade.init(selectedStore);
 
-            /* 3 · apri la schermata di login con il tipo utente scelto */
+            /* 2 · NavigationManager */
+            NavigationService nav =
+                    rbStateless.isSelected()
+                    ? new NavigationManagerAlternative(stage)   // interfaccia “secondaria”
+                    : new NavigationManager(stage);             // interfaccia “principale”
+
+            /* 3 · Login (user / staf) */
             String userType = rbUser.isSelected() ? "user" : "staf";
             nav.navigateToLogin(nav, userType);
         });
 
-        /* ---------------- layout ------------------------------- */
+        /* ===== Layout ===== */
         VBox root = new VBox(12,
-                rbDatabase, rbStateless,
+                new Label("Scegli la modalità di avvio:"),
+                rbDatabase, rbFile, rbStateless,
                 new Separator(),
+                new Label("Tipo di login:"),
                 rbUser, rbStaf,
                 new Separator(),
                 confirmBtn);
         root.setPadding(new Insets(20));
 
-        stage.setScene(new Scene(root, 320, 260));
-        stage.setTitle("Seleziona modalità di avvio");
+        stage.setScene(new Scene(root, 340, 310));
+        stage.setTitle("Selezione modalità");
         stage.show();
     }
 
