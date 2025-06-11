@@ -29,7 +29,7 @@ public class RequestAdoptionGUIControllerAlternative {
     private void addEventHandlers() {
         view.getConferma().setOnAction(_ -> handleConfirm());
         view.getAnnulla().setOnAction(_ -> handleCancel());
-        view.getModifica().setOnAction(_ -> handleModify());
+        
     }
     private void handleConfirm() {
 
@@ -104,9 +104,7 @@ public class RequestAdoptionGUIControllerAlternative {
 
     /* ----------------------- modifica ---------------------------- */
 
-    private void handleModify() {
-        nav.navigateToHomePage(nav, typeOfLogin);
-    }
+   
 }
 
 

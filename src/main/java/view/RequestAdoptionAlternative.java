@@ -25,7 +25,7 @@ public class RequestAdoptionAlternative {
     private final TextField indirizzo;
     private final TextField telefono;
 
-    private final Button modifica;
+    
     private final Button conferma;
     private final Button annulla;
 
@@ -92,11 +92,11 @@ public class RequestAdoptionAlternative {
         telefonoErrorLabel = makeErrLabel();
         grid.add(telefonoErrorLabel, 2, row++);
 
-        modifica = new Button("Modifica richieste adozione");
+        
         conferma = new Button("Conferma");
         annulla = new Button("Annulla");
 
-        root.getChildren().addAll(title, grid, new HBox(10, modifica, conferma, annulla));
+        root.getChildren().addAll(title, grid, new HBox(10, conferma, annulla));
     }
 
     /* ---------- getter ------------------ */
@@ -104,9 +104,7 @@ public class RequestAdoptionAlternative {
     public VBox getRoot() {
         return root;
     }
-    public Button getModifica() {
-        return modifica;
-    }
+   
 
     public Button getConferma() {
         return conferma;
