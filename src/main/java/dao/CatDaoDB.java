@@ -2,7 +2,7 @@ package dao;
 
 
 import entity.Cat;
-import exception.DataAccessException;
+
 
 import java.sql.*;
 import java.util.ArrayList;

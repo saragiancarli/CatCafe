@@ -56,18 +56,25 @@ public class CatDaoFile implements GenericDao<Cat> {
         cats.add(cat);
         saveToFile();
     }
-    @Override 
-    public Cat read(Object...k){ 
-    	 return cats.stream()
-                 .filter(cat -> cat.getNameCat().equals(cat.getNameCat()))
-                 .findFirst()
-                 .orElse(null);
-        }
-    @Override public void delete(Object...k){
-    	
-        cats.removeIf(cat -> cat.getNameCat().equals(cat.getNameCat()));
+    @Override
+    public Cat read(Object... keys) {
+        if (keys.length != 1 || !(keys[0] instanceof String nameCat))
+            throw new IllegalArgumentException("Chiave attesa: String nameCat");
+
+        return cats.stream()
+                   .filter(c -> c.getNameCat().equalsIgnoreCase(nameCat))
+                   .findFirst()
+                   .orElse(null);
+    }
+
+    @Override
+    public void delete(Object... keys) {
+        if (keys.length != 1 || !(keys[0] instanceof String nameCat))
+            throw new IllegalArgumentException("Chiave attesa: String nameCat");
+
+        cats.removeIf(c -> c.getNameCat().equalsIgnoreCase(nameCat));
         saveToFile();
-        }
+    }
 
     public Cat read(String name) {
         return cats.stream()

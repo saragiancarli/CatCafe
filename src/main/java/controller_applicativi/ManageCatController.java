@@ -1,10 +1,10 @@
 package controller_applicativi;
 
-import dao.CatDaoDB;
+
 import dao.DaoFactory;
-import dao.DatabaseConnectionManager;
+
 import dao.GenericDao;
-import entity.Booking;
+
 import entity.Cat;
 
 import java.sql.SQLException;
