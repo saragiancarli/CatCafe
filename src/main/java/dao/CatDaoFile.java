@@ -3,6 +3,8 @@ package dao;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
+
 import entity.Cat;
 
 import java.io.*;
@@ -10,7 +12,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatDaoFile {
+public class CatDaoFile implements GenericDao<Cat> {
     private static final String FILE_PATH = "cats.json";
     private final Gson gson;
     private final List<Cat> cats;
@@ -54,6 +56,18 @@ public class CatDaoFile {
         cats.add(cat);
         saveToFile();
     }
+    @Override 
+    public Cat read(Object...k){ 
+    	 return cats.stream()
+                 .filter(cat -> cat.getNameCat().equals(cat.getNameCat()))
+                 .findFirst()
+                 .orElse(null);
+        }
+    @Override public void delete(Object...k){
+    	
+        cats.removeIf(cat -> cat.getNameCat().equals(cat.getNameCat()));
+        saveToFile();
+        }
 
     public Cat read(String name) {
         return cats.stream()

@@ -2,6 +2,7 @@ package dao;
 
 import entity.Adoption;
 import entity.Booking;
+import entity.Cat;
 import entity.Staf;
 import entity.User;
 
@@ -27,10 +28,12 @@ public class DaoFactory implements DaoFactoryInterface {
     private static UserDaoMemory userDaoMemoryInstance;
     private static StafDaoMemory stafDaoMemoryInstance;
     private static BookingDaoMemory bookingDaoMemoryInstance;
+    private static CatDaoMemory catDaoMemoryInstance;
 
     private static GenericDao<User> userDaoFileInstance;
     private static GenericDao<Staf> stafDaoFileInstance;
     private static GenericDao<Booking> bookingDaoFileInstance;
+    private static GenericDao<Cat> catDaoFileInstance;
 
     /* ---------- costruttore privato ---------- */
     public DaoFactory() {
@@ -142,4 +145,34 @@ public class DaoFactory implements DaoFactoryInterface {
             requestAdoptionMemoryInstance = new RequestAdoptionDaoMemory();
         return requestAdoptionMemoryInstance;
     }
+    
+    public GenericDao<Cat> getCatDao() {
+
+        switch (storageOption) {
+
+            case DATABASE -> {
+                return new CatDaoDB(DatabaseConnectionManager.getConnection());
+
+            }
+
+            case FILE -> {
+                return getCatFileInstance();
+            }
+
+            default -> {                              // STATELESS
+                return getCatMemoryInstance();
+            }
+        }
+    }
+    private static CatDaoMemory getCatMemoryInstance() {
+        if (catDaoMemoryInstance == null)
+        	catDaoMemoryInstance = new CatDaoMemory();
+        return catDaoMemoryInstance;
+    }
+    private static GenericDao<Cat> getCatFileInstance() {
+        if (catDaoFileInstance == null)
+        	catDaoFileInstance = new CatDaoFile();
+        return catDaoFileInstance;
+    }
+    
 }

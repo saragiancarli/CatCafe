@@ -104,7 +104,7 @@ public class RequestAdoption {
                 emailConfermaLabel, emailConferma, emailConfermaErrorLabel,
                 indirizzoLabel, indirizzo, indirizzoErrorLabel,
                 telefonoLabel, telefono, telefonoErrorLabel,
-                modificaBox,
+                
                 azioniBox
         );
     }

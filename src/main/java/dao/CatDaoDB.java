@@ -1,13 +1,16 @@
 package dao;
 
+
 import entity.Cat;
+import exception.DataAccessException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CatDaoDB {
+public class CatDaoDB implements GenericDao<Cat> {
 
     private static final Logger logger = Logger.getLogger(CatDaoDB.class.getName());
 
@@ -24,14 +27,19 @@ public class CatDaoDB {
             VALUES (?, ?, ?, ?, ?)
             """;
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, cat.getNameCat());
-            ps.setString(2, cat.getRace());
-            ps.setString(3, cat.getDescription());
-            ps.setInt(4, cat.getAge());
-            ps.setBoolean(5, cat.isStateAdoption());
-            ps.executeUpdate();
-        }
+        try (PreparedStatement ps = conn.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS)) {
+        	ps.setString(1, cat.getNameCat());
+        	ps.setString(2, cat.getRace());
+        	ps.setString(3, cat.getDescription());
+        	ps.setInt   (4, cat.getAge());
+        	ps.setBoolean(5, cat.isStateAdoption());
+        	ps.executeUpdate();
+        	// recupera la chiave generata
+        	try (ResultSet rs = ps.getGeneratedKeys()) {
+        		if (rs.next()) cat.setIdCat(rs.getInt(1));
+        		}
+        	}
     }
 
     public void update(Cat cat) throws SQLException {
@@ -97,20 +105,21 @@ public class CatDaoDB {
         cat.setStateAdoption(rs.getBoolean("stateAdoption"));
         return cat;
     }
+    @Override
+    public List<Cat> readAll() {
+    	  List<Cat> cats = new ArrayList<>();
+          String sql = "SELECT *"+" FROM Cat WHERE stateAdoption = false";
 
-    public List<Cat> readAdoptableCats() {
-        List<Cat> cats = new ArrayList<>();
-        String sql = "SELECT *"+" FROM Cat WHERE stateAdoption = false";
+          try (Statement st = conn.createStatement();
+               ResultSet rs = st.executeQuery(sql)) {
+              while (rs.next()) {
+                  cats.add(map(rs));
+              }
+          } catch (SQLException e) {
+              throw new exception.CatDaoException("Errore nel recupero dei gatti adottabili", e);
+          }
 
-        try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            while (rs.next()) {
-                cats.add(map(rs));
-            }
-        } catch (SQLException e) {
-            throw new exception.CatDaoException("Errore nel recupero dei gatti adottabili", e);
-        }
-
-        return cats;
+          return cats;
     }
+    
 }

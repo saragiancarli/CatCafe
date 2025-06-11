@@ -1,5 +1,6 @@
 package dao;
 
+
 import entity.Cat;
 
 import java.sql.SQLException;
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CatDaoMemory {
+public class CatDaoMemory implements GenericDao<Cat> {
     private final List<Cat> storage;
 
     public CatDaoMemory() {
@@ -35,6 +36,7 @@ public class CatDaoMemory {
         if (cat == null) throw new SQLException("Cat cannot be null");
         storage.add(cat);
     }
+   
 
     public Cat read(String name) {
         return storage.stream()
@@ -62,6 +64,19 @@ public class CatDaoMemory {
             throw new SQLException("Cat not found");
         }
     }
+    @Override 
+    public Cat read(Object...k){ 
+    	 return storage.stream()
+                 .filter(cat -> cat.getNameCat().equals(cat.getNameCat()))
+                 .findFirst()
+                 .orElse(null);
+        }
+    
+ @Override public void delete(Object...k){
+    	
+	 storage.removeIf(cat -> cat.getNameCat().equals(cat.getNameCat()));
+        
+        }
 
     public List<Cat> readAll() {
         return new ArrayList<>(storage);
