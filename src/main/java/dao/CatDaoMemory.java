@@ -64,19 +64,20 @@ public class CatDaoMemory implements GenericDao<Cat> {
             throw new SQLException("Cat not found");
         }
     }
-    @Override 
-    public Cat read(Object...k){ 
-    	 return storage.stream()
-                 .filter(cat -> cat.getNameCat().equals(cat.getNameCat()))
-                 .findFirst()
-                 .orElse(null);
-        }
+   
     
- @Override public void delete(Object...k){
-    	
-	 storage.removeIf(cat -> cat.getNameCat().equals(cat.getNameCat()));
-        
-        }
+    @Override
+    public Cat read(Object... keys) {
+        if (keys.length != 1 || !(keys[0] instanceof String nameCat))
+            throw new IllegalArgumentException("Chiave attesa: String nameCat");
+        return read(nameCat);
+    }
+ @Override
+ public void delete(Object... keys) throws SQLException {
+     if (keys.length != 1 || !(keys[0] instanceof String nameCat))
+         throw new IllegalArgumentException("Chiave attesa: String nameCat");
+     delete(nameCat);
+ }
 
     public List<Cat> readAll() {
         return new ArrayList<>(storage);
