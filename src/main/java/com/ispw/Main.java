@@ -17,7 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        /* ===== Selettore storage. ===== */
+        /* ===== Selettore storage ===== */
         ToggleGroup storageGroup = new ToggleGroup();
 
         RadioButton rbDatabase = new RadioButton("Principale (DB)");
