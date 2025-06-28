@@ -1,0 +1,1255 @@
+CLASSI SARA:
+
+package bean;
+
+import entity.Cat;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class ManageCatBean {
+
+    /* ---------- campi ---------- */
+    private final List<Cat> catList = new ArrayList<>();
+    private Cat selected;
+
+    /* ---------- costruttori ---------- */
+    public ManageCatBean() { }
+
+    public ManageCatBean(Cat selected) {
+        this.selected = selected;
+    }
+
+    /* ---------- lista completa ---------- */
+    public void setCatList(List<Cat> list) {
+        catList.clear();
+        if (list != null) catList.addAll(list);
+    }
+
+    public List<Cat> getCatList() {
+        return Collections.unmodifiableList(catList);
+    }
+
+    /* ---------- selezione ---------- */
+    public void setSelected(Cat cat) {
+        this.selected = cat;
+    }
+
+    public Cat getSelected() {
+        return selected;
+    }
+
+    public boolean isSelected() {
+        return selected != null;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+package bean;
+
+
+
+import java.util.List;
+
+
+import dao.SessionManager;
+import entity.Booking;
+import entity.Adoption;
+import view.*;
+
+public final class ModelBeanFactory {
+
+    private ModelBeanFactory() { }            // utility-class
+
+    /* ------------------------------------------------------------------
+     *  LOGIN BEAN –  versione “view principale”
+     * ------------------------------------------------------------------ */
+    public static LoginBean getLoginBean(LoginView view) {
+
+        LoginBean bean = new LoginBean();
+        bean.setEmail(view.getEmailField().getText());
+        bean.setPassword(view.getPasswordField().getText());
+
+        // RadioButton o toggle nella view principale (“user” / “staf”)
+        if (view.getType().equals("user")) {
+            bean.setUserType("user");
+        } else  {
+            bean.setUserType("staf");
+        } // else null
+
+        return bean;
+    }
+
+    /* ------------------------------------------------------------------
+     *  LOGIN BEAN – versione “alternative view”
+     * ------------------------------------------------------------------ */
+    public static LoginBean getLoginBean(LoginAlternativeView view) {
+
+        LoginBean bean = new LoginBean();
+        bean.setEmail(view.getEmailField().getText());
+        bean.setPassword(view.getPasswordField().getText());
+
+        if (view.getClientLoginOption().isSelected()) {
+            bean.setUserType("user");
+        } else if (view.getReceptionistLoginOption().isSelected()) {
+            bean.setUserType("staf");
+        }
+
+        return bean;
+    }
+
+    /* ------------------------------------------------------------------
+     *  BEAN caricati dalla sessione (dopo login riuscito)
+     * ------------------------------------------------------------------ */
+    public static LoginBean loadLoginBean() {
+
+        if (SessionManager.getInstance().getEmail() == null) return null;
+
+        LoginBean bean = new LoginBean();
+        bean.setEmail(SessionManager.getInstance().getEmail());
+        bean.setPassword(SessionManager.getInstance().getPassword());
+        bean.setUserType(SessionManager.getInstance().getType());
+        return bean;
+    }
+
+    /* ------------------------------------------------------------------
+     *  REGISTRAZIONE – bean di supporto
+     * ------------------------------------------------------------------ */
+    /* -------- view “normale” -------- */
+    public static ClientRegistrationBean getClientRegistrationBean(RegistrationView v) {
+        ClientRegistrationBean b = new ClientRegistrationBean();
+        b.setFirstName(v.getFirstNameField().getText());
+        b.setLastName(v.getLastNameField().getText());
+        b.setEmail(v.getEmailField().getText());
+        b.setPhoneNumber(v.getPhoneNumberField().getText());
+        b.setPassword(v.getPasswordField().getText());
+        b.setRepeatPassword(v.getRepeatPasswordField().getText());
+        b.setUserType(v.getuserType());                     // "user" / "staf"
+        return b;
+    }
+
+    /* -------- view alternativa -------- */
+    public static ClientRegistrationBean getClientRegistrationBean(RegistrationViewAlternative v) {
+        ClientRegistrationBean b = new ClientRegistrationBean();
+        b.setFirstName(v.getFirstNameField().getText());
+        b.setLastName(v.getLastNameField().getText());
+        b.setEmail(v.getEmailField().getText());
+        b.setPhoneNumber(v.getPhoneNumberField().getText());
+        b.setPassword(v.getPasswordField().getText());
+        b.setRepeatPassword(v.getRepeatPasswordField().getText());
+        b.setUserType(v.getSelectedUserType());
+        return b;
+    }
+    public static BookingBean getBookingBean(BookingView v) {
+        BookingBean b = new BookingBean();
+        b.setTitle   (v.getNomePrenotazione());
+        b.setDate (v.getDate());
+        b.setTime(v.getTime());                // nel tuo View “Ora” è il secondo DatePicker
+        b.setSeats   (v.getParticipants());
+        b.setConfirmationEmail(v.getConfirmationEmail());
+        return b;
+    }
+    public static List<ManageBookingBean> getManageBookingBeans(List<Booking> bookings) {
+        return bookings.stream()
+                       .map(ManageBookingBean::new)   // usa il costruttore ❶
+                       .toList();                     // disponibile da Java 16
+    }
+    public static Adoption getRequestAdoptionBean(RequestAdoption a) {
+        Adoption bean = new Adoption();
+        bean.setName(a.getName());
+        bean.setSurname(a.getSurname());
+        String phoneNumber = a.getPhoneNumber();
+        bean.setPhoneNumber(phoneNumber);
+
+        bean.setEmail(a.getEmail());
+        bean.setAddress(a.getAddress());
+        bean.setNameCat(a.getSelectedCatName());
+        bean.setStateAdoption(false); // default
+
+        return bean;
+    }
+}
+
+
+
+
+
+
+package controller_applicativi;
+import dao.DaoFactory;
+import dao.GenericDao;
+import entity.Cat;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import bean.ManageCatBean;
+import exception.CatDaoException;
+
+public class ManageCatController {
+
+    private static final Logger LOG =
+            Logger.getLogger(ManageCatController.class.getName());
+
+
+    private final GenericDao<Cat> catDao =
+            DaoFactory.getInstance().getCatDao();
+
+    /* ----- carica tutti i gatti ----- */
+    public List<Cat> loadAll() {return catDao.readAll();
+    }
+
+    /* ----- aggiunta nuovo gatto ----- */
+    public void newCat(ManageCatBean bean) {
+        if (!bean.isSelected()) {
+            LOG.log(Level.WARNING, "Nessun gatto selezionato per la creazione.");
+            return;
+        }
+
+        try {
+            catDao.create(bean.getSelected());  // Assicurati che CatDaoDB abbia create/update/delete
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, "Errore DB durante l'inserimento del gatto", e);
+        }
+    }
+
+    /* ----- cancellazione gatto ----- */
+    public void cancelCat(Cat cat) {
+        try {
+            catDao.delete(cat.getIdCat());
+        } catch (SQLException e) {
+            throw new CatDaoException("Errore DB durante la cancellazione del gatto", e);
+        }
+    }
+}
+
+
+
+
+
+package controller_applicativi;
+
+import entity.Adoption;
+import dao.BeanDao;
+import dao.DaoFactory;
+
+import dao.RequestAdoptionDaoDB;
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class RequestAdoptionController{
+
+    private static final Logger LOG = Logger.getLogger(RequestAdoptionController.class.getName());
+
+    private final BeanDao<Adoption> beanDao = DaoFactory.getInstance().getRequestAdoptionDao();
+
+    /**
+     * Crea una richiesta di adozione.
+     * @param bean dati della richiesta
+     * @return "success" | "error:validation" | "error:duplicate" | "error:database_error"
+     */
+    public String requestAdoption(Adoption bean) {
+
+        /* ---------- validation ---------- */
+        if (!bean.hasValidName() ||
+                !bean.hasValidSurname() ||
+                !bean.hasValidPhoneNumber() ||
+                !bean.hasValidEmail() ||
+                !bean.hasValidAddress() ||
+                !bean.hasValidStatus() ||
+                bean.getNameCat() == null || bean.getNameCat().isBlank()) {
+            return "error:validation";
+        }
+
+        /* ---------- check duplicates ---------- */
+
+        if (beanDao instanceof RequestAdoptionDaoDB daoDB) {
+            try {
+                boolean exists = daoDB.existsByEmailAndCat(bean.getEmail(), bean.getNameCat());
+                if (exists) {
+                    return "error:duplicate";
+                }
+            } catch (SQLException ex) {
+                LOG.log(Level.SEVERE, "Errore DB durante check duplicati", ex);
+                return "error:database_error";
+            }
+        }
+
+        /* ---------- PERSISTENZA ---------- */
+        try {
+            beanDao.create(bean);
+            return "success";
+        } catch (SQLException ex) {
+            LOG.log(Level.SEVERE, "Errore DB durante insert adozione", ex);
+            return "error:database_error";
+        }
+    }
+}
+
+
+
+package controller_grafici;
+
+import bean.ManageCatBean;
+import controller_applicativi.ManageCatController;
+import entity.Cat;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.layout.VBox;
+import view.ManageCat;
+
+import java.util.logging.Logger;
+
+public class ManageCatGUIController {
+
+    private static final Logger logger = Logger.getLogger(ManageCatGUIController.class.getName());
+
+    private final ManageCat view = new ManageCat();
+    private final ManageCatController service = new ManageCatController();
+
+    private final ManageCatBean bean = new ManageCatBean();
+    private final NavigationService navigationService;
+    private final String typeOfLogin;
+
+    private boolean deleteMode = false;
+
+    public ManageCatGUIController(NavigationService navigationService, String typeOfLogin) {
+        this.navigationService = navigationService;
+        this.typeOfLogin = typeOfLogin;
+        addEventHandlers();
+        addIndexColumn();
+        refreshTable();
+    }
+
+    private void addEventHandlers() {
+        // selezione riga -> aggiorna bean
+        view.getTable().getSelectionModel().selectedItemProperty().addListener(
+                (_, _, sel) -> bean.setSelected(sel)
+        );
+
+        // CONFERMA / CREA
+        view.getBtnConfirm().setOnAction(_ -> {
+            if (deleteMode) {
+                Cat selectedCat = bean.getSelected();
+                if (selectedCat != null) {
+                    logger.info("Sto eliminando il gatto con ID: " + selectedCat.getIdCat());
+                    service.cancelCat(selectedCat);  // passare il gatto completo
+                    refreshTable();
+                    logger.info("Gatto eliminato.");
+                } else {
+                    logger.info("Nessun gatto selezionato per eliminazione.");
+                }
+                deleteMode = false; // resetta modalità cancellazione
+            } else {
+                if (bean.isSelected()) {
+                    service.newCat(bean);
+                    refreshTable();
+                }
+            }
+        });
+
+        // CANCELLA
+        view.getBtnCancel().setOnAction(_ -> {
+            deleteMode = true;
+            logger.info("Modalità eliminazione attivata. Seleziona un gatto e premi Conferma.");
+        });
+
+        // CREA NUOVO GATTO
+
+        view.getBtnAddCat().setOnAction(_ -> {
+            Cat nuovoGatto = new Cat();
+            nuovoGatto.setNameCat("");
+            nuovoGatto.setRace("");
+            nuovoGatto.setDescription("");
+            nuovoGatto.setAge(0);
+            nuovoGatto.setStateAdoption(false);
+
+            view.getTable().getItems().add(nuovoGatto);
+            view.getTable().getSelectionModel().select(nuovoGatto);
+            bean.setSelected(nuovoGatto);
+        });
+
+
+
+        // TORNA INDIETRO
+        view.getBtnBack().setOnAction(_ -> navigationService.navigateToHomePage(navigationService, typeOfLogin));
+    }
+
+    private void refreshTable() {
+        ObservableList<Cat> items = FXCollections.observableArrayList(service.loadAll());
+        bean.setCatList(items);
+        view.setItems(items);
+    }
+    private void addIndexColumn() {
+        TableColumn<Cat, Number> indexCol = new TableColumn<>("ID");
+        indexCol.setCellValueFactory(col ->
+                new ReadOnlyObjectWrapper<>(view.getTable().getItems().indexOf(col.getValue()))
+        );
+        view.getTable().getColumns().addFirst(indexCol);
+    }
+
+    public VBox getRoot() {
+        return new VBox(view.getRoot());
+    }
+}
+
+
+
+
+
+
+
+package controller_grafici;
+
+import javafx.collections.FXCollections;
+import javafx.scene.layout.VBox;
+import bean.ManageCatBean;
+import controller_applicativi.ManageCatController;
+import entity.Cat;
+import view.ManageCatAlternative;
+
+public class ManageCatGUIControllerAlternative {
+
+    private final ManageCatAlternative view = new ManageCatAlternative();
+    private final ManageCatController service = new ManageCatController();
+
+    private final NavigationService nav;
+    private final String typeOfLogin;
+
+    public ManageCatGUIControllerAlternative(NavigationService nav, String typeOfLogin) {
+        this.nav = nav;
+        this.typeOfLogin = typeOfLogin;
+
+        refresh();
+
+        /* --- pulsante Conferma --- */
+        view.getBtnConfirm().setOnAction(_ -> {
+            Cat sel = view.getListView().getSelectionModel().getSelectedItem();
+            if (sel == null) {
+                view.showError("Seleziona un gatto prima di confermare.");
+                return;
+            }
+            try {
+                ManageCatBean bean = new ManageCatBean();
+                bean.setSelected(sel);
+                service.newCat(bean);
+                refresh();
+            } catch (Exception e) {
+                view.showError("Errore nel confermare il gatto: " + e.getMessage());
+            }
+        });
+
+        /* --- pulsante Cancella --- */
+        view.getBtnCancel().setOnAction(_ -> {
+            Cat sel = view.getListView().getSelectionModel().getSelectedItem();
+            if (sel == null) {
+                view.showError("Seleziona un gatto prima di cancellare.");
+                return;
+            }
+            try {
+                service.cancelCat(sel);
+                refresh();
+            } catch (Exception e) {
+                view.showError("Errore nel cancellare il gatto: " + e.getMessage());
+            }
+        });
+
+        view.getBtnBack().setOnAction(_ -> nav.navigateToHomePage(nav, typeOfLogin));
+    }
+
+    private void refresh() {
+        view.hideError();
+        try {
+            view.setItems(FXCollections.observableArrayList(service.loadAll()));
+        } catch (Exception e) {
+            view.showError("Errore nel caricamento della lista gatti: " + e.getMessage());
+        }
+    }
+
+    public VBox getRoot() {
+        return view.getRoot();
+    }
+}
+
+
+
+
+
+package controller_grafici;
+
+import entity.Adoption;
+import bean.ModelBeanFactory;
+import controller_applicativi.RequestAdoptionController;
+import dao.CatDaoDB;
+import dao.DatabaseConnectionManager;
+import entity.Cat;
+import entity.Client;
+import facade.ApplicationFacade;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.VBox;
+import view.RequestAdoption;
+import java.util.List;
+import java.util.logging.Logger;
+
+public class RequestAdoptionGUIController {
+    private static final Logger LOG = Logger.getLogger(RequestAdoptionGUIController.class.getName());
+
+    /* ------------------------------------------------------------ */
+    private final NavigationService nav;
+    private final RequestAdoption view;
+    private final String typeOfLogin;
+    private final RequestAdoptionController request = new RequestAdoptionController();
+    private final CatDaoDB catDAO;
+
+
+
+    public RequestAdoptionGUIController(NavigationService nav, String typeOfLogin) {
+        this.nav = nav;
+        this.view = new RequestAdoption();
+        this.typeOfLogin = typeOfLogin;
+        this.catDAO = new CatDaoDB(DatabaseConnectionManager.getConnection());
+        loadCatsIntoComboBox();
+        addEventHandlers();
+    }
+    /* -------------------------- eventi GUI ---------------------- */
+    private void addEventHandlers() {
+        view.getConferma().setOnAction(_ -> handleConfirm());
+        view.getAnnulla().setOnAction(_ -> handleCancel());
+        view.getModifica().setOnAction(_ -> handleModify());
+    }
+    private void handleConfirm() {
+        view.hideAllErrors();
+
+        Adoption bean;
+        try {
+            bean = ModelBeanFactory.getRequestAdoptionBean(view);
+        } catch (IllegalArgumentException e) {
+            view.setTelefonoError(e.getMessage());
+            return;
+        }
+        boolean ok = true;
+
+        if (!bean.hasValidName()) {
+            view.setNomeError("Nome obbligatorio");
+            ok = false;
+        }
+        if (!bean.hasValidSurname()) {
+            view.setCognomeError("Cognome obbligatorio");
+            ok = false;
+
+        }
+        if (!bean.hasValidPhoneNumber()) {
+            view.setTelefonoError("Numero di telefono non valido (min 10 cifre)");
+            ok = false;
+
+        }
+        if (!bean.hasValidEmail()) {
+            view.setEmailError("Email non valida");
+            ok = false;
+
+        }
+        if (!bean.hasValidAddress()) {
+            view.setIndirizzoError("Indirizzo obbligatorio");
+            ok = false;
+
+        }
+        if (bean.getNameCat() == null || bean.getNameCat().isBlank()) {
+            view.setNomeGattoError("Seleziona un gatto");
+            ok = false;
+        }
+
+        if (!ok) return;          // blocca se ci sono errori
+
+
+        Client currentUser = ApplicationFacade.getUserFromLogin(); // utente loggato
+
+        if (currentUser == null) {
+            view.setNomeError("Utente non loggato - effettua il login");
+            return; // Interrompe l'esecuzione del metodo
+        }
+
+        String esito = request.requestAdoption(bean);
+
+        switch (esito) {
+            case "success" -> {
+                LOG.info("Richiesta adozione inviata con successo");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Successo");
+                alert.setHeaderText(null);
+                alert.setContentText("Richiesta adozione inviata con successo!");
+                alert.showAndWait();
+                nav.navigateToHomePage(nav, typeOfLogin);        // torna alla home
+            }
+            case "error:duplicate" ->
+                    view.setNomeGattoError("Hai già una richiesta per questo gatto");
+            case "error:validation" ->
+                    view.setNomeError("Dati non validi - ricontrolla i campi");
+            case "error:database_error" ->
+                    view.setNomeError("Errore di sistema. Riprova più tardi");
+            default ->
+                    view.setNomeError("Errore sconosciuto");
+        }
+    }
+    private void loadCatsIntoComboBox() {
+        List<Cat> cats = catDAO.readAdoptableCats();
+        populateCatNames(cats);
+    }
+    private void populateCatNames(List<Cat> cats) {
+        List<String> catNames = cats.stream()
+                .map(Cat::getNameCat)
+                .toList();
+        view.getComboBoxCatName().setItems(FXCollections.observableArrayList(catNames));
+        view.getComboBoxCatName().setPromptText("Seleziona un gatto");
+    }
+
+    /* ----------------------- annulla ---------------------------- */
+    private void handleCancel() {
+        nav.navigateToHomePage(nav, typeOfLogin);
+    }
+    /* -------------------- root per il NavigationManager --------- */
+    public VBox getRoot() { return view.getRoot(); }
+
+    /* ----------------------- modifica ---------------------------- */
+
+    private void handleModify() {
+        nav.navigateToHomePage(nav, typeOfLogin);
+    }
+
+}
+
+
+
+
+
+
+
+
+package controller_grafici;
+
+import entity.Adoption;
+import controller_applicativi.RequestAdoptionController;
+import dao.CatDaoMemory;
+import entity.Client;
+import facade.ApplicationFacade;
+import javafx.scene.layout.VBox;
+import view.RequestAdoptionAlternative;
+
+import java.util.logging.Logger;
+
+public class RequestAdoptionGUIControllerAlternative {
+    private final Logger lOG = Logger.getLogger(getClass().getName());
+    private final NavigationService nav;
+    private final RequestAdoptionAlternative view;
+    private final RequestAdoptionController adoption = new RequestAdoptionController();
+
+    private final String typeOfLogin;
+
+    public RequestAdoptionGUIControllerAlternative(NavigationService navigation,String typeOfLogin) {
+        this.nav = navigation;
+        this.typeOfLogin=typeOfLogin;
+        this.view = new RequestAdoptionAlternative();
+        addEventHandlers();
+        populateCats();
+    }
+    public VBox getRoot() { return view.getRoot(); }
+    private void addEventHandlers() {
+        view.getConferma().setOnAction(_ -> handleConfirm());
+        view.getAnnulla().setOnAction(_ -> handleCancel());
+        view.getModifica().setOnAction(_ -> handleModify());
+    }
+    private void handleConfirm() {
+
+        Adoption bean = new Adoption();
+        bean.setName(view.getName());
+        bean.setSurname(view.getSurname());
+        bean.setPhoneNumber(view.getPhoneNumber());
+        bean.setEmail(view.getEmail());
+        bean.setAddress(view.getAddress());
+        bean.setNameCat(view.getSelectedCatName());
+        view.hideAllErrors();
+        boolean ok = true;
+
+        if (!bean.hasValidName()) {
+            view.setNomeError("Nome obbligatorio");
+            ok = false;
+        }
+        if (!bean.hasValidSurname()) {
+            view.setCognomeError("Cognome obbligatorio");
+            ok = false;
+        }
+        if (!bean.hasValidPhoneNumber()) {
+            view.setTelefonoError("Numero di telefono non valido");
+            ok = false;
+        }
+        if (!bean.hasValidEmail()) {
+            view.setEmailError("Email non valida");
+            ok = false;
+        }
+        if (!bean.hasValidAddress()) {
+            view.setIndirizzoError("Indirizzo obbligatorio");
+            ok = false;
+        }
+        if (bean.getNameCat() == null || bean.getNameCat().isBlank()) {
+            view.setnomeGattoError("Seleziona un gatto");
+            ok = false;
+        }
+
+        if (!ok) return;
+
+        Client currentUser = ApplicationFacade.getUserFromLogin();
+        if (currentUser == null) {
+            view.setNomeError("Utente non loggato - effettua il login");
+            return;
+        }
+        String esito = adoption.requestAdoption(bean);
+
+        switch (esito) {
+            case "success" -> {
+                lOG.info("Richiesta adozione inviata con successo");
+                nav.navigateToHomePage(nav, typeOfLogin);
+            }
+            case "error:duplicate" ->
+                    view.setnomeGattoError("Hai già una richiesta per questo gatto");
+            case "error:validation" ->
+                    view.setNomeError("Dati non validi - ricontrolla i campi");
+            case "error:database_error" ->
+                    view.setNomeError("Errore di sistema. Riprova più tardi");
+            default ->
+                    view.setNomeError("Errore sconosciuto");
+        }
+    }
+    private void populateCats() {
+        CatDaoMemory catDao = new CatDaoMemory(); // usa i dati "in memoria"
+        var cats = catDao.readAdoptableCats();    // ottieni solo quelli adottabili
+        view.setAvailableCats(cats);              // passerai questi dati alla ComboBox nella vista
+    }
+
+    private void handleCancel() {
+        nav.navigateToHomePage(nav, typeOfLogin);
+    }
+
+    /* ----------------------- modifica ---------------------------- */
+
+    private void handleModify() {
+        nav.navigateToHomePage(nav, typeOfLogin);
+    }
+}
+
+
+
+
+package dao;
+
+import entity.Cat;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class CatDaoDB  implements GenericDao<Cat>{
+
+    private static final Logger logger = Logger.getLogger(CatDaoDB.class.getName());
+
+    private final Connection conn;
+
+    public CatDaoDB(Connection c) {
+        this.conn = c;
+    }
+
+    @Override
+    public void create(Cat cat) throws SQLException {
+        final String sql = """
+            INSERT INTO Cat
+              (nameCat, race, description, age, stateAdoption)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, cat.getNameCat());
+            ps.setString(2, cat.getRace());
+            ps.setString(3, cat.getDescription());
+            ps.setInt(4, cat.getAge());
+            ps.setBoolean(5, cat.isStateAdoption());
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public void update(Cat cat) throws SQLException {
+        final String sql = """
+            UPDATE Cat
+               SET nameCat = ?,
+                   race = ?,
+                   description = ?,
+                   age = ?,
+                   stateAdoption = ?
+             WHERE idCat = ?
+            """;
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, cat.getNameCat());       // <-- nameCat prima
+            ps.setString(2, cat.getRace());
+            ps.setString(3, cat.getDescription());
+            ps.setInt(4, cat.getAge());
+            ps.setBoolean(5, cat.isStateAdoption());
+            ps.setInt(6, cat.getIdCat());            // <-- idCat alla fine
+            ps.executeUpdate();
+        }
+    }
+
+    @Override
+    public void delete(Object... keys) throws SQLException {
+        if (keys.length != 1 || !(keys[0] instanceof Integer idCat)) {
+            throw new IllegalArgumentException("Key must be an Integer idCat");
+        }
+
+        final String sql = "DELETE FROM Cat WHERE idCat = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idCat);
+            int rowsDeleted = ps.executeUpdate();
+            logger.log(Level.INFO, "Righe eliminate: {0}", rowsDeleted);
+
+        }
+    }
+
+    @Override
+    public Cat read(Object... keys) throws SQLException {
+        if (keys.length != 1 || !(keys[0] instanceof String nameCat)) {
+            throw new IllegalArgumentException("Key must be nameCat String");
+        }
+
+        final String sql = "SELECT *"+" FROM Cat WHERE nameCat = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nameCat);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? map(rs) : null;
+            }
+        }
+    }
+    @Override
+    public List<Cat> readAll(){
+        List<Cat> cats = new ArrayList<>();
+        String sql = "SELECT " + "* FROM Cat";
+
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                cats.add(map(rs));
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException("Errore durante il recupero di tutti i gatti", e);
+        }
+
+
+        return cats;
+    }
+
+    /* -------------------------- helper map -------------------------- */
+    private Cat map(ResultSet rs) throws SQLException {
+        Cat cat = new Cat();
+        cat.setIdCat(rs.getInt("idCat"));
+        cat.setNameCat(rs.getString("nameCat"));
+        cat.setRace(rs.getString("race"));
+        cat.setDescription(rs.getString("description"));
+        cat.setAge(rs.getInt("age"));
+        cat.setStateAdoption(rs.getBoolean("stateAdoption"));
+        return cat;
+    }
+
+    public List<Cat> readAdoptableCats() {
+        List<Cat> cats = new ArrayList<>();
+        String sql = "SELECT *"+" FROM Cat WHERE stateAdoption = false";
+
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                cats.add(map(rs));
+            }
+        } catch (SQLException e) {
+            throw new exception.CatDaoException("Errore nel recupero dei gatti adottabili", e);
+        }
+
+        return cats;
+    }
+}
+
+
+
+
+package dao;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import entity.Cat;
+
+import java.io.*;
+import java.lang.reflect.Type;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CatDaoFile implements GenericDao<Cat> {
+    private static final String FILE_PATH = "cats.json";
+    private final Gson gson;
+    private final List<Cat> cats;
+
+    public CatDaoFile() {
+        this.gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
+        this.cats = loadFromFile();
+    }
+
+    /* ----------- I/O ----------- */
+    private List<Cat> loadFromFile() {
+        File file = new File(FILE_PATH);
+        if (!file.exists()) return new ArrayList<>();
+
+        try (Reader reader = new FileReader(file)) {
+            Type listType = new TypeToken<List<Cat>>() {}.getType();
+            List<Cat> loaded = gson.fromJson(reader, listType);
+            return loaded != null ? loaded : new ArrayList<>();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    private void saveToFile() {
+        try (Writer writer = new FileWriter(FILE_PATH)) {
+            gson.toJson(cats, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* ----------- CRUD ----------- */
+
+    @Override
+    public void create(Cat cat) throws SQLException {
+        if (read(cat.getNameCat()) != null) {
+            throw new SQLException("Gatto già presente: " + cat.getNameCat());
+        }
+        cats.add(cat);
+        saveToFile();
+    }
+
+    @Override
+    public Cat read(Object... keys) {
+        if (keys == null || keys.length == 0) return null;
+        String name = (String) keys[0];
+        return cats.stream()
+                .filter(cat -> cat.getNameCat().equals(name))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public void update(Cat cat) throws SQLException {
+        for (int i = 0; i < cats.size(); i++) {
+            if (cats.get(i).getNameCat().equals(cat.getNameCat())) {
+                cats.set(i, cat);
+                saveToFile();
+                return;
+            }
+        }
+        throw new SQLException("Gatto non trovato: " + cat.getNameCat());
+    }
+
+    @Override
+    public void delete(Object... keys) throws SQLException {
+        if (keys == null || keys.length == 0) throw new SQLException("No key provided");
+        String name = (String) keys[0];
+        boolean removed = cats.removeIf(cat -> cat.getNameCat().equals(name));
+        if (!removed) throw new SQLException("Gatto non trovato: " + name);
+        saveToFile();
+    }
+
+    @Override
+    public List<Cat> readAll() {
+        return new ArrayList<>(cats);
+    }
+
+    public List<Cat> readAdoptableCats() {
+        List<Cat> adoptable = new ArrayList<>();
+        for (Cat cat : cats) {
+            if (!cat.isStateAdoption()) {
+                adoptable.add(cat);
+            }
+        }
+        return adoptable;
+    }
+}
+
+
+
+
+
+package dao;
+
+import entity.Cat;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CatDaoMemory implements GenericDao<Cat> {
+    private final List<Cat> storage;
+
+    public CatDaoMemory() {
+        storage = new ArrayList<>();
+
+        // Gatti di esempio
+        Cat c1 = new Cat();
+        c1.setNameCat("Micio");
+        c1.setRace("Siamese");
+        c1.setAge(3);
+        c1.setDescription("Gatto molto affettuoso");
+        c1.setStateAdoption(false);
+        storage.add(c1);
+
+        Cat c2 = new Cat();
+        c2.setNameCat("Luna");
+        c2.setRace("Persiano");
+        c2.setAge(2);
+        c2.setDescription("Gatta tranquilla");
+        c2.setStateAdoption(false);
+        storage.add(c2);
+    }
+
+    @Override
+    public void create(Cat cat) throws SQLException {
+        if (cat == null) throw new SQLException("Cat cannot be null");
+        storage.add(cat);
+    }
+
+    @Override
+    public Cat read(Object... keys) {
+        if (keys == null || keys.length == 0) return null;
+        String name = (String) keys[0];
+        return storage.stream()
+                .filter(cat -> cat.getNameCat().equals(name))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public void update(Cat cat) throws SQLException {
+        if (cat == null) throw new SQLException("Cat cannot be null");
+        Cat existing = read(cat.getNameCat());
+        if (existing != null) {
+            storage.remove(existing);
+            storage.add(cat);
+        } else {
+            throw new SQLException("Cat not found");
+        }
+    }
+
+    @Override
+    public void delete(Object... keys) throws SQLException {
+        if (keys == null || keys.length == 0) throw new SQLException("No key provided");
+        String name = (String) keys[0];
+        Cat existing = read(name);
+        if (existing != null) {
+            storage.remove(existing);
+        } else {
+            throw new SQLException("Cat not found");
+        }
+    }
+
+    @Override
+    public List<Cat> readAll() {
+        return new ArrayList<>(storage);
+    }
+
+    public List<Cat> readAdoptableCats() {
+        List<Cat> adoptable = new ArrayList<>();
+        for (Cat cat : storage) {
+            if (!cat.isStateAdoption()) {
+                adoptable.add(cat);
+            }
+        }
+        return adoptable;
+    }
+}
+
+
+
+
+
+package dao;
+
+import entity.*;
+
+public class DaoFactory implements DaoFactoryInterface {
+
+    /* ---------- singleton ---------- */
+    private static final DaoFactory INSTANCE = new DaoFactory();
+
+    public static DaoFactory getInstance() {
+        return INSTANCE;
+    }
+
+    /* ---------- configurazione ---------- */
+    public enum Store {DATABASE, FILE, STATELESS}
+
+    private static Store storageOption = Store.STATELESS;      // default
+
+    public static void setStorageOption(Store opt) {
+        storageOption = opt;
+    }
+
+    /* ---------- cache DAO in-memory ---------- */
+    private static UserDaoMemory userDaoMemoryInstance;
+    private static StafDaoMemory stafDaoMemoryInstance;
+    private static BookingDaoMemory bookingDaoMemoryInstance;
+    private static CatDaoMemory catDaoMemoryInstance;
+    private static RequestAdoptionDaoMemory requestAdoptionMemoryInstance;
+
+
+    private static GenericDao<User> userDaoFileInstance;
+    private static GenericDao<Staf> stafDaoFileInstance;
+    private static GenericDao<Booking> bookingDaoFileInstance;
+    private static GenericDao<Cat> catDaoFileInstance;
+    private static BeanDao<Adoption> requestAdoptionDaoFileInstance;
+
+    /* ---------- costruttore privato ---------- */
+    public DaoFactory() {
+
+        // Costruttore privato per nascondere quello pubblico implicito
+    }
+
+    /* ---------- DAO di istanza ---------- */
+    public GenericDao<User> getUserDao() {
+        return switch (storageOption) {
+            case DATABASE -> new UserDaoDB(DatabaseConnectionManager.getConnection());
+            case FILE -> getUserFileInstance();
+            default -> getUserMemoryInstance();
+        };
+    }
+
+    public GenericDao<Staf> getStafDao() {
+        return switch (storageOption) {
+            case DATABASE -> new StafDaoDB(DatabaseConnectionManager.getConnection());
+            case FILE -> getStafFileInstance();
+            default -> getStafMemoryInstance();
+        };
+    }
+
+    private static GenericDao<User> getUserFileInstance() {
+        if (userDaoFileInstance == null)
+            userDaoFileInstance = new UserDaoFile();
+        return userDaoFileInstance;
+    }
+
+    /* ---------- helper per cache ---------- */
+    private static UserDaoMemory getUserMemoryInstance() {
+        if (userDaoMemoryInstance == null)
+            userDaoMemoryInstance = new UserDaoMemory();
+        return userDaoMemoryInstance;
+    }
+
+    private static GenericDao<Staf> getStafFileInstance() {
+        if (stafDaoFileInstance == null)
+            stafDaoFileInstance = new StafDaoFile();
+        return stafDaoFileInstance;
+    }
+
+    private static StafDaoMemory getStafMemoryInstance() {
+        if (stafDaoMemoryInstance == null)
+            stafDaoMemoryInstance = new StafDaoMemory();
+        return stafDaoMemoryInstance;
+    }
+
+    public GenericDao<Booking> getBookingDao() {
+
+        switch (storageOption) {
+
+            case DATABASE -> {
+                return new BookingDaoDB(DatabaseConnectionManager.getConnection());
+
+            }
+
+            case FILE -> {
+                return getBookingFileInstance();
+            }
+
+            default -> {                              // STATELESS
+                return getBookingMemoryInstance();
+            }
+        }
+    }
+
+
+    private static GenericDao<Booking> getBookingFileInstance() {
+        if (bookingDaoFileInstance == null)
+            bookingDaoFileInstance = new BookingDaoFile();
+        return bookingDaoFileInstance;
+    }
+
+    /* ---- singleton in-memory --------------------------------- */
+    private static BookingDaoMemory getBookingMemoryInstance() {
+        if (bookingDaoMemoryInstance == null)
+            bookingDaoMemoryInstance = new BookingDaoMemory();
+        return bookingDaoMemoryInstance;
+    }
+
+    public BeanDao<Adoption> getRequestAdoptionDao() {
+        switch (storageOption) {
+            case DATABASE -> {return new RequestAdoptionDaoDB(DatabaseConnectionManager.getConnection());}
+            case FILE -> {return getRequestAdoptionFileInstance();}
+            default -> {return getRequestAdoptionMemoryInstance();}
+        }
+    }
+
+    private static BeanDao<Adoption> getRequestAdoptionFileInstance() {
+        if (requestAdoptionDaoFileInstance == null)
+            requestAdoptionDaoFileInstance = new RequestAdoptionDaoFile();
+        return requestAdoptionDaoFileInstance;
+    }
+
+    private static RequestAdoptionDaoMemory getRequestAdoptionMemoryInstance() {
+        if (requestAdoptionMemoryInstance == null)
+            requestAdoptionMemoryInstance = new RequestAdoptionDaoMemory();
+        return requestAdoptionMemoryInstance;
+    }
+    public GenericDao<Cat> getCatDao() {
+        return switch (storageOption) {
+            case DATABASE -> new CatDaoDB(DatabaseConnectionManager.getConnection());
+            case FILE -> getCatFileInstance(); // solo se esiste CatDaoFile
+            default -> getCatMemoryInstance();
+        };
+    }
+    private static GenericDao<Cat> getCatFileInstance() {
+        if (catDaoFileInstance == null)
+            catDaoFileInstance = new CatDaoFile(); // implementare se serve
+        return catDaoFileInstance;
+    }
+    private static CatDaoMemory getCatMemoryInstance() {
+        if (catDaoMemoryInstance == null)
+            catDaoMemoryInstance = new CatDaoMemory();
+        return catDaoMemoryInstance;
+    }
+
+}
