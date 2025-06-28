@@ -63,3 +63,25 @@ CREATE TABLE IF NOT EXISTS `Cat` (
     stateAdoption   BOOLEAN NOT NULL DEFAULT 0, /* 0 = da_adottare, 1 = adottato*/
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
+*------------------------------------------------------------------
+  4. TABELLA adoption_requsts  (nameCat, phoneNumber, name, surname, email, address, stateAdoption)
+------------------------------------------------------------------*/
+CREATE TABLE IF NOT EXISTS `adoption_requsts` (
+    nameCat         VARCHAR(50) NOT NULL,
+    phoneNumber     VARCHAR(30) NOT NULL,
+    name            VARCHAR(100) NOT NULL,
+    surname         VARCHAR(100) NOT NULL,
+    email           VARCHAR(150) NOT NULL,
+    address         TEXT,
+    stateAdoption   BOOLEAN NOT NULL DEFAULT 0, /* 0 = da_adottare, 1 = adottato*/
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE = InnoDB;
+
+
+
+
+
+
+
+
+
