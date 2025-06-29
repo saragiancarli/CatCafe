@@ -41,13 +41,30 @@ public class ManageCatGUIController {
 
         // CONFERMA / CREA
         view.getBtnConfirm().setOnAction(_ -> {
-        	if (!deleteMode && bean.isSelected()) {
-                service.newCat(bean);   // oppure update se già esiste
-                refreshTable();
+            if (deleteMode) {
+                Cat selectedCat = bean.getSelected();
+                if (selectedCat != null) {
+                    logger.info("Sto eliminando il gatto con ID: " + selectedCat.getIdCat());
+                    service.cancelCat(selectedCat);  // passare il gatto completo
+                    refreshTable();
+                    logger.info("Gatto eliminato.");
+                } else {
+                    logger.info("Nessun gatto selezionato per eliminazione.");
+                }
+                deleteMode = false; // resetta modalità cancellazione
+            } else {
+                if (bean.isSelected()) {
+                    service.newCat(bean);
+                    refreshTable();
+                }
             }
         });
 
-       
+        // CANCELLA
+        view.getBtnCancel().setOnAction(_ -> {
+            deleteMode = true;
+            logger.info("Modalità eliminazione attivata. Seleziona un gatto e premi Conferma.");
+        });
 
         // CREA NUOVO GATTO
 

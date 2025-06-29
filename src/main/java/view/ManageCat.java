@@ -24,7 +24,7 @@ public class ManageCat {
 
     private final Button btnAddCat = new Button("Inserisci gatto");
     private final Button btnConfirm = new Button("Conferma modifiche");
-    
+    private final Button btnCancel = new Button("Elimina gatto");
     private final Button btnBack = new Button("Indietro");
 
     private final VBox root = new VBox(12);
@@ -46,7 +46,7 @@ public class ManageCat {
             table.scrollTo(newCat);
         });
 
-        HBox leftButtons = new HBox(10, btnAddCat);
+        HBox leftButtons = new HBox(10, btnAddCat, btnCancel);
         leftButtons.setAlignment(Pos.CENTER_RIGHT);
 
         HBox rightButtons = new HBox(10, btnConfirm, btnBack);
@@ -117,7 +117,9 @@ public class ManageCat {
         return btnConfirm;
     }
 
-    
+    public Button getBtnCancel() {
+        return btnCancel;
+    }
 
     public Button getBtnBack() {
         return btnBack;

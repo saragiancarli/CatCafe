@@ -115,7 +115,7 @@ public class RequestAdoptionGUIController {
         }
     }
     private void loadCatsIntoComboBox() {
-        List<Cat> cats = catDAO.readAll();
+        List<Cat> cats = catDAO.readAdoptableCats();
         populateCatNames(cats);
     }
     private void populateCatNames(List<Cat> cats) {

@@ -1,10 +1,6 @@
 package controller_applicativi;
-
-
 import dao.DaoFactory;
-
 import dao.GenericDao;
-
 import entity.Cat;
 
 import java.sql.SQLException;
@@ -21,11 +17,11 @@ public class ManageCatController {
             Logger.getLogger(ManageCatController.class.getName());
 
 
-    private final GenericDao<Cat>  catDao = DaoFactory.getInstance().getCatDao();
+    private final GenericDao<Cat> catDao =
+            DaoFactory.getInstance().getCatDao();
 
     /* ----- carica tutti i gatti ----- */
-    public List<Cat> loadAll() {
-        return catDao.readAll();
+    public List<Cat> loadAll() {return catDao.readAll();
     }
 
     /* ----- aggiunta nuovo gatto ----- */

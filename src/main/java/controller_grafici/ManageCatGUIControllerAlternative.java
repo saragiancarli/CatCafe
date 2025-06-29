@@ -1,89 +1,71 @@
 package controller_grafici;
 
+import javafx.collections.FXCollections;
+import javafx.scene.layout.VBox;
 import bean.ManageCatBean;
 import controller_applicativi.ManageCatController;
 import entity.Cat;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.layout.VBox;
 import view.ManageCatAlternative;
 
-
-
 public class ManageCatGUIControllerAlternative {
-
-    
 
     private final ManageCatAlternative view = new ManageCatAlternative();
     private final ManageCatController service = new ManageCatController();
 
-    private final ManageCatBean bean = new ManageCatBean();
-    private final NavigationService navigationService;
+    private final NavigationService nav;
     private final String typeOfLogin;
 
-    private boolean deleteMode = false;
-
-    public ManageCatGUIControllerAlternative(NavigationService navigationService, String typeOfLogin) {
-        this.navigationService = navigationService;
+    public ManageCatGUIControllerAlternative(NavigationService nav, String typeOfLogin) {
+        this.nav = nav;
         this.typeOfLogin = typeOfLogin;
-        addEventHandlers();
-        addIndexColumn();
-        refreshTable();
-    }
 
-    private void addEventHandlers() {
-        // selezione riga -> aggiorna bean
-        view.getTable().getSelectionModel().selectedItemProperty().addListener(
-                (_, _, sel) -> bean.setSelected(sel)
-        );
+        refresh();
 
-        // CONFERMA / CREA
+        /* --- pulsante Conferma --- */
         view.getBtnConfirm().setOnAction(_ -> {
-        	if (!deleteMode && bean.isSelected()) {
-                service.newCat(bean);   // oppure update se già esiste
-                refreshTable();
+            Cat sel = view.getListView().getSelectionModel().getSelectedItem();
+            if (sel == null) {
+                view.showError("Seleziona un gatto prima di confermare.");
+                return;
+            }
+            try {
+                ManageCatBean bean = new ManageCatBean();
+                bean.setSelected(sel);
+                service.newCat(bean);
+                refresh();
+            } catch (Exception e) {
+                view.showError("Errore nel confermare il gatto: " + e.getMessage());
             }
         });
 
-       
-
-        // CREA NUOVO GATTO
-
-        view.getBtnAddCat().setOnAction(_ -> {
-            Cat nuovoGatto = new Cat();
-            nuovoGatto.setNameCat("");
-            nuovoGatto.setRace("");
-            nuovoGatto.setDescription("");
-            nuovoGatto.setAge(0);
-            nuovoGatto.setStateAdoption(false);
-
-            view.getTable().getItems().add(nuovoGatto);
-            view.getTable().getSelectionModel().select(nuovoGatto);
-            bean.setSelected(nuovoGatto);
+        /* --- pulsante Cancella --- */
+        view.getBtnCancel().setOnAction(_ -> {
+            Cat sel = view.getListView().getSelectionModel().getSelectedItem();
+            if (sel == null) {
+                view.showError("Seleziona un gatto prima di cancellare.");
+                return;
+            }
+            try {
+                service.cancelCat(sel);
+                refresh();
+            } catch (Exception e) {
+                view.showError("Errore nel cancellare il gatto: " + e.getMessage());
+            }
         });
 
-
-
-        // TORNA INDIETRO
-        view.getBtnBack().setOnAction(_ -> navigationService.navigateToHomePage(navigationService, typeOfLogin));
+        view.getBtnBack().setOnAction(_ -> nav.navigateToHomePage(nav, typeOfLogin));
     }
 
-    private void refreshTable() {
-        ObservableList<Cat> items = FXCollections.observableArrayList(service.loadAll());
-        bean.setCatList(items);
-        view.setItems(items);
-    }
-    private void addIndexColumn() {
-        TableColumn<Cat, Number> indexCol = new TableColumn<>("ID");
-        indexCol.setCellValueFactory(col ->
-                new ReadOnlyObjectWrapper<>(view.getTable().getItems().indexOf(col.getValue()))
-        );
-        view.getTable().getColumns().addFirst(indexCol);
+    private void refresh() {
+        view.hideError();
+        try {
+            view.setItems(FXCollections.observableArrayList(service.loadAll()));
+        } catch (Exception e) {
+            view.showError("Errore nel caricamento della lista gatti: " + e.getMessage());
+        }
     }
 
     public VBox getRoot() {
-        return new VBox(view.getRoot());
+        return view.getRoot();
     }
 }

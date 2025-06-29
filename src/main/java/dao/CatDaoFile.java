@@ -3,12 +3,11 @@ package dao;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-
 import entity.Cat;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,41 +48,27 @@ public class CatDaoFile implements GenericDao<Cat> {
 
     /* ----------- CRUD ----------- */
 
-    public void create(Cat cat) {
+    @Override
+    public void create(Cat cat) throws SQLException {
         if (read(cat.getNameCat()) != null) {
-            throw new IllegalArgumentException("Gatto già presente: " + cat.getNameCat());
+            throw new SQLException("Gatto già presente: " + cat.getNameCat());
         }
         cats.add(cat);
         saveToFile();
     }
+
     @Override
     public Cat read(Object... keys) {
-        if (keys.length != 1 || !(keys[0] instanceof String nameCat))
-            throw new IllegalArgumentException("Chiave attesa: String nameCat");
-
-        return cats.stream()
-                   .filter(c -> c.getNameCat().equalsIgnoreCase(nameCat))
-                   .findFirst()
-                   .orElse(null);
-    }
-
-    @Override
-    public void delete(Object... keys) {
-        if (keys.length != 1 || !(keys[0] instanceof String nameCat))
-            throw new IllegalArgumentException("Chiave attesa: String nameCat");
-
-        cats.removeIf(c -> c.getNameCat().equalsIgnoreCase(nameCat));
-        saveToFile();
-    }
-
-    public Cat read(String name) {
+        if (keys == null || keys.length == 0) return null;
+        String name = (String) keys[0];
         return cats.stream()
                 .filter(cat -> cat.getNameCat().equals(name))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void update(Cat cat) {
+    @Override
+    public void update(Cat cat) throws SQLException {
         for (int i = 0; i < cats.size(); i++) {
             if (cats.get(i).getNameCat().equals(cat.getNameCat())) {
                 cats.set(i, cat);
@@ -91,14 +76,19 @@ public class CatDaoFile implements GenericDao<Cat> {
                 return;
             }
         }
-        throw new IllegalArgumentException("Gatto non trovato: " + cat.getNameCat());
+        throw new SQLException("Gatto non trovato: " + cat.getNameCat());
     }
 
-    public void delete(String name) {
-        cats.removeIf(cat -> cat.getNameCat().equals(name));
+    @Override
+    public void delete(Object... keys) throws SQLException {
+        if (keys == null || keys.length == 0) throw new SQLException("No key provided");
+        String name = (String) keys[0];
+        boolean removed = cats.removeIf(cat -> cat.getNameCat().equals(name));
+        if (!removed) throw new SQLException("Gatto non trovato: " + name);
         saveToFile();
     }
 
+    @Override
     public List<Cat> readAll() {
         return new ArrayList<>(cats);
     }
@@ -113,3 +103,4 @@ public class CatDaoFile implements GenericDao<Cat> {
         return adoptable;
     }
 }
+

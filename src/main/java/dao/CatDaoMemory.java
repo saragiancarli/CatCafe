@@ -1,12 +1,10 @@
 package dao;
 
-
 import entity.Cat;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class CatDaoMemory implements GenericDao<Cat> {
     private final List<Cat> storage;
@@ -32,19 +30,23 @@ public class CatDaoMemory implements GenericDao<Cat> {
         storage.add(c2);
     }
 
+    @Override
     public void create(Cat cat) throws SQLException {
         if (cat == null) throw new SQLException("Cat cannot be null");
         storage.add(cat);
     }
-   
 
-    public Cat read(String name) {
+    @Override
+    public Cat read(Object... keys) {
+        if (keys == null || keys.length == 0) return null;
+        String name = (String) keys[0];
         return storage.stream()
                 .filter(cat -> cat.getNameCat().equals(name))
                 .findFirst()
                 .orElse(null);
     }
 
+    @Override
     public void update(Cat cat) throws SQLException {
         if (cat == null) throw new SQLException("Cat cannot be null");
         Cat existing = read(cat.getNameCat());
@@ -56,7 +58,10 @@ public class CatDaoMemory implements GenericDao<Cat> {
         }
     }
 
-    public void delete(String name) throws SQLException {
+    @Override
+    public void delete(Object... keys) throws SQLException {
+        if (keys == null || keys.length == 0) throw new SQLException("No key provided");
+        String name = (String) keys[0];
         Cat existing = read(name);
         if (existing != null) {
             storage.remove(existing);
@@ -64,21 +69,8 @@ public class CatDaoMemory implements GenericDao<Cat> {
             throw new SQLException("Cat not found");
         }
     }
-   
-    
-    @Override
-    public Cat read(Object... keys) {
-        if (keys.length != 1 || !(keys[0] instanceof String nameCat))
-            throw new IllegalArgumentException("Chiave attesa: String nameCat");
-        return read(nameCat);
-    }
- @Override
- public void delete(Object... keys) throws SQLException {
-     if (keys.length != 1 || !(keys[0] instanceof String nameCat))
-         throw new IllegalArgumentException("Chiave attesa: String nameCat");
-     delete(nameCat);
- }
 
+    @Override
     public List<Cat> readAll() {
         return new ArrayList<>(storage);
     }
