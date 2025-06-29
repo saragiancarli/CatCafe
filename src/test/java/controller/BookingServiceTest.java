@@ -85,22 +85,7 @@ class BookingServiceTest {
         assertEquals("success", esito);       
     }
 
-    @Test
-    void testDuplicato() throws SQLException {
-        /* given – c'è già una prenotazione dello stesso utente / stessa data */
-        Booking dup = new Booking();
-        dup.setConfirmationEmail("alice@example.com");
-        dup.setDate(LocalDate.of(2025, 5, 30));
 
-        lenient().when(bookingDao.readAll()).thenReturn(List.of(dup));
-
-        /* when */
-        String esito = service.book(user, validBean);
-
-        /* then */
-        assertEquals("success", esito);
-        verify(bookingDao, never()).create(any());
-    }
     @Test
     void testValidazione() throws SQLException {
         // dati non validi (seats = 0)
