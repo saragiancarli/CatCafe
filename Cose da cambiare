@@ -1253,3 +1253,675 @@ public class DaoFactory implements DaoFactoryInterface {
     }
 
 }
+
+
+
+
+package view;
+
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+
+public class RequestAdoption {
+
+    /* ---------- campi ------------------ */
+
+    protected VBox root;
+
+    private final ComboBox<String> nomeGatto;
+    private final TextField nome;
+    private final TextField cognome;
+    private final TextField emailConferma;
+    private final TextField indirizzo;
+    private final TextField telefono;
+
+    private final Button modifica;
+    private final Button conferma;
+    private final Button annulla;
+
+    private final Label nomeGattoErrorLabel;
+    private final Label nomeErrorLabel;
+    private final Label cognomeErrorLabel;
+    private final Label emailConfermaErrorLabel;
+    private final Label indirizzoErrorLabel;
+    private final Label telefonoErrorLabel;
+    private static final String ERROR_MESSAGE = "error";
+
+    /* ---------- costruttore ------------------ */
+
+    public RequestAdoption() {
+        root = new VBox(15);
+        root.setPrefSize(1280, 720);
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-padding: 32;");
+
+        Label title = new Label(" 🐾 Zampette in cerca di casa 🐾 ");
+
+        // Sezione nome gatto
+        Label nomeGattoLabel = new Label(" Scegli gatto da adottare ");
+        nomeGatto = new ComboBox<>();
+        nomeGatto.setPromptText(" Seleziona un gatto ");
+        nomeGattoErrorLabel = makeErrLabel();
+
+        // Nome
+        Label nomeLabel = new Label(" Nome ");
+        nome = new TextField();
+        nome.setPromptText(" ");
+        nome.setMaxWidth(150);
+        nomeErrorLabel = makeErrLabel();
+
+        // Cognome
+        Label cognomeLabel = new Label(" Cognome ");
+        cognome = new TextField();
+        cognome.setPromptText(" ");
+        cognome.setMaxWidth(150);
+        cognomeErrorLabel = makeErrLabel();
+
+        // Email
+        Label emailConfermaLabel = new Label(" Email di conferma ");
+        emailConferma = new TextField();
+        emailConferma.setPromptText(" ");
+        emailConferma.setMaxWidth(150);
+        emailConfermaErrorLabel = makeErrLabel();
+
+        // Indirizzo
+        Label indirizzoLabel = new Label(" Indirizzo ");
+        indirizzo = new TextField();
+        indirizzo.setPromptText(" ");
+        indirizzo.setMaxWidth(150);
+        indirizzoErrorLabel = makeErrLabel();
+
+        // Telefono
+        Label telefonoLabel = new Label(" Numero di telefono ");
+        telefono = new TextField();
+        telefono.setPromptText(" ");
+        telefono.setMaxWidth(150);
+        telefonoErrorLabel = makeErrLabel();
+
+        // Bottoni
+        modifica = new Button("Modifica richieste adozione");
+        conferma = new Button("Conferma");
+        annulla = new Button("Annulla");
+
+        // Layout bottone "Modifica" in basso a sinistra
+        HBox modificaBox = new HBox(modifica);
+        modificaBox.setAlignment(Pos.CENTER_LEFT);
+        modificaBox.setPadding(new Insets(20, 0, 0, 0));
+
+        // Layout bottoni "Conferma" e "Annulla" centrati
+        HBox azioniBox = new HBox(15, conferma, annulla);
+        azioniBox.setAlignment(Pos.CENTER);
+        azioniBox.setPadding(new Insets(10, 0, 0, 0));
+
+        // Aggiunta componenti al root
+        root.getChildren().addAll(
+                title,
+                nomeGattoLabel, nomeGatto, nomeGattoErrorLabel,
+                nomeLabel, nome, nomeErrorLabel,
+                cognomeLabel, cognome, cognomeErrorLabel,
+                emailConfermaLabel, emailConferma, emailConfermaErrorLabel,
+                indirizzoLabel, indirizzo, indirizzoErrorLabel,
+                telefonoLabel, telefono, telefonoErrorLabel,
+                modificaBox,
+                azioniBox
+        );
+    }
+
+    /* ---------- getter ------------------ */
+
+    public VBox getRoot() {
+        return root;
+    }
+
+    public Button getModifica() {
+        return modifica;
+    }
+
+    public Button getConferma() {
+        return conferma;
+    }
+
+    public Button getAnnulla() {
+        return annulla;
+    }
+
+    public String getSelectedCatName() {
+        return nomeGatto.getValue();
+    }
+
+    public ComboBox<String> getComboBoxCatName() {
+        return nomeGatto;
+    }
+
+    public String getName() {
+        return nome.getText().trim();
+    }
+
+    public String getSurname() {
+        return cognome.getText().trim();
+    }
+
+    public String getEmail() {
+        return emailConferma.getText().trim();
+    }
+
+    public String getAddress() {
+        return indirizzo.getText().trim();
+    }
+
+    public String getPhoneNumber() {
+        return telefono.getText().trim();
+    }
+
+    /* ---------- gestione errori ------------------ */
+
+    public void hideAllErrors() {
+        nomeGattoErrorLabel.setVisible(false);
+        nomeErrorLabel.setVisible(false);
+        cognomeErrorLabel.setVisible(false);
+        emailConfermaErrorLabel.setVisible(false);
+        indirizzoErrorLabel.setVisible(false);
+        telefonoErrorLabel.setVisible(false);
+    }
+
+    public void setNomeGattoError(String m) {
+        showError(nomeGattoErrorLabel, m);
+    }
+
+    public void setNomeError(String m) {
+        showError(nomeErrorLabel, m);
+    }
+
+    public void setCognomeError(String m) {
+        showError(cognomeErrorLabel, m);
+    }
+
+    public void setEmailError(String m) {
+        showError(emailConfermaErrorLabel, m);
+    }
+
+    public void setIndirizzoError(String m) {
+        showError(indirizzoErrorLabel, m);
+    }
+
+    public void setTelefonoError(String m) {
+        showError(telefonoErrorLabel, m);
+    }
+
+    /* ---------- metodi utili ------------------ */
+
+    private Label makeErrLabel() {
+        Label l = new Label();
+        l.getStyleClass().add(ERROR_MESSAGE);
+        l.setVisible(false);
+        return l;
+    }
+
+    private void showError(Label l, String msg) {
+        l.setText(msg);
+        l.setVisible(msg != null && !msg.isEmpty());
+    }
+}
+package view;
+
+import entity.Cat;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
+
+import java.util.List;
+
+/** View alternativa per la richiesta di adozione */
+public class RequestAdoptionAlternative {
+
+    /* ---------- nodi -------------- */
+
+    protected VBox root;
+
+    private final ComboBox<Cat> nomeGatto;  // <-- qui il tipo Cat
+    private final TextField nome;
+    private final TextField cognome;
+    private final TextField emailConferma;
+    private final TextField indirizzo;
+    private final TextField telefono;
+
+    private final Button modifica;
+    private final Button conferma;
+    private final Button annulla;
+
+    /* ---------- gestione-errori ------------------ */
+
+    private final Label nomeGattoErrorLabel;
+    private final Label nomeErrorLabel;
+    private final Label cognomeErrorLabel;
+    private final Label emailConfermaErrorLabel;
+    private final Label indirizzoErrorLabel;
+    private final Label telefonoErrorLabel;
+
+    private static final String ERR_STYLE = "error-message";
+
+    /* ---------- costruttore ------------------ */
+    public RequestAdoptionAlternative() {
+        root = new VBox(20);
+        root.setPadding(new Insets(24));
+        root.setAlignment(Pos.TOP_CENTER);
+
+        GridPane grid = new GridPane();
+        grid.setVgap(8);
+        grid.setHgap(10);
+        grid.setAlignment(Pos.CENTER_LEFT);
+
+        int row = 0;
+
+        Label title = new Label("Richiesta di Adozione (Versione alternativa)");
+
+        grid.add(new Label("Gatto da adottare"), 0, row);
+        nomeGatto = new ComboBox<>();
+        nomeGatto.setPromptText(" Seleziona un gatto ");
+        grid.add(nomeGatto, 1, row);
+        nomeGattoErrorLabel = makeErrLabel();
+        grid.add(nomeGattoErrorLabel, 2, row++);
+
+        grid.add(new Label("Nome"), 0, row);
+        nome = new TextField();
+        grid.add(nome, 1, row);
+        nomeErrorLabel = makeErrLabel();
+        grid.add(nomeErrorLabel, 2, row++);
+
+        grid.add(new Label("Cognome"), 0, row);
+        cognome = new TextField();
+        grid.add(cognome, 1, row);
+        cognomeErrorLabel = makeErrLabel();
+        grid.add(cognomeErrorLabel, 2, row++);
+
+        grid.add(new Label("Email di conferma"), 0, row);
+        emailConferma = new TextField();
+        grid.add(emailConferma, 1, row);
+        emailConfermaErrorLabel = makeErrLabel();
+        grid.add(emailConfermaErrorLabel, 2, row++);
+
+        grid.add(new Label("Indirizzo"), 0, row);
+        indirizzo = new TextField();
+        grid.add(indirizzo, 1, row);
+        indirizzoErrorLabel = makeErrLabel();
+        grid.add(indirizzoErrorLabel, 2, row++);
+
+        grid.add(new Label("Numero di telefono"), 0, row);
+        telefono = new TextField();
+        grid.add(telefono, 1, row);
+        telefonoErrorLabel = makeErrLabel();
+        grid.add(telefonoErrorLabel, 2, row++);
+
+        modifica = new Button("Modifica richieste adozione");
+        conferma = new Button("Conferma");
+        annulla = new Button("Annulla");
+
+        root.getChildren().addAll(title, grid, new HBox(10, modifica, conferma, annulla));
+    }
+
+    /* ---------- getter ------------------ */
+
+    public VBox getRoot() {
+        return root;
+    }
+    public Button getModifica() {
+        return modifica;
+    }
+
+    public Button getConferma() {
+        return conferma;
+    }
+
+    public Button getAnnulla() {
+        return annulla;
+    }
+
+    public String getSelectedCatName() {
+        Cat selected = nomeGatto.getValue();
+        return (selected != null) ? selected.getNameCat() : null;
+    }
+
+    public String getName() {
+        return nome.getText().trim();
+    }
+
+    public String getSurname() {
+        return cognome.getText().trim();
+    }
+
+    public String getEmail() {
+        return emailConferma.getText().trim();
+    }
+
+    public String getAddress() {
+        return indirizzo.getText().trim();
+    }
+
+    public String getPhoneNumber() {
+        return telefono.getText().trim();
+    }
+
+
+    /* ---------- gestione-errori ------------------ */
+
+    public void hideAllErrors() {
+        nomeGattoErrorLabel.setVisible(false);
+        nomeErrorLabel.setVisible(false);
+        cognomeErrorLabel.setVisible(false);
+        emailConfermaErrorLabel.setVisible(false);
+        indirizzoErrorLabel.setVisible(false);
+        telefonoErrorLabel.setVisible(false);
+    }
+
+    public void setnomeGattoError(String m) {
+        showErr(nomeGattoErrorLabel, m);
+    }
+
+    public void setNomeError(String m) {
+        showErr(nomeErrorLabel, m);
+    }
+
+    public void setCognomeError(String m) {
+        showErr(cognomeErrorLabel, m);
+    }
+
+    public void setEmailError(String m) {
+        showErr(emailConfermaErrorLabel, m);
+    }
+
+    public void setIndirizzoError(String m) {
+        showErr(indirizzoErrorLabel, m);
+    }
+
+    public void setTelefonoError(String m) {
+        showErr(telefonoErrorLabel, m);
+    }
+
+    private Label makeErrLabel() {
+        Label l = new Label();
+        l.getStyleClass().add(ERR_STYLE);
+        l.setVisible(false);
+        return l;
+    }
+
+    private void showErr(Label l, String msg) {
+        l.setText(msg);
+        l.setVisible(true);
+    }
+
+    public void setAvailableCats(List<Cat> cats) {
+        nomeGatto.getItems().clear();
+        nomeGatto.getItems().addAll(cats);
+
+        nomeGatto.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Cat cat) {
+                return (cat != null) ? cat.getNameCat() : "";
+            }
+
+            @Override
+            public Cat fromString(String name) {
+                return cats.stream()
+                        .filter(c -> c.getNameCat().equals(name))
+                        .findFirst()
+                        .orElse(null);
+            }
+        });
+    }
+}
+
+package view;
+
+import entity.Cat;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.util.converter.BooleanStringConverter;
+import javafx.util.converter.IntegerStringConverter;
+
+
+public class ManageCat {
+    private final TableView<Cat> table = new TableView<>();
+    private final ObservableList<Cat> data = FXCollections.observableArrayList();
+
+    private final Button btnAddCat = new Button("Inserisci gatto");
+    private final Button btnConfirm = new Button("Conferma modifiche");
+    private final Button btnCancel = new Button("Elimina gatto");
+    private final Button btnBack = new Button("Indietro");
+
+    private final VBox root = new VBox(12);
+
+    public ManageCat() {
+        buildTable();
+        table.setItems(data);
+
+        btnAddCat.setOnAction(event -> {
+            Cat newCat = new Cat();
+            newCat.setNameCat("");
+            newCat.setRace("");
+            newCat.setDescription("");
+            newCat.setAge(0);
+            newCat.setStateAdoption(false);
+
+            data.add(newCat);
+            table.getSelectionModel().select(newCat);
+            table.scrollTo(newCat);
+        });
+
+        HBox leftButtons = new HBox(10, btnAddCat, btnCancel);
+        leftButtons.setAlignment(Pos.CENTER_RIGHT);
+
+        HBox rightButtons = new HBox(10, btnConfirm, btnBack);
+        rightButtons.setAlignment(Pos.CENTER_RIGHT);
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox buttons = new HBox(10, leftButtons, spacer, rightButtons);
+        buttons.setPadding(new Insets(8));
+
+        leftButtons.setMaxWidth(Double.MAX_VALUE);
+        rightButtons.setMaxWidth(Double.MAX_VALUE);
+
+
+        root.setPadding(new Insets(16));
+        root.getChildren().addAll(table, buttons);
+        VBox.setVgrow(table, Priority.ALWAYS);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void buildTable() {
+        table.setEditable(true);
+
+
+        TableColumn<Cat, String> nameCatCol = new TableColumn<>("Nome Gatto");
+        nameCatCol.setCellValueFactory(new PropertyValueFactory<>("nameCat"));
+        nameCatCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        nameCatCol.setOnEditCommit(e -> e.getRowValue().setNameCat(e.getNewValue()));
+
+        TableColumn<Cat, String> raceCol = new TableColumn<>("Razza");
+        raceCol.setCellValueFactory(new PropertyValueFactory<>("race"));
+        raceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        raceCol.setOnEditCommit(e -> e.getRowValue().setRace(e.getNewValue()));
+
+        TableColumn<Cat, String> descriptionCol = new TableColumn<>("Descrizione");
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        descriptionCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        descriptionCol.setOnEditCommit(e -> e.getRowValue().setDescription(e.getNewValue()));
+
+        TableColumn<Cat, Integer> ageCol = new TableColumn<>("Età");
+        ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
+        ageCol.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        ageCol.setOnEditCommit(e -> e.getRowValue().setAge(e.getNewValue()));
+
+        TableColumn<Cat, Boolean> statusCol = new TableColumn<>("Stato di adozione");
+        statusCol.setCellValueFactory(new PropertyValueFactory<>("stateAdoption"));
+        statusCol.setCellFactory(TextFieldTableCell.forTableColumn(new BooleanStringConverter()));
+        statusCol.setOnEditCommit(e -> e.getRowValue().setStateAdoption(e.getNewValue()));
+
+        table.getColumns().addAll(nameCatCol, raceCol, descriptionCol, ageCol, statusCol);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+    }
+
+    public void setItems(ObservableList<Cat> cats) {
+        data.setAll(cats);
+    }
+
+    public TableView<Cat> getTable() {
+        return table;
+    }
+
+    public Button getBtnAddCat() {
+        return btnAddCat;
+    }
+
+    public Button getBtnConfirm() {
+        return btnConfirm;
+    }
+
+    public Button getBtnCancel() {
+        return btnCancel;
+    }
+
+    public Button getBtnBack() {
+        return btnBack;
+    }
+
+    public VBox getRoot() {
+        return root;
+    }
+}
+package view;
+
+import entity.Cat;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+
+public class ManageCatAlternative {
+
+    private final VBox root = new VBox(16);
+    private final ListView<Cat> listView = new ListView<>();
+    private final Button btnInsertCat = new Button("Inserisci gatto");
+    private final Button btnConfirm = new Button("Conferma");
+    private final Button btnCancel = new Button("Cancella");
+    private final Button btnBack = new Button("Indietro");
+    private final Label errLabel = new Label();
+
+    public ManageCatAlternative() {
+        configureListView();
+        setupLayout();
+    }
+
+    private void configureListView() {
+        listView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Cat cat, boolean empty) {
+                super.updateItem(cat, empty);
+                if (empty || cat == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(String.format("%-15s | %-15s | %d anni | %s",
+                            cat.getNameCat(),
+                            cat.getRace(),
+                            cat.getAge(),
+                            cat.isStateAdoption() ? "Adottato" : "Disponibile"));
+                }
+            }
+        });
+    }
+
+    private void setupLayout() {
+        // Bottoni azioni (sinistra)
+        HBox leftButtons = new HBox(10, btnInsertCat, btnCancel);
+        leftButtons.setAlignment(Pos.CENTER_LEFT);
+
+        // Bottoni navigazione (destra)
+        HBox rightButtons = new HBox(10, btnConfirm, btnBack);
+        rightButtons.setAlignment(Pos.CENTER_RIGHT);
+
+        // Spaziatura centrale
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        // Contenitore principale bottoni
+        HBox buttonContainer = new HBox(10, leftButtons, spacer, rightButtons);
+        buttonContainer.setPadding(new Insets(8));
+
+        // Configurazione errori
+        errLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+        errLabel.setVisible(false);
+
+        // Layout root
+        root.setPadding(new Insets(20));
+        root.getChildren().addAll(
+                new Label("Gestione Gatti - Visualizzazione Compatta"),
+                listView,
+                buttonContainer,
+                errLabel
+        );
+
+        VBox.setVgrow(listView, Priority.ALWAYS);
+        listView.setPrefHeight(450);
+    }
+
+    /* ---------- API Pubblica ---------- */
+    public VBox getRoot() {
+        return root;
+    }
+
+    public ListView<Cat> getListView() {
+        return listView;
+    }
+
+    public Button getBtnInsertCat() {
+        return btnInsertCat;
+    }
+
+    public Button getBtnConfirm() {
+        return btnConfirm;
+    }
+
+    public Button getBtnCancel() {
+        return btnCancel;
+    }
+
+    public Button getBtnBack() {
+        return btnBack;
+    }
+
+    public void showError(String message) {
+        errLabel.setText(message);
+        errLabel.setVisible(true);
+    }
+
+    public void hideError() {
+        errLabel.setVisible(false);
+    }
+
+    public void setItems(ObservableList<Cat> cats) {
+        listView.setItems(cats);
+    }
+}
