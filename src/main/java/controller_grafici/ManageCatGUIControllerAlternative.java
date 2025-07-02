@@ -47,8 +47,8 @@ public class ManageCatGUIControllerAlternative {
                     newCat = null;
                     refresh();
                     view.hideError();
-                } catch (Exception e) {
-                    view.showError("Errore nell'inserimento: " + e.getMessage());
+                } catch (Exception _) {
+                    view.showError("Errore nell'inserimento: ");
                 }
                 return;
             }
@@ -60,8 +60,8 @@ public class ManageCatGUIControllerAlternative {
                 service.cancelCat(toDelete);
                 toDelete = null;
                 refresh();
-            } catch (Exception e) {
-                view.showError("Errore nel cancellare il gatto: " + e.getMessage());
+            } catch (Exception _) {
+                view.showError("Errore nel cancellare il gatto: " );
             }
         });
 
