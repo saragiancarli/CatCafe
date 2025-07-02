@@ -5,6 +5,7 @@ import controller_applicativi.RequestAdoptionController;
 import dao.CatDaoMemory;
 import entity.Client;
 import facade.ApplicationFacade;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import view.RequestAdoptionAlternative;
 
@@ -79,7 +80,12 @@ public class RequestAdoptionGUIControllerAlternative {
 
         switch (esito) {
             case "success" -> {
-                lOG.info("Richiesta adozione inviata con successo");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Successo");
+                alert.setHeaderText(null);
+                alert.setContentText("Richiesta adozione inviata con successo!");
+                alert.showAndWait();
+
                 nav.navigateToHomePage(nav, typeOfLogin);
             }
             case "error:duplicate" ->

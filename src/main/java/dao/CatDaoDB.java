@@ -1,6 +1,8 @@
 package dao;
 
 import entity.Cat;
+import exception.CatDaoException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +103,7 @@ public class CatDaoDB  implements GenericDao<Cat>{
             }
         }
         catch (SQLException e) {
-            throw new RuntimeException("Errore durante il recupero di tutti i gatti", e);
+            throw new CatDaoException("Errore durante il recupero di tutti i gatti", e);
         }
 
 

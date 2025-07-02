@@ -5,6 +5,7 @@ import dao.BeanDao;
 import dao.DaoFactory;
 
 import dao.RequestAdoptionDaoDB;
+import facade.ApplicationFacade;
 
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -18,19 +19,19 @@ public class RequestAdoptionController{
 
     /**
      * Crea una richiesta di adozione.
-     * @param bean dati della richiesta
+     * @param a dati della richiesta
      * @return "success" | "error:validation" | "error:duplicate" | "error:database_error"
      */
-    public String requestAdoption(Adoption bean) {
+    public String requestAdoption(Adoption a) {
 
         /* ---------- validation ---------- */
-        if (!bean.hasValidName() ||
-                !bean.hasValidSurname() ||
-                !bean.hasValidPhoneNumber() ||
-                !bean.hasValidEmail() ||
-                !bean.hasValidAddress() ||
-                !bean.hasValidStatus() ||
-                bean.getNameCat() == null || bean.getNameCat().isBlank()) {
+        if (!a.hasValidName() ||
+                !a.hasValidSurname() ||
+                !a.hasValidPhoneNumber() ||
+                !a.hasValidEmail() ||
+                !a.hasValidAddress() ||
+                !a.hasValidStatus() ||
+                a.getNameCat() == null || a.getNameCat().isBlank()) {
             return "error:validation";
         }
 
@@ -38,7 +39,7 @@ public class RequestAdoptionController{
 
         if (beanDao instanceof RequestAdoptionDaoDB daoDB) {
             try {
-                boolean exists = daoDB.existsByEmailAndCat(bean.getEmail(), bean.getNameCat());
+                boolean exists = daoDB.existsByEmailAndCat(a.getEmail(), a.getNameCat());
                 if (exists) {
                     return "error:duplicate";
                 }
@@ -50,7 +51,8 @@ public class RequestAdoptionController{
 
         /* ---------- PERSISTENZA ---------- */
         try {
-            beanDao.create(bean);
+            beanDao.create(a);
+            ApplicationFacade.sendAdoptionConfirmationEmail(a);
             return "success";
         } catch (SQLException ex) {
             LOG.log(Level.SEVERE, "Errore DB durante insert adozione", ex);

@@ -1,6 +1,7 @@
 package facade;
 
 
+import entity.Adoption;
 import javafx.scene.control.Alert;
 
 import java.util.logging.Logger;
@@ -19,15 +20,15 @@ public final class ApplicationFacade {
     /* ------------------------------------------------------------ */
     private static final Logger LOG = Logger.getLogger(ApplicationFacade.class.getName());
 
-         // inizializzata da init()
+    // inizializzata da init()
     private static ValidateLogin validator;  // idem
 
     private ApplicationFacade() {}           // utility-class: no istanze
 
-    
+
     /* ============================================================ */
     public static void init(Store storageMode) {
-        
+
 
         DaoFactory.getInstance();
         DaoFactory.setStorageOption(storageMode);
@@ -37,7 +38,7 @@ public final class ApplicationFacade {
         LOG.info(() -> "ApplicationFacade inizializzata in modalità " + storageMode);
     }
 
-    
+
 
     /** Controlla se le credenziali sono valide. */
     public static boolean isLoginValid(LoginBean bean) {
@@ -72,15 +73,15 @@ public final class ApplicationFacade {
         }
     }
     public static void sendBookingConfirmationEmail(Booking b) {
-   	 
+
         /* destinatario = indirizzo inserito in fase di prenotazione   */
         String to = b.getConfirmationEmail();
-                // niente mail
-        
+        // niente mail
+
         String subject;
         String body;
-        
-      
+
+
         subject = "Prenotazione #" + b.getId() + " confermata!";
         body = """
                Ciao %s,
@@ -95,21 +96,21 @@ public final class ApplicationFacade {
 
                Ti aspettiamo! 😺
                """.formatted(
-                      b.getTitle(), b.getId(),
-                      b.getTitle(), b.getDate(),
-                      b.getTime(),  b.getSeats());
-                EmailService.sendEmail(to, subject, body);
-            }
-public static void sendBookingCancelledEmail(Booking b) {
-	 
-    /* destinatario = indirizzo inserito in fase di prenotazione   */
-    String to = b.getConfirmationEmail();
-          // niente mail
-    
-    String subject;
-    String body;
-                subject = "Prenotazione #" + b.getId() + " annullata";
-                body = """
+                b.getTitle(), b.getId(),
+                b.getTitle(), b.getDate(),
+                b.getTime(),  b.getSeats());
+        EmailService.sendEmail(to, subject, body);
+    }
+    public static void sendBookingCancelledEmail(Booking b) {
+
+        /* destinatario = indirizzo inserito in fase di prenotazione   */
+        String to = b.getConfirmationEmail();
+        // niente mail
+
+        String subject;
+        String body;
+        subject = "Prenotazione #" + b.getId() + " annullata";
+        body = """
                        Ciao %s,
 
                        la tua prenotazione  del %s alle %s è stata
@@ -117,14 +118,39 @@ public static void sendBookingCancelledEmail(Booking b) {
 
                        Per dubbi o nuove richieste contattaci pure!
                        """.formatted(
-                              b.getTitle(), b.getId(),
-                              b.getDate(), b.getTime());
-                EmailService.sendEmail(to, subject, body);
-            
-            
-        }
+                b.getTitle(), b.getId(),
+                b.getDate(), b.getTime());
+        EmailService.sendEmail(to, subject, body);
+
+
+    }
+    public static void sendAdoptionConfirmationEmail(Adoption a) {
+        String to = a.getEmail();
+        String subject;
+        String body;
+
+
+        subject = "La richiesta di adozione di #" + a.getNameCat() + " confermata!";
+        body = """
+               Ciao %s %s,
+
+               siamo lieti di confermare la tua adozione, facciamo un recap:
+
+               • Gatto che si sta adottando: %s
+               • Il numero di telefono in cui vi contatteremo        : %s
+               • L' indirizzo in cui i nostri collaboratori terranno il sopraluogo    : %s
+
+               Ci vediamo presto! 😺
+               """.formatted(
+                a.getName(), a.getSurname(),
+                a.getNameCat(),
+                a.getPhoneNumber(), a.getAddress());
+        EmailService.sendEmail(to, subject, body);
+
+
+    }
     /* ===================  Helper grafici  ======================= */
-   
+
     public static void showErrorMessage(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -133,9 +159,9 @@ public static void sendBookingCancelledEmail(Booking b) {
         alert.showAndWait();
     }
 
-    
+
     /* =======================  private debug  ========================== */
-    
+
     private static void ensureInit() {
         if (validator == null)
             throw new IllegalStateException("ApplicationFacade.init(...) non è stato chiamato!");

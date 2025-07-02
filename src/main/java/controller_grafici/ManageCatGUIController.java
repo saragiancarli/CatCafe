@@ -44,7 +44,7 @@ public class ManageCatGUIController {
             if (deleteMode) {
                 Cat selectedCat = bean.getSelected();
                 if (selectedCat != null) {
-                    logger.info("Sto eliminando il gatto con ID: " + selectedCat.getIdCat());
+                    logger.info("Sto eliminando il gatto con id: " + selectedCat.getIdCat());
                     service.cancelCat(selectedCat);  // passare il gatto completo
                     refreshTable();
                     logger.info("Gatto eliminato.");
