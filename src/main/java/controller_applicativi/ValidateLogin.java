@@ -20,7 +20,7 @@ public class ValidateLogin {
     private final GenericDao<User> userDao;
     private final GenericDao<Staf> stafDao;
     public ValidateLogin() {
-        DaoFactory f = DaoFactory.getInstance();   // usa il singleton
+        DaoFactory f = DaoFactory.getInstance();   
         this.userDao = f.getUserDao();
         this.stafDao = f.getStafDao();
     }
@@ -65,6 +65,6 @@ if(bean== null || bean.getEmail() == null || bean.getEmail().isBlank()){return n
         }
     }
 
-    /* placeholder: sostituisci con BCrypt.checkpw(raw, stored) */
+    
     private boolean match(String raw, String stored) { return raw.equals(stored); }
 }

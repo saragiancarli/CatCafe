@@ -53,6 +53,7 @@ public class BookingService {
         {
             return "error:duplicate";
         }
+       
 
         /* ---------- 3. MAPPING Bean → Entity ---------- */
         Booking b = new Booking();
@@ -60,7 +61,7 @@ public class BookingService {
         b.setDate (bean.getDate());
         b.setTime (bean.getTime());
         b.setSeats(bean.getSeats());
-        b.setConfirmationEmail(bean.getConfirmationEmail());  // <-- ESSENZIALE
+        b.setConfirmationEmail(bean.getConfirmationEmail());  
                                                   
 
         /* ---------- 4. PERSISTENZA ---------- */

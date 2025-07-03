@@ -12,7 +12,7 @@ import view.*;
 
 public final class ModelBeanFactory {
 
-    private ModelBeanFactory() { }            // utility-class
+    private ModelBeanFactory() { }            
 
     /* ------------------------------------------------------------------
      *  LOGIN BEAN –  versione “view principale”
@@ -77,7 +77,7 @@ public final class ModelBeanFactory {
         b.setPhoneNumber(v.getPhoneNumberField().getText());
         b.setPassword(v.getPasswordField().getText());
         b.setRepeatPassword(v.getRepeatPasswordField().getText());
-        b.setUserType(v.getuserType());                     // "user" / "staf"
+        b.setUserType(v.getuserType());                     
         return b;
     }
 
@@ -97,15 +97,15 @@ public final class ModelBeanFactory {
         BookingBean b = new BookingBean();
         b.setTitle   (v.getNomePrenotazione());
         b.setDate (v.getDate());
-        b.setTime(v.getTime());                // nel tuo View “Ora” è il secondo DatePicker
+        b.setTime(v.getTime());                
         b.setSeats   (v.getParticipants());
         b.setConfirmationEmail(v.getConfirmationEmail());
         return b;
     }
     public static List<ManageBookingBean> getManageBookingBeans(List<Booking> bookings) {
         return bookings.stream()
-                       .map(ManageBookingBean::new)   // usa il costruttore ❶
-                       .toList();                     // disponibile da Java 16
+                       .map(ManageBookingBean::new)   
+                       .toList();                     
     }
     public static Adoption getRequestAdoptionBean(RequestAdoption a) {
         Adoption bean = new Adoption();
