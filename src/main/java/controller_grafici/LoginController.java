@@ -17,7 +17,7 @@ public class LoginController {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     private final NavigationService navigationService;
-    private final String typeOfLogin;              // scelta esterna: "user" | "staf"
+    private final String typeOfLogin;            
 
     private final LoginView loginView;
 
@@ -38,12 +38,12 @@ public class LoginController {
     /* ---------------------------------------------------------- */
     private void handleLogin() {
 
-        /* ---------- POPOLA IL BEAN DALLA VIEW ---------- */
+     
         LoginBean bean = ModelBeanFactory.getLoginBean(loginView);
 
-        /* ---------- VALIDAZIONE GUI (no più validateFields) ---------- */
+       
         boolean ok = true;
-        loginView.hideErrorMessages();                 // reset
+        loginView.hideErrorMessages();                 
 
         if (!bean.hasValidEmail()) {
             loginView.showEmailError();
@@ -53,7 +53,7 @@ public class LoginController {
             loginView.showPasswordError();
             ok = false;
         }
-        // userType è fissato dal costruttore oppure dai radio-button
+        
         if (!bean.hasUserType()) {
             loginView.getErrorMessage().setText("Seleziona User o Staf.");
             loginView.getErrorMessage().setVisible(true);
@@ -61,9 +61,9 @@ public class LoginController {
             ok = false;
         }
 
-        if (!ok) return;                              // ferma se errori GUI
+        if (!ok) return;                           
 
-        /* ---------- BUSINESS: chiamata ApplicationFacade ----------- */
+        
         try {
             logger.info(() -> "Tentativo di login per utente: " + bean.getUserType());
 

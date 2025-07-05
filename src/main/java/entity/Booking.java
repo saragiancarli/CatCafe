@@ -6,7 +6,6 @@ import javafx.beans.property.*;
 
 import java.time.*;
 
-// è ancora serializzabile se ti serve
 public class Booking  {
 
     private  final IntegerProperty            id    = new SimpleIntegerProperty();

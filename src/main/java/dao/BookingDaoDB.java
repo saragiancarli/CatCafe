@@ -158,9 +158,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------------------- */
-    /* MAPPING helper                                                */
-    /* ------------------------------------------------------------- */
+ 
     private Booking map(ResultSet rs) throws SQLException {
 
         Booking b = new Booking();

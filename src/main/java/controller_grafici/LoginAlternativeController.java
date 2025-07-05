@@ -18,9 +18,9 @@ public class LoginAlternativeController {
     private static final Logger logger = Logger.getLogger(LoginAlternativeController.class.getName());
 
     private final NavigationService navigationService;
-    private final String userType;                        // "user" o "staf" pre-selezionato
+    private final String userType;                        
 
-    private final LoginAlternativeView loginView; // view concreta
+    private final LoginAlternativeView loginView; 
 
     public LoginAlternativeController(NavigationService nav, String userType) {
         this.navigationService = nav;
@@ -39,7 +39,7 @@ public class LoginAlternativeController {
     /* ---------------------------------------------------------- */
     private void handleLogin() {
 
-        /* --- se l'interfaccia alternativa richiede la scelta del tipo --- */
+        
         if (userType == null && loginView.getLoginTypeGroup().getSelectedToggle() == null) {
             ApplicationFacade.showErrorMessage("Errore",
                     "Tipo di login non selezionato",
