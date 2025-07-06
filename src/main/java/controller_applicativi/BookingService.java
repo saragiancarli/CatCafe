@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import bean.BookingBean;
-import dao.BookingDaoDB;
+
 import dao.DaoFactory;
 import dao.GenericDao;
 import entity.Activity;
@@ -15,7 +15,7 @@ import entity.Booking;
 import entity.Client;
 
 
-import java.time.LocalDate;
+
 
 
 
@@ -36,7 +36,7 @@ public class BookingService {
      * @return "success" | "error:validation" | "error:duplicate"
      *         | "error:database_error"
      */
-    public String book(Client user, BookingBean bean) {
+    public String book( BookingBean bean) {
 
         /* ---------- 1. VALIDAZIONE lato business ---------- */
         if (!bean.hasValidTitle()  ||

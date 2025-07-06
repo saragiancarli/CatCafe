@@ -86,7 +86,7 @@ public class BookingView {
     public LocalTime  getTime()            { return ora.getValue();    }
     public int        getParticipants()    {
         try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
-        catch (NumberFormatException e) { return 0; }
+        catch (NumberFormatException _) { return 0; }
     }
     public String     getNomePrenotazione(){ return nomePrenotazione.getText().trim(); }
     public String     getConfirmationEmail(){ return email.getText().trim(); }

@@ -114,12 +114,12 @@ public class BookingViewAlternative {
     /* ----- valori inseriti ----- */
     public LocalDate getDate() {
         try { return LocalDate.parse(dataField.getText().trim()); }
-        catch (DateTimeParseException e){ return null; }
+        catch (DateTimeParseException _){ return null; }
     }
     public LocalTime getTime() { return LocalTime.of(oraHour.getValue(), oraMin.getValue()); }
     public int getParticipants(){
         try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
-        catch(NumberFormatException e){ return 0; }
+        catch(NumberFormatException _){ return 0; }
     }
     public String getNomePrenotazione(){ return nomePrenotazione.getText().trim(); }
     public String getConfirmationEmail(){ return email.getText().trim(); }

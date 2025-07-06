@@ -79,7 +79,7 @@ class BookingServiceTest {
     	lenient().when(bookingDao.readAll()).thenReturn(List.of());     // lista vuota
 
         /* when */
-        String esito = service.book(user, validBean);
+        String esito = service.book( validBean);
 
         /* then */
         assertEquals("success", esito);       
@@ -89,7 +89,7 @@ class BookingServiceTest {
     @Test
     void testValidazione() throws SQLException {
         // dati non validi (seats = 0)
-        String esito = service.book(user, invalidBean);
+        String esito = service.book( invalidBean);
 
         assertEquals("error:validation", esito);
         verify(bookingDao, never()).create(any());

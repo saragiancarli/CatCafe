@@ -57,8 +57,8 @@ public class BookingControllerAlternative {
         if (!ok) return;
 
         /* --- business layer --- */
-        Client current = ApplicationFacade.getUserFromLogin();
-        String esito  = service.book(current, bean);
+        
+        String esito  = service.book( bean);
 
         switch (esito){
             case "success"            -> nav.navigateToHomePage(nav, typeOfLogin);
