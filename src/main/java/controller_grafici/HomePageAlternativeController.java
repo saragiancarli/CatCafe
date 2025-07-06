@@ -39,10 +39,7 @@ public class HomePageAlternativeController {
             navigationService.navigateToAdopt(navigationService, typeOfLogin);}
 
          
-    else if (sel == homeView.getMenageBookOption()) {
-    	navigationService.navigateToMenageBooking(navigationService, typeOfLogin);       
-
-        } 
+     
         else if (sel == homeView.getCatOption()) {
             navigationService.navigateToManageCat(navigationService, typeOfLogin);
         }
@@ -52,7 +49,10 @@ public class HomePageAlternativeController {
         else if (sel == homeView.getChangeToUserButton()) {
        	 navigationService.navigateToLogin(navigationService, "user");
        }
-        
+        else if (sel == homeView.getReviviewOption()) {
+          	 navigationService.navigateToReviview(navigationService, "user");
+          }
+       
     });
 }
 

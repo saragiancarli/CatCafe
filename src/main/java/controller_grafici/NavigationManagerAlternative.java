@@ -76,13 +76,13 @@ public class NavigationManagerAlternative implements NavigationService {
         ManageCatGUIControllerAlternative controller = new ManageCatGUIControllerAlternative(navigationService, typeOfLogin);
         this.display(controller.getRoot(), "Cat Page");
     }
-    public void navigateToMenageBooking(NavigationService navigationService,String typeOfLogin) {
-    	ManageBookingAlternativeController controller = new ManageBookingAlternativeController(navigationService,typeOfLogin);
-        this.display(controller.getRoot(), "Menage Booking Page");
-    }
+   
   public void navigateToRegistration(NavigationService navigationService, String typeOfLogin) {
         RegistrationAlternativeController controller = new RegistrationAlternativeController(navigationService, typeOfLogin);
         this.display(controller.getRoot(), "Registrazione (secondaria)");
     }
-
+  public void navigateToReviview(NavigationService navigationService, String typeOfLogin) {
+	  ReviewAltController controller = new ReviewAltController(navigationService, typeOfLogin);
+      this.display(controller.getRoot(), "Registrazione (secondaria)");
+  }
 }

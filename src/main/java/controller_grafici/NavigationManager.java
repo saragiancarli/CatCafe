@@ -50,10 +50,12 @@ public class NavigationManager implements NavigationService {
         ManageCatGUIController controller = new ManageCatGUIController(navigationService, typeOfLogin);
         this.display(controller.getRoot(), "Cat Page");
     }
-        public void navigateToMenageBooking(NavigationService navigationService,String typeOfLogin) {
-        ManageBookingController controller = new ManageBookingController(navigationService,typeOfLogin);
-        this.display(controller.getRoot(), "Booking Page");
-    }
+        
+        public void navigateToReviview(NavigationService navigationService,String typeOfLogin) {
+        	ReviewController controller = new ReviewController(navigationService,typeOfLogin);
+            this.display(controller.getRoot(), "Booking Page");
+        }
+        
 
     public void display(VBox root, String title) {
         try {

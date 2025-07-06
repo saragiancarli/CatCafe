@@ -8,7 +8,8 @@ public class HomePageAlternative {
     protected VBox root;
     private final RadioButton bookSeatOption;
     private final RadioButton adoptOption;
-    private final RadioButton menageBookOption;
+    private final RadioButton reviviewOption;
+    
     private final RadioButton catOption;
     private final Button confirmButton;
     private final ToggleGroup selectionGroup;
@@ -40,14 +41,14 @@ public class HomePageAlternative {
 
         bookSeatOption = new RadioButton("Prenota Tavolo");
         adoptOption = new RadioButton("Adotta");
-        menageBookOption = new RadioButton("Gestisci prenotazioni");
+        reviviewOption= new RadioButton("Lascia una tua recensione");
         catOption = new RadioButton("Gestisci Gatti");
         changeToStaftOption= new RadioButton("Vuoi passare al pannello di controllo dello Staf?");
         changeToUserOption= new RadioButton("Vuoi passare alla schermata da Utente?");
         
         bookSeatOption.setToggleGroup(selectionGroup);
         adoptOption.setToggleGroup(selectionGroup);
-        menageBookOption.setToggleGroup(selectionGroup);
+        reviviewOption.setToggleGroup(selectionGroup);
         catOption.setToggleGroup(selectionGroup);
         changeToStaftOption.setToggleGroup(selectionGroup);
         changeToUserOption.setToggleGroup(selectionGroup);
@@ -55,8 +56,8 @@ public class HomePageAlternative {
         bookSeatOption .setDisable(!isUser);
         adoptOption    .setDisable(!isUser);
         changeToStaftOption.setDisable(!isUser);
+        reviviewOption.setDisable(!isUser);
 
-        menageBookOption.setDisable(!isStaf);
         catOption .setDisable(!isStaf);
         changeToUserOption.setDisable(!isStaf);
         // Messaggio di errore nascosto inizialmente
@@ -74,7 +75,8 @@ public class HomePageAlternative {
                
                 bookSeatOption,
                 adoptOption,
-                menageBookOption,
+                reviviewOption,
+                
                 catOption,
                 selectionError,
                 confirmButton,
@@ -90,10 +92,11 @@ public class HomePageAlternative {
     public RadioButton getAdoptOption() {
         return adoptOption;
     }
-
-    public RadioButton getMenageBookOption() {
-        return menageBookOption;
+    public RadioButton getReviviewOption() {
+        return reviviewOption;
     }
+
+    
     public RadioButton getCatOption() {
         return catOption;
     }

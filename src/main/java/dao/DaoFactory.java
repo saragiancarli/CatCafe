@@ -30,7 +30,8 @@ public class DaoFactory implements DaoFactoryInterface {
     private static RequestAdoptionDaoMemory requestAdoptionMemoryInstance;
     private static GenericDao<Activity> activityDaoMemoryInstance;
    
-
+    private static ReviewDaoMemory           reviewDaoMemoryInstance;
+    private static GenericDao<Review>        reviewDaoFileInstance;
 
     private static GenericDao<User> userDaoFileInstance;
     private static GenericDao<Staf> stafDaoFileInstance;
@@ -166,7 +167,21 @@ public class DaoFactory implements DaoFactoryInterface {
     }
     
     
-    
+    public GenericDao<Review> getReviewDao() {
+        return switch (storageOption) {
+            case DATABASE -> new ReviewDaoDB(DatabaseConnectionManager.getConnection());
+            case FILE     -> getReviewFileInstance();
+            default       -> getReviewMemoryInstance();
+        };
+    }
+    private static GenericDao<Review> getReviewFileInstance() {
+        if (reviewDaoFileInstance == null) reviewDaoFileInstance = new ReviewDaoFile();
+        return reviewDaoFileInstance;
+    }
+    private static ReviewDaoMemory getReviewMemoryInstance() {
+        if (reviewDaoMemoryInstance == null) reviewDaoMemoryInstance = new ReviewDaoMemory();
+        return reviewDaoMemoryInstance;
+    }
     
     
 

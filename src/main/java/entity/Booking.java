@@ -1,123 +1,60 @@
 package entity;
 
-
-import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-
-import java.time.*;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
-public class Booking  {
+/**
+ * Versione “plain-old Java object” senza Property JavaFX.
+ */
+public class Booking {
 
-    private  final IntegerProperty            id    = new SimpleIntegerProperty();
-    private final StringProperty             title = new SimpleStringProperty();
-    private final ObjectProperty<LocalDate>  date  = new SimpleObjectProperty<>();
-    private final ObjectProperty<LocalTime>  time  = new SimpleObjectProperty<>();
-    private final IntegerProperty            seats = new SimpleIntegerProperty();
-    private final StringProperty             email = new SimpleStringProperty();
-    
-    private final ListProperty<String> freeActivities =
-            new SimpleListProperty<>(FXCollections.observableArrayList());
-    private final ObjectProperty<BookingStatus> status =
-            new SimpleObjectProperty<>(BookingStatus.PENDING);
+    /* ---------------- campi ---------------- */
+    private int             id;
+    private String          title;
+    private LocalDate       date;
+    private LocalTime       time;
+    private int             seats;
+    private String          email;
+    private List<String>    freeActivities = List.of();  // mai null
+    private BookingStatus   status         = BookingStatus.PENDING;
 
     /* ---------------- stato ---------------- */
-    public void confirm () {
-    	status.set(BookingStatus.BOOKED   );
-    	}
-    public void cancel  () { 
-    	status.set(BookingStatus.CANCELLED );
-    	}
+    public void confirm() { status = BookingStatus.BOOKED;   }
+    public void cancel()  { status = BookingStatus.CANCELLED;}
 
-    /* ---------------- getter/setter/property ---------------- */
-    public int getId() { 
-    	return id.get(); 
-    	}
-    public void setId(int v){ 
-    	id.set(v); 
-    	}
-    public IntegerProperty idProperty(){
-    	return id; 
-    	}
+    /* ---------------- getter/setter ---------------- */
+    public int          getId()                     { return id; }
+    public void         setId(int id)               { this.id = id; }
 
-    public String getTitle(){
-    	return title.get(); 
-    	}
-    public void setTitle(String v)  {
-    	title.set(v);
-    	}
-    public StringProperty titleProperty()    { 
-    	return title; 
-    	}
+    public String       getTitle()                  { return title; }
+    public void         setTitle(String title)      { this.title = title; }
 
-    public LocalDate getDate() {
-    	return date.get(); 
-    	}
-    public void setDate(LocalDate v) { 
-    	date.set(v);
-    	}
-    public ObjectProperty<LocalDate> dateProperty() {
-    	return date; 
-    	}
+    public LocalDate    getDate()                   { return date; }
+    public void         setDate(LocalDate date)     { this.date = date; }
 
-    public LocalTime getTime()      {
-    	return time.get();
-    	}
-    public void setTime(LocalTime v)  {
-    	time.set(v);
-    	}
-    public ObjectProperty<LocalTime> timeProperty() {
-    	return time;
-    	}
+    public LocalTime    getTime()                   { return time; }
+    public void         setTime(LocalTime time)     { this.time = time; }
 
-    public int getSeats()    {
-    	return seats.get(); 
-    	}
-    public void setSeats(int v)   {
-    	seats.set(v); 
-    	}
-    public IntegerProperty seatsProperty()   {
-    	return seats; 
-    	}
+    public int          getSeats()                  { return seats; }
+    public void         setSeats(int seats)         { this.seats = seats; }
 
-    public String getConfirmationEmail()      {
-    	return email.get();
-    	}
-    public void setConfirmationEmail(String v)     {
-    	email.set(v);
-    	}
-    public StringProperty emailProperty()   {
-    	return email; 
-    	}
+    public String       getConfirmationEmail()      { return email; }
+    public void         setConfirmationEmail(String email) { this.email = email; }
 
-    public BookingStatus getStatus()  {
-    	return status.get();
-    	}
-    public void setStatus(BookingStatus v)   {
-    	status.set(v); 
-    	}
-    public ObjectProperty<BookingStatus> statusProperty() {
-    	
-    	return status; 
-    	}
-    public List<String> getFreeActivities() {
-        /* restituisce copia non modificabile: chi legge non può alterare lo stato interno */
-        return Collections.unmodifiableList(freeActivities);
+    public BookingStatus getStatus()                { return status; }
+    public void          setStatus(BookingStatus s) { this.status = s; }
+
+    /** Restituisce una view non modificabile della lista. */
+    public List<String> getFreeActivities()         { return Collections.unmodifiableList(freeActivities); }
+    public void         setFreeActivities(List<String> list) {
+        this.freeActivities = list == null ? List.of() : List.copyOf(list);
     }
-    public void        setFreeActivities(List<String> list)    {
-    	freeActivities.setAll(list == null ? List.of() : list);
-    }
-    public ListProperty<String> activitiesProperty()       { return freeActivities; }
 
-    
-    
-    
-    
-
-    @Override public String toString() { /* utile per debug */ return
-        "Booking["+id.get()+", "+title.get()+", "+date.get()+" "+time.get()+
-        ", "+seats.get()+", "+status.get()+"]";
+    @Override
+    public String toString() {
+        return "Booking[" + id + ", " + title + ", " + date + " " + time +
+               ", " + seats + ", " + status + ']';
     }
 }

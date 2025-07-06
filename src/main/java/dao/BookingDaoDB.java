@@ -1,6 +1,8 @@
 package dao;
 
-
+import entity.Booking;
+import entity.BookingStatus;
+import exception.DataAccessException;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -8,27 +10,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import entity.Booking;
-import entity.BookingStatus;
-import exception.DataAccessException;
-
 /** DAO JDBC per la tabella <code>bookings</code>. */
 public class BookingDaoDB implements GenericDao<Booking> {
 
     private final Connection conn;
 
-    public BookingDaoDB(Connection c) {
-        this.conn = c;
-    }
+    public BookingDaoDB(Connection c) { this.conn = c; }
 
-    /* ------------------------------------------------------------- */
-    /* CREATE                                                        */
-    /* ------------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /*                        CREATE                             */
+    /* --------------------------------------------------------- */
     @Override
     public void create(Booking b) throws SQLException {
         final String sql = """
             INSERT INTO bookings
-              (nomePrenotazione, email, data, ora, numeroPartecipanti, status,activities)
+              (nomePrenotazione, email, data, ora,
+               numeroPartecipanti, status, activities)
             VALUES (?,?,?,?,?,?,?)
             """;
 
@@ -51,15 +48,15 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------------------- */
-    /* READ (by id)                                                  */
-    /* ------------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /*                    READ (by primary key)                  */
+    /* --------------------------------------------------------- */
     @Override
     public Booking read(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
             throw new IllegalArgumentException("Key must be Integer id");
 
-        final String sql = "SELECT*  FROM bookings WHERE id = ?";
+        final String sql = "SELECT * FROM bookings WHERE id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -69,37 +66,39 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------------------- */
-    /* UPDATE                                                        */
-    /* ------------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /*                         UPDATE                            */
+    /* --------------------------------------------------------- */
     @Override
     public void update(Booking b) throws SQLException {
-
         final String sql = """
             UPDATE bookings
                SET nomePrenotazione   = ?,
+                   email             = ?,
                    data              = ?,
                    ora               = ?,
                    numeroPartecipanti = ?,
-                   status            = ?
-                   
+                   status            = ?,
+                   activities        = ?
              WHERE id = ?
             """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, b.getTitle());
-            ps.setDate  (2, Date.valueOf(b.getDate()));
-            ps.setTime  (3, Time.valueOf(b.getTime()));
-            ps.setInt   (4, b.getSeats());
-            ps.setString(5, b.getStatus().name());
-            ps.setInt   (6, b.getId());
+            ps.setString(2, b.getConfirmationEmail());
+            ps.setDate  (3, Date.valueOf(b.getDate()));
+            ps.setTime  (4, Time.valueOf(b.getTime()));
+            ps.setInt   (5, b.getSeats());
+            ps.setString(6, b.getStatus().name());
+            ps.setString(7, String.join(",", b.getFreeActivities()));
+            ps.setInt   (8, b.getId());
             ps.executeUpdate();
         }
     }
 
-    /* ------------------------------------------------------------- */
-    /* DELETE                                                        */
-    /* ------------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /*                         DELETE                            */
+    /* --------------------------------------------------------- */
     @Override
     public void delete(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
@@ -112,41 +111,48 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------------------- */
-    /* READ ALL                                                      */
-    /* ------------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /*                       READ ALL                            */
+    /* --------------------------------------------------------- */
     @Override
     public List<Booking> readAll() {
         List<Booking> list = new ArrayList<>();
 
+        final String sql = "SELECT * FROM bookings";
+
         try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SELECT* FROM bookings")) {
+             ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) list.add(map(rs));
 
         } catch (SQLException e) {
-        	throw new  DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
+            throw new DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
         }
         return list;
     }
 
-    /* ------------------------------------------------------------- */
-    /* EXTRA API – esistenza / ricerca                               */
-    /* ------------------------------------------------------------- */
+    /* --------------------------------------------------------- */
+    /*                EXTRA API – esistenza / ricerca            */
+    /* --------------------------------------------------------- */
+    /** Verifica se esiste già una prenotazione per <email,data>. */
     public boolean existsByUserAndCheckIn(String email, LocalDate in) {
-        final String sql = "SELECT 1 FROM bookings WHERE email = ? AND data = ?";
+        final String sql =
+            "SELECT 1 FROM bookings WHERE email = ? AND data = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setDate  (2, Date.valueOf(in));
             return ps.executeQuery().next();
+
         } catch (SQLException e) {
-            throw new  DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
+            throw new DataAccessException("Errore durante la verifica di esistenza prenotazione", e);
         }
     }
 
+    /** Restituisce la prenotazione di quel cliente in quella data, se c’è. */
     public Optional<Booking> findByUserAndCheckIn(String email, LocalDate in) {
-        final String sql = "SELECT  FROM bookings WHERE email = ? AND data = ?";
+        final String sql =
+            "SELECT * FROM bookings WHERE email = ? AND data = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -155,22 +161,31 @@ public class BookingDaoDB implements GenericDao<Booking> {
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? Optional.of(map(rs)) : Optional.empty();
             }
+
         } catch (SQLException e) {
-            throw new  DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
+            throw new DataAccessException("Errore durante il recupero prenotazione", e);
         }
     }
 
- 
+    /* --------------------------------------------------------- */
+    /*                 MAPPER ResultSet → Booking                */
+    /* --------------------------------------------------------- */
     private Booking map(ResultSet rs) throws SQLException {
 
         Booking b = new Booking();
-        b.setId                (rs.getInt   ("id"));
-        b.setTitle             (rs.getString("nomePrenotazione"));
-        b.setConfirmationEmail (rs.getString("email"));
-        b.setDate              (rs.getDate  ("data").toLocalDate());
-        b.setTime              (rs.getTime  ("ora").toLocalTime());
-        b.setSeats             (rs.getInt   ("numeroPartecipanti"));
-        b.setStatus            (BookingStatus.valueOf(rs.getString("status")));
+        b.setId               (rs.getInt   ("id"));
+        b.setTitle            (rs.getString("nomePrenotazione"));
+        b.setConfirmationEmail(rs.getString("email"));
+        b.setDate             (rs.getDate  ("data").toLocalDate());
+        b.setTime             (rs.getTime  ("ora").toLocalTime());
+        b.setSeats            (rs.getInt   ("numeroPartecipanti"));
+        b.setStatus           (BookingStatus.valueOf(rs.getString("status")));
+
+        /* activities CSV → List<String> */
+        String csv = rs.getString("activities");
+        b.setFreeActivities(csv == null || csv.isBlank()
+                            ? List.of()
+                            : List.of(csv.split("\\s*,\\s*")));
 
         return b;
     }

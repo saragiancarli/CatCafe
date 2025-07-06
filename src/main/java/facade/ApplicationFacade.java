@@ -13,6 +13,7 @@ import dao.DaoFactory;
 import dao.DaoFactory.Store;
 import entity.Booking;
 import entity.Client;
+import entity.Review;
 import exception.WrongLoginCredentialsException;
 
 public final class ApplicationFacade {
@@ -72,6 +73,32 @@ public final class ApplicationFacade {
             LOG.info("Credenziali non valide in sessione"); return null;
         }
     }
+    
+    public static void sendReviewConfirmationEmail(Review r) {
+
+        String to = r.getEmail();
+        String subject = "Grazie per la tua recensione!";
+        String body = """
+                      Ciao,
+
+                      abbiamo ricevuto la tua recensione del %s alle %s.
+
+                      Valutazione: %d stelle
+                      Servizio speciale: %s
+
+                      Testo della recensione:
+                      %s
+
+                      A presto! 😺
+                      """
+                .formatted(r.getDate(), r.getTime(),
+                           r.getStars(), 
+                           r.getSpecialService() == null ? "-" : r.getSpecialService(),
+                           r.getBody());
+
+        EmailService.sendEmail(to, subject, body);
+    }
+
     public static void sendBookingConfirmationEmail(Booking b) {
 
         /* destinatario = indirizzo inserito in fase di prenotazione   */

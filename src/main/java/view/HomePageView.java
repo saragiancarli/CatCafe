@@ -10,9 +10,11 @@ public class HomePageView {
 
     private final Button bookSeatButton     = new Button("Prenota un tavolo");
     private final Button adoptionButton     = new Button("Adotta un gatto!!");
-    private final Button menageBookingButton= new Button("Gestisci prenotazioni");
+   
     private final Button menageCatButton    = new Button("Gestisci i gatti del cat cafè");
     private final Button logoutButton       = new Button("Logout");
+    private final Button reviviewButton       = new Button("Lascia una tua recensione");
+    
 
     /* ------------------------------------------------------------ */
     public HomePageView(String typeOfLogin) {
@@ -35,15 +37,15 @@ public class HomePageView {
         /* Abilita/disabilita bottoni in base al ruolo */
         bookSeatButton.setDisable(!isUser);
         adoptionButton.setDisable(!isUser);
+        reviviewButton.setDisable(!isUser);
 
-        menageBookingButton.setDisable(!isStaf);
         menageCatButton.setDisable(!isStaf);
 
         /* Ordine nella VBox: titolo → descrizione → bottoni */
         root.getChildren().addAll(
                 title, description,
-                bookSeatButton, adoptionButton,
-                menageBookingButton, menageCatButton,
+                bookSeatButton, adoptionButton,reviviewButton,
+                 menageCatButton,
                 logoutButton
         );
     }
@@ -59,13 +61,13 @@ public class HomePageView {
     public Button getAdoptionButton() {
     	return adoptionButton;
     	}
-    public Button getMenageBookingButton(){
-    	return menageBookingButton;
-    	}
+    
     public Button getManageCat() {
     	return menageCatButton; 
     	}
-
+    public Button getReviviewButton() {
+    	return reviviewButton; 
+    	}
 
     public Button getLogoutButton() {
     	return logoutButton; 

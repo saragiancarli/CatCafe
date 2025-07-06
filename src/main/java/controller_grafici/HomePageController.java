@@ -23,9 +23,10 @@ public class HomePageController {
 
         homeView.getBookButton().setOnAction(_ -> goToBooking());
         homeView.getAdoptionButton().setOnAction(_ -> goToAdopt());
-        homeView.getMenageBookingButton().setOnAction(_ -> goToMenageBooking());
+       
         homeView.getManageCat().setOnAction(_ -> gotoManageCat());
         homeView.getLogoutButton().setOnAction(_ ->goToLogin());
+        homeView.getReviviewButton().setOnAction(_ ->goToReviview());
 
     }
 
@@ -35,15 +36,17 @@ public class HomePageController {
     public void goToAdopt() {
         navigationService.navigateToAdopt(navigationService,typeOfLogin);
     }
-    public void goToMenageBooking() {
-        navigationService.navigateToMenageBooking(navigationService,typeOfLogin);
-    }
+    
     public void gotoManageCat() {
         navigationService.navigateToManageCat(navigationService,typeOfLogin);
     }
     public void goToLogin() {
         navigationService.navigateToLogin(navigationService,typeOfLogin);
     }
+    public void goToReviview() {
+        navigationService.navigateToReviview(navigationService,typeOfLogin);
+    }
+    
 
     public VBox getRoot() {
         return this.homeView.getRoot();
