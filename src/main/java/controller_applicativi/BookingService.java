@@ -12,7 +12,6 @@ import dao.DaoFactory;
 import dao.GenericDao;
 import entity.Activity;
 import entity.Booking;
-import entity.Client;
 
 
 
