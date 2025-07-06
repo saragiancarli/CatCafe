@@ -1,16 +1,27 @@
 package dao;
 
 import entity.Review;
+import exception.DataAccessException;    // <-- import dedicato
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/** DAO JDBC per la tabella <code>reviews</code>. */
+/** DAO JDBC per la tabella <code>reviews</code> (senza SELECT *). */
 public class ReviewDaoDB implements GenericDao<Review> {
 
-    private final Connection conn;
+    private static final String BASE_SELECT = """
+        SELECT  id,
+                data,
+                ora,
+                email,
+                stars,
+                specialService,
+                body
+          FROM  reviews
+        """;
 
+    private final Connection conn;
     public ReviewDaoDB(Connection c) { this.conn = c; }
 
     /* ---------------- CREATE ---------------- */
@@ -21,9 +32,8 @@ public class ReviewDaoDB implements GenericDao<Review> {
               (data, ora, email, stars, specialService, body)
             VALUES (?,?,?,?,?,?)
             """;
-
         try (PreparedStatement ps =
-                     conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                 conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setDate (1, Date.valueOf(r.getDate()));
             ps.setTime (2, Time.valueOf(r.getTime()));
@@ -45,8 +55,9 @@ public class ReviewDaoDB implements GenericDao<Review> {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
             throw new IllegalArgumentException("Key must be Integer id");
 
-        try (PreparedStatement ps =
-                     conn.prepareStatement("SELECT * FROM reviews WHERE id = ?")) {
+        final String sql = BASE_SELECT + " WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? map(rs) : null;
@@ -86,7 +97,7 @@ public class ReviewDaoDB implements GenericDao<Review> {
             throw new IllegalArgumentException("Key must be Integer id");
 
         try (PreparedStatement ps =
-                     conn.prepareStatement("DELETE FROM reviews WHERE id = ?")) {
+                 conn.prepareStatement("DELETE FROM reviews WHERE id = ?")) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -97,10 +108,12 @@ public class ReviewDaoDB implements GenericDao<Review> {
     public List<Review> readAll() {
         List<Review> list = new ArrayList<>();
         try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM reviews")) {
+             ResultSet rs = st.executeQuery(BASE_SELECT)) {
+
             while (rs.next()) list.add(map(rs));
+
         } catch (SQLException e) {
-            throw new RuntimeException("Impossibile leggere tutte le recensioni", e);
+            throw new DataAccessException("Impossibile leggere tutte le recensioni", e);
         }
         return list;
     }

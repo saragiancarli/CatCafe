@@ -5,21 +5,29 @@ import entity.BookingStatus;
 import exception.DataAccessException;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-/** DAO JDBC per la tabella <code>bookings</code>. */
+/** DAO JDBC per la tabella <code>bookings</code> (senza SELECT *). */
 public class BookingDaoDB implements GenericDao<Booking> {
 
-    private final Connection conn;
+    private static final String BASE_SELECT = """
+        SELECT  id,
+                nomePrenotazione,
+                email,
+                data,
+                ora,
+                numeroPartecipanti,
+                status,
+                activities
+          FROM  bookings
+        """;
 
+    private final Connection conn;
     public BookingDaoDB(Connection c) { this.conn = c; }
 
-    /* --------------------------------------------------------- */
-    /*                        CREATE                             */
-    /* --------------------------------------------------------- */
+    /* ------------------------------------------------ CREATE ---- */
     @Override
     public void create(Booking b) throws SQLException {
         final String sql = """
@@ -28,9 +36,8 @@ public class BookingDaoDB implements GenericDao<Booking> {
                numeroPartecipanti, status, activities)
             VALUES (?,?,?,?,?,?,?)
             """;
-
         try (PreparedStatement ps =
-                     conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                 conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, b.getTitle());
             ps.setString(2, b.getConfirmationEmail());
@@ -39,7 +46,6 @@ public class BookingDaoDB implements GenericDao<Booking> {
             ps.setInt   (5, b.getSeats());
             ps.setString(6, b.getStatus().name());
             ps.setString(7, String.join(",", b.getFreeActivities()));
-
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -48,15 +54,13 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* --------------------------------------------------------- */
-    /*                    READ (by primary key)                  */
-    /* --------------------------------------------------------- */
+    /* ------------------------------------------------ READ by id */
     @Override
     public Booking read(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
             throw new IllegalArgumentException("Key must be Integer id");
 
-        final String sql = "SELECT * FROM bookings WHERE id = ?";
+        final String sql = BASE_SELECT + " WHERE id = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -66,9 +70,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* --------------------------------------------------------- */
-    /*                         UPDATE                            */
-    /* --------------------------------------------------------- */
+    /* ------------------------------------------------ UPDATE ---- */
     @Override
     public void update(Booking b) throws SQLException {
         final String sql = """
@@ -82,7 +84,6 @@ public class BookingDaoDB implements GenericDao<Booking> {
                    activities        = ?
              WHERE id = ?
             """;
-
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, b.getTitle());
             ps.setString(2, b.getConfirmationEmail());
@@ -96,82 +97,59 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* --------------------------------------------------------- */
-    /*                         DELETE                            */
-    /* --------------------------------------------------------- */
+    /* ------------------------------------------------ DELETE ---- */
     @Override
     public void delete(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
             throw new IllegalArgumentException("Key must be Integer id");
 
         try (PreparedStatement ps =
-                     conn.prepareStatement("DELETE FROM bookings WHERE id = ?")) {
+                 conn.prepareStatement("DELETE FROM bookings WHERE id = ?")) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
 
-    /* --------------------------------------------------------- */
-    /*                       READ ALL                            */
-    /* --------------------------------------------------------- */
+    /* ------------------------------------------------ READ ALL -- */
     @Override
     public List<Booking> readAll() {
         List<Booking> list = new ArrayList<>();
-
-        final String sql = "SELECT * FROM bookings";
-
         try (Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-
+             ResultSet rs = st.executeQuery(BASE_SELECT)) {
             while (rs.next()) list.add(map(rs));
-
         } catch (SQLException e) {
             throw new DataAccessException("Errore nel recupero di tutte le prenotazioni", e);
         }
         return list;
     }
 
-    /* --------------------------------------------------------- */
-    /*                EXTRA API – esistenza / ricerca            */
-    /* --------------------------------------------------------- */
-    /** Verifica se esiste già una prenotazione per <email,data>. */
+    /* -------------------------------- exists / find ------------- */
     public boolean existsByUserAndCheckIn(String email, LocalDate in) {
-        final String sql =
-            "SELECT 1 FROM bookings WHERE email = ? AND data = ?";
-
+        final String sql = "SELECT 1 FROM bookings WHERE email = ? AND data = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setDate  (2, Date.valueOf(in));
             return ps.executeQuery().next();
-
         } catch (SQLException e) {
             throw new DataAccessException("Errore durante la verifica di esistenza prenotazione", e);
         }
     }
 
-    /** Restituisce la prenotazione di quel cliente in quella data, se c’è. */
     public Optional<Booking> findByUserAndCheckIn(String email, LocalDate in) {
-        final String sql =
-            "SELECT * FROM bookings WHERE email = ? AND data = ?";
-
+        final String sql = BASE_SELECT + " WHERE email = ? AND data = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.setDate  (2, Date.valueOf(in));
-
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? Optional.of(map(rs)) : Optional.empty();
             }
-
         } catch (SQLException e) {
             throw new DataAccessException("Errore durante il recupero prenotazione", e);
         }
     }
 
-    /* --------------------------------------------------------- */
-    /*                 MAPPER ResultSet → Booking                */
-    /* --------------------------------------------------------- */
+    /* --------------------- ResultSet → Booking ------------------ */
     private Booking map(ResultSet rs) throws SQLException {
-
         Booking b = new Booking();
         b.setId               (rs.getInt   ("id"));
         b.setTitle            (rs.getString("nomePrenotazione"));
@@ -181,12 +159,10 @@ public class BookingDaoDB implements GenericDao<Booking> {
         b.setSeats            (rs.getInt   ("numeroPartecipanti"));
         b.setStatus           (BookingStatus.valueOf(rs.getString("status")));
 
-        /* activities CSV → List<String> */
         String csv = rs.getString("activities");
         b.setFreeActivities(csv == null || csv.isBlank()
                             ? List.of()
                             : List.of(csv.split("\\s*,\\s*")));
-
         return b;
     }
 }
