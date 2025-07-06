@@ -2,9 +2,12 @@ package entity;
 
 
 import javafx.beans.property.*;
-
+import javafx.collections.FXCollections;
 
 import java.time.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Booking  {
 
@@ -14,6 +17,9 @@ public class Booking  {
     private final ObjectProperty<LocalTime>  time  = new SimpleObjectProperty<>();
     private final IntegerProperty            seats = new SimpleIntegerProperty();
     private final StringProperty             email = new SimpleStringProperty();
+    
+    private final ListProperty<String> freeActivities =
+            new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ObjectProperty<BookingStatus> status =
             new SimpleObjectProperty<>(BookingStatus.PENDING);
 
@@ -96,6 +102,19 @@ public class Booking  {
     	
     	return status; 
     	}
+    public List<String> getFreeActivities() {
+        /* restituisce copia non modificabile: chi legge non può alterare lo stato interno */
+        return Collections.unmodifiableList(freeActivities);
+    }
+    public void        setFreeActivities(List<String> list)    {
+    	freeActivities.setAll(list == null ? List.of() : list);
+    }
+    public ListProperty<String> activitiesProperty()       { return freeActivities; }
+
+    
+    
+    
+    
 
     @Override public String toString() { /* utile per debug */ return
         "Booking["+id.get()+", "+title.get()+", "+date.get()+" "+time.get()+

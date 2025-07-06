@@ -3,6 +3,7 @@ package bean;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class BookingBean {
 	private int id;
@@ -12,6 +13,7 @@ public class BookingBean {
     private LocalTime  ora;
     private int        numeroPartecipanti;
     private String email;
+    private List<String> freeActivities;
 
     /*======= mini-validazioni =======*/
     public boolean hasValidTitle()   {
@@ -62,4 +64,11 @@ public class BookingBean {
     public void    setConfirmationEmail(String e)   { 
     	email = e; 
     	}
+    public List<String> getFreeActivities() {
+        return freeActivities;
+    }
+
+    public void setFreeActivities(List<String> freeActivities) {
+        this.freeActivities = freeActivities;
+    }
 }

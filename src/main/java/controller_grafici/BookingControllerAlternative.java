@@ -1,48 +1,43 @@
 package controller_grafici;
 
-import javafx.scene.layout.VBox;
-
-import java.util.logging.Logger;
-
 import bean.BookingBean;
 import controller_applicativi.BookingService;
+import entity.Activity;
 import entity.Client;
 import facade.ApplicationFacade;
+import javafx.scene.layout.VBox;
 import view.BookingViewAlternative;
 
-/** Controller grafico che gestisce la BookingRoomViewAlternative. */
+import java.util.List;
+import java.util.logging.Logger;
+
 public class BookingControllerAlternative {
 
-    /* --------------------- campi --------------------------------- */
-    private final Logger lOG = Logger.getLogger(getClass().getName());
+    private static final Logger LOG = Logger.getLogger(BookingControllerAlternative.class.getName());
 
-    private final BookingViewAlternative view;
-    private final NavigationService navigation;
-    private final BookingService    service   = new BookingService();
+    private final BookingViewAlternative view = new BookingViewAlternative();
+    private final NavigationService     nav;
+    private final BookingService        service = new BookingService();
+    private final String                typeOfLogin;
 
-	private String typeOfLogin;
-
-    /* ============================================================= */
-    public BookingControllerAlternative(NavigationService navigation,String typeOfLogin) {
-        this.navigation = navigation;
-        this.typeOfLogin=typeOfLogin;
-        this.view = new BookingViewAlternative();
+    public BookingControllerAlternative(NavigationService nav, String typeOfLogin) {
+        this.nav = nav;
+        this.typeOfLogin = typeOfLogin;
         addEventHandlers();
+        loadActivities();                     // <-- carica la tendina
     }
 
-    public VBox getRoot() { return view.getRoot(); }
+    public VBox getRoot(){ return view.getRoot(); }
 
-    /* --------------------- HANDLERS ------------------------------ */
-    private void addEventHandlers() {
+    /* -------------------- eventi GUI -------------------- */
+    private void addEventHandlers(){
         view.getConfirmButton().setOnAction(_ -> handleConfirm());
-        view.getCancelButton() .setOnAction(_ ->
-                navigation.navigateToHomePage(navigation, "user"));
-        
+        view.getCancelButton() .setOnAction(_ -> nav.navigateToHomePage(nav, typeOfLogin));
     }
 
-    private void handleConfirm() {
+    /* -------------------- conferma ---------------------- */
+    private void handleConfirm(){
 
-        /* 1. Costruisci il bean */
         BookingBean bean = new BookingBean();
         bean.setTitle            (view.getNomePrenotazione());
         bean.setDate             (view.getDate());
@@ -50,49 +45,34 @@ public class BookingControllerAlternative {
         bean.setSeats            (view.getParticipants());
         bean.setConfirmationEmail(view.getConfirmationEmail());
 
-        /* 2. Validazione GUI */
-        view.hideAllErrors();
-        boolean ok = true;
+        /* attività scelta (può essere null) */
+        String selected = view.getSelectedActivity();
+        bean.setFreeActivities(selected == null ? List.of() : List.of(selected));
 
-        if (!bean.hasValidTitle()) {
-            view.setNomeError("Inserisci un titolo.");
-            ok = false;
-        }
-        if (!bean.hasValidDates()) {
-            view.setDataError("Data/ora non valide.");
-            ok = false;
-        }
-        if (!bean.hasValidSeats()) {
-            view.setPartecipantiError("Numero posti non valido.");
-            ok = false;
-        }
-        
-        if (!ok) return;                       // stop se errori GUI
+        /* --- validazione GUI minima --- */
+        boolean ok = true; view.hideAllErrors();
+        if (!bean.hasValidTitle()){ view.setNomeError("Titolo obbligatorio"); ok=false; }
+        if (!bean.hasValidDates()){ view.setDataError("Data/ora non valide");  ok=false; }
+        if (!bean.hasValidSeats()){ view.setPartecipantiError("Posti 1-50");   ok=false; }
+        if (!ok) return;
 
-        /* 3. Chiama servizio di business */
-        Client currentUser =
-                ApplicationFacade.getUserFromLogin();       // utente loggato
+        /* --- business layer --- */
+        Client current = ApplicationFacade.getUserFromLogin();
+        String esito  = service.book(current, bean);
 
-        String esito = service.book(currentUser, bean);
-        
-        
-        switch (esito) {
-            case "success" ->
+        switch (esito){
+            case "success"            -> nav.navigateToHomePage(nav, typeOfLogin);
+            case "error:duplicate"    -> view.setDataError("Prenotazione già presente quel giorno");
+            case "error:validation"   -> view.setNomeError("Dati non validi");
+            default -> view.setNomeError("Errore di sistema, riprova");
             
-                 navigation.navigateToHomePage(navigation, typeOfLogin);
-
-            case "error:duplicate" ->
-                 view.setDataError("Hai già una prenotazione per quel giorno.");
-
-            case "error:validation" ->
-                 view.setNomeError("Dati non validi (ricontrolla i campi).");
-
-            case "error:database_error" ->
-                 ApplicationFacade.showErrorMessage(
-                        "Errore DB", "Impossibile salvare la prenotazione",
-                        "Riprova più tardi.");
-
-            default -> lOG.warning("Esito inatteso");
         }
+    }
+
+    /* ----------------- carica attività ------------------ */
+    private void loadActivities(){
+        List<Activity> acts = service.getAvailableActivities();
+        List<String>   names = acts.stream().map(Activity::getName).toList();
+        view.loadActivities(names);
     }
 }

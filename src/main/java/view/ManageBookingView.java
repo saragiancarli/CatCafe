@@ -57,6 +57,8 @@ public class ManageBookingView {
 
         TableColumn<Booking,BookingStatus> statCol = new TableColumn<>("Stato");
         statCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        
+        
 
         table.getColumns().addAll(idCol,titleCol,dateCol,timeCol,
                                   seatsCol,mailCol,statCol);

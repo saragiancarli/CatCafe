@@ -7,184 +7,130 @@ import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.util.List;
 import java.util.stream.IntStream;
 
-/** View per prenotare un tavolo “immerso nei gatti”. */
+/**
+ * View per prenotare un tavolo “immerso nei gatti 🐾”.
+ * Ora le attività vengono mostrate con RadioButton (una sola scelta).
+ */
 public class BookingView {
 
-    /* ---------- nodi principali (nomi richiesti) ------------------ */
-    protected VBox root;                             // contenitore radice
+    /* ---------- nodi principali ---------- */
+    private final VBox             root = new VBox(15);
 
-    private final DatePicker       data;             // giorno
-    private final ComboBox<LocalTime> ora;           // ora (slot da 15')
-    private final TextField  numeroPartecipanti;     // numero posti
-    private final TextField  nomePrenotazione;       // titolo
-    private final TextField  email;                  // e-mail di conferma
+    private final DatePicker       data = new DatePicker();
+    private final ComboBox<LocalTime> ora = new ComboBox<>();
+    private final TextField        numeroPartecipanti = new TextField();
+    private final TextField        nomePrenotazione   = new TextField();
+    private final TextField        email              = new TextField();
 
-    private final Button confirmButton;
-    private final Button cancelButton;
+    /* ---------- sezione attività ---------- */
+    private final VBox         activitySection = new VBox(8);
+    private final ToggleGroup  activityGroup   = new ToggleGroup();   // <- chiave
 
-    /* ---------- label di errore ----------------------------------- */
-    private final Label dataErrorLabel;
-    private final Label oraErrorLabel;
-    private final Label numeroPartecipantiErrorLabel;
-    private final Label nomePrenotazioneErrorLabel;
-    private final Label emailErrorLabel;
+    /* ---------- bottoni ---------- */
+    private final Button confirmButton = new Button("Conferma");
+    private final Button cancelButton  = new Button("Annulla");
 
-    private static final String ERROR_MESSAGE = "error-message";   // stile CSS
-
-    /* ===============================================================*/
-    public BookingView() {
-
-        /* ----- layout di base ----- */
-        root = new VBox(15);
-        root.setPrefSize(1280, 720);
-        root.setAlignment(Pos.CENTER);
-        root.setStyle("-fx-padding: 32;");
-
-        Label title = new Label("Prenota un tavolo immerso tra i gatti 🐾");
-
-        /* ----- Data (DatePicker) ----- */
-        Label dataLabel = new Label("Giorno");
-        data = new DatePicker();
-        data.setPromptText("Seleziona la data");
-        dataErrorLabel = makeErrLabel();
-
-        /* ----- Ora (ComboBox) ----- */
-        Label oraLabel = new Label("Ora di arrivo");
-        ora = new ComboBox<>();
-        populateTimeBox();                      // slot 15-min 08:00-23:45
-        ora.setPromptText("Seleziona l'ora");
-        oraErrorLabel = makeErrLabel();
-
-        /* ----- Numero partecipanti ----- */
-        Label partLabel = new Label("Numero partecipanti");
-        numeroPartecipanti = new TextField();
-        numeroPartecipanti.setPromptText("Es. 2");
-        numeroPartecipanti.setMaxWidth(140);
-        numeroPartecipantiErrorLabel = makeErrLabel();
-
-        /* ----- Nome prenotazione ----- */
-        Label nomeLabel = new Label("Nome prenotazione");
-        nomePrenotazione = new TextField();
-        nomePrenotazione.setPromptText("Es. 'Luca'");
-        nomePrenotazione.setMaxWidth(200);
-        nomePrenotazioneErrorLabel = makeErrLabel();
-
-        /* ----- E-mail ----- */
-        Label emailLabel = new Label("E-mail di conferma");
-        email = new TextField();
-        email.setPromptText("nome@esempio.com");
-        email.setMaxWidth(260);
-        emailErrorLabel = makeErrLabel();
-
-        /* ----- Bottoni ----- */
-        confirmButton = new Button("Conferma");
-        cancelButton  = new Button("Annulla");
-
-        /* ----- composizione ----- */
-        root.getChildren().addAll(
-            title,
-            dataLabel, data, dataErrorLabel,
-            oraLabel,  ora,  oraErrorLabel,
-            partLabel, numeroPartecipanti, numeroPartecipantiErrorLabel,
-            nomeLabel, nomePrenotazione, nomePrenotazioneErrorLabel,
-            emailLabel, email, emailErrorLabel,
-            confirmButton, cancelButton
-        );
-    }
-
-    /* ===============================================================
-                                 GETTER
-       ===============================================================*/
-    public VBox      getRoot()            {
-    	return root; 
-    	}
-    public Button    getConfirmButton()   { 
-    	return confirmButton; 
-    	}
-    public Button    getCancelButton()    {
-    	return cancelButton; 
-    	}
-
-    public LocalDate getDate()            { 
-    	return data.getValue(); 
-    	}
-    public LocalTime getTime()            {
-    	return ora.getValue(); 
-    	}
-
-    public int getParticipants() {
-        try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
-        catch (NumberFormatException _) { 
-        	return 0; 
-        	}
-    }
-    public String getNomePrenotazione()  { 
-    	return nomePrenotazione.getText().trim();
-    	}
-    public String getConfirmationEmail() {
-    	return email.getText().trim();
-    	}
-
-    /* ===============================================================
-                           ERROR-HANDLING METHODS
-       ===============================================================*/
-    public void hideAllErrors() {
-    	dataErrorLabel.setVisible(false);
-    	oraErrorLabel.setVisible(false);
-        numeroPartecipantiErrorLabel.setVisible(false);
-        nomePrenotazioneErrorLabel.setVisible(false);
-        emailErrorLabel.setVisible(false);
-    }
-
-    public void setDataError(String m)  { 
-    	showErr(dataErrorLabel, m); 
-    	}
-    public void setOraError(String m)  { 
-    	showErr(oraErrorLabel,  m);
-    	}
-    public void setPartecipantiError(String m)  {
-    	showErr(numeroPartecipantiErrorLabel, m); 
-    	}
-    public void setNomeError(String m) {
-    	showErr(nomePrenotazioneErrorLabel, m); 
-    	}
-    public void setEmailError(String m)  {
-    	showErr(emailErrorLabel, m); 
-    	}
-
-    /* ===============================================================
-                                HELPERS
-       ===============================================================*/
-    private Label makeErrLabel() {
+    /* ---------- label di errore (private helper) ---------- */
+    private Label makeErr() {
         Label l = new Label();
-        l.getStyleClass().add(ERROR_MESSAGE);
+        l.getStyleClass().add("error-message");
         l.setVisible(false);
         return l;
     }
-    private void showErr(Label l, String msg) {
-        l.setText(msg); l.setVisible(true);
+    private final Label dataErr  = makeErr();
+    private final Label oraErr   = makeErr();
+    private final Label seatErr  = makeErr();
+    private final Label nameErr  = makeErr();
+    private final Label mailErr  = makeErr();
+
+    /* ======================================================= */
+    public BookingView() {
+        root.setPrefSize(1280,720);
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("-fx-padding:32;");
+
+        Label title = new Label("Prenota un tavolo immerso tra i gatti 🐾");
+
+        /* ----- combo orari ----- */
+        populateTimeBox();
+
+        /* ----- sezione attività (inizialmente vuota: la riempie il controller) ----- */
+        Label activityTitle = new Label("Attività disponibili:");
+        activitySection.getChildren().add(activityTitle);
+
+        /* ----- layout ----- */
+        root.getChildren().addAll(
+                title,
+                new Label("Giorno"), data,  dataErr,
+                new Label("Ora di arrivo"), ora, oraErr,
+                new Label("Numero partecipanti"), numeroPartecipanti, seatErr,
+                new Label("Nome prenotazione"), nomePrenotazione, nameErr,
+                new Label("E-mail di conferma"), email, mailErr,
+                new Separator(), activitySection,
+                confirmButton, cancelButton
+        );
     }
 
-    /** Popola il ComboBox con slot di 15 minuti (08:00-23:45). */
+    /* ======================================================= */
+    /*                      API PUBLICA                        */
+    /* ======================================================= */
+    public VBox   getRoot()            { return root; }
+    public Button getConfirmButton()   { return confirmButton; }
+    public Button getCancelButton()    { return cancelButton; }
+
+    /* ----- valori inseriti dall’utente ----- */
+    public LocalDate  getDate()            { return data.getValue();   }
+    public LocalTime  getTime()            { return ora.getValue();    }
+    public int        getParticipants()    {
+        try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
+        catch (NumberFormatException e) { return 0; }
+    }
+    public String     getNomePrenotazione(){ return nomePrenotazione.getText().trim(); }
+    public String     getConfirmationEmail(){ return email.getText().trim(); }
+
+    /** Restituisce il nome dell’attività selezionata (o `null` se nessuna). */
+    public String getSelectedActivityName() {
+        Toggle sel = activityGroup.getSelectedToggle();
+        return sel == null ? null : ((RadioButton) sel).getText();
+    }
+
+    /* ----- error helper ----- */
+    public void hideAllErrors() { dataErr.setVisible(false); oraErr.setVisible(false);
+        seatErr.setVisible(false); nameErr.setVisible(false); mailErr.setVisible(false);}
+    public void setDataError(String m){ dataErr.setText(m); dataErr.setVisible(true);}
+    public void setOraError (String m){ oraErr .setText(m); oraErr .setVisible(true);}
+    public void setPartecipantiError(String m){ seatErr.setText(m); seatErr.setVisible(true);}
+    public void setNomeError(String m){ nameErr.setText(m); nameErr.setVisible(true);}
+    public void setEmailError(String m){ mailErr.setText(m); mailErr.setVisible(true);}
+
+    /* ======================================================= */
+    /*              METODI CHIAMATI DAL CONTROLLER             */
+    /* ======================================================= */
+
+    /** Aggiunge i RadioButton per le attività passate dal controller. */
+    public void addActivityRadios(List<String> activityNames) {
+        for (String name : activityNames) {
+            RadioButton rb = new RadioButton(name);
+            rb.setToggleGroup(activityGroup);     // mutual-exclusive
+            activitySection.getChildren().add(rb);
+        }
+    }
+
+    /* ======================================================= */
+    /*                      helpers interni                     */
+    /* ======================================================= */
     private void populateTimeBox() {
-        // 08:00 → 23:45 (slot di 15')
-        var times = IntStream.rangeClosed(32, 95)          // 32 * 15′ = 08:00
-                             .mapToObj(i -> LocalTime.of(i / 4, (i % 4) * 15))
-                             .toList();                    // ← niente Collectors
-
+        var times = IntStream.rangeClosed(32,95)   // 08:00 → 23:45
+                .mapToObj(i -> LocalTime.of(i/4,(i%4)*15))
+                .toList();
         ora.setItems(FXCollections.observableArrayList(times));
-        ora.setButtonCell(timeCell());
-        ora.setCellFactory(_ -> timeCell());
+        ora.setButtonCell(timeCell()); ora.setCellFactory(_->timeCell());
     }
-    private ListCell<LocalTime> timeCell() {
-        return new ListCell<>() {
-            @Override protected void updateItem(LocalTime t, boolean empty) {
-                super.updateItem(t, empty);
-                setText(empty || t==null ? "" : t.toString());
-            }
-        };
-    }
+    private ListCell<LocalTime> timeCell(){ return new ListCell<>() {
+        @Override protected void updateItem(LocalTime t, boolean empty){
+            super.updateItem(t,empty); setText(empty||t==null?"":t.toString());
+        }};}
 }

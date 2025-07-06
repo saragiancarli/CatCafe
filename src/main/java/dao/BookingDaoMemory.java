@@ -85,9 +85,9 @@ public class BookingDaoMemory implements GenericDao<Booking> {
         return id;
     }
 
-    /** Copia difensiva per evitare modifiche esterne allo storage. */
     private Booking cloneOf(Booking src) {
         if (src == null) return null;
+
         Booking b = new Booking();
         b.setId               (src.getId());
         b.setTitle            (src.getTitle());
@@ -95,7 +95,15 @@ public class BookingDaoMemory implements GenericDao<Booking> {
         b.setTime             (src.getTime());
         b.setSeats            (src.getSeats());
         b.setConfirmationEmail(src.getConfirmationEmail());
-        b.setStatus           (src.getStatus());      // ← preserva lo stato
+        b.setStatus           (src.getStatus());
+
+        // copia difensiva della lista attività (può essere null)
+        List<String> acts = src.getFreeActivities();
+        b.setFreeActivities(
+                acts == null ? List.of() : new ArrayList<>(acts)
+        );
+
         return b;
     }
+
 }

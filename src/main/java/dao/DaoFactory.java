@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.List;
+
 import entity.*;
 
 public class DaoFactory implements DaoFactoryInterface {
@@ -26,6 +28,8 @@ public class DaoFactory implements DaoFactoryInterface {
     private static BookingDaoMemory bookingDaoMemoryInstance;
     private static CatDaoMemory catDaoMemoryInstance;
     private static RequestAdoptionDaoMemory requestAdoptionMemoryInstance;
+    private static GenericDao<Activity> activityDaoMemoryInstance;
+   
 
 
     private static GenericDao<User> userDaoFileInstance;
@@ -33,6 +37,7 @@ public class DaoFactory implements DaoFactoryInterface {
     private static GenericDao<Booking> bookingDaoFileInstance;
     private static GenericDao<Cat> catDaoFileInstance;
     private static BeanDao<Adoption> requestAdoptionDaoFileInstance;
+    private static GenericDao<Activity> activityDaoFileInstance;
 
     /* ---------- costruttore privato ---------- */
     public DaoFactory() {
@@ -150,6 +155,38 @@ public class DaoFactory implements DaoFactoryInterface {
         if (catDaoMemoryInstance == null)
             catDaoMemoryInstance = new CatDaoMemory();
         return catDaoMemoryInstance;
+    }
+    
+    public GenericDao<Activity> getActivityDao() {
+        return switch (storageOption) {
+            case DATABASE -> new ActivityDaoDB(DatabaseConnectionManager.getConnection());
+            case FILE -> getActivityFileInstance(); 
+            default -> getActivityMemoryInstance();
+        };
+    }
+    
+    
+    
+    
+    
+
+    public static GenericDao<Activity> getActivityFileInstance() {
+        if (activityDaoFileInstance == null) {
+            activityDaoFileInstance = new ActivityDaoFile();
+        }
+        return activityDaoFileInstance;
+    }
+
+    public static ActivityDaoMemory getActivityMemoryInstance(){
+        if (activityDaoMemoryInstance == null) {
+            activityDaoMemoryInstance = new ActivityDaoMemory();
+        }
+        return (ActivityDaoMemory) activityDaoMemoryInstance;
+    }
+    public static List<Activity> getAvailableActivities() {
+        DaoFactory daoFactory = new DaoFactory();
+        GenericDao<Activity> activityDao = daoFactory.getActivityDao();
+        return activityDao.readAll(); // Metodo da implementare nel DAO
     }
 
 }

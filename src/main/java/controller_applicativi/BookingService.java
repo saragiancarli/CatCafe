@@ -1,6 +1,8 @@
 package controller_applicativi;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,6 +10,7 @@ import bean.BookingBean;
 import dao.BookingDaoDB;
 import dao.DaoFactory;
 import dao.GenericDao;
+import entity.Activity;
 import entity.Booking;
 import entity.Client;
 
@@ -17,6 +20,7 @@ import java.time.LocalDate;
 
 
 public class BookingService {
+	private List<Activity> selectedActivities = new ArrayList<>();
 
     private static final Logger LOG =
             Logger.getLogger(BookingService.class.getName());
@@ -45,14 +49,7 @@ public class BookingService {
         }
 
        
-        LocalDate giorno = bean.getDate();
-
-       
-        if (genericDao instanceof BookingDaoDB db &&
-            db.existsByUserAndCheckIn(user.getEmail(), giorno))
-        {
-            return "error:duplicate";
-        }
+        
        
 
         /* ---------- 3. MAPPING Bean → Entity ---------- */
@@ -62,7 +59,7 @@ public class BookingService {
         b.setTime (bean.getTime());
         b.setSeats(bean.getSeats());
         b.setConfirmationEmail(bean.getConfirmationEmail());  
-                                                  
+        b.setFreeActivities(bean.getFreeActivities());                                          
 
         /* ---------- 4. PERSISTENZA ---------- */
         try {
@@ -73,5 +70,11 @@ public class BookingService {
             LOG.log(Level.SEVERE, "Errore DB durante insert booking", ex);
             return "error:database_error";
         }
+    }
+    public List<Activity> getSelectedActivities() {
+        return selectedActivities;
+    }
+    public List<Activity> getAvailableActivities() {
+        return DaoFactory.getAvailableActivities();
     }
 }

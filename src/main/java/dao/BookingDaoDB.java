@@ -28,8 +28,8 @@ public class BookingDaoDB implements GenericDao<Booking> {
     public void create(Booking b) throws SQLException {
         final String sql = """
             INSERT INTO bookings
-              (nomePrenotazione, email, data, ora, numeroPartecipanti, status)
-            VALUES (?,?,?,?,?,?)
+              (nomePrenotazione, email, data, ora, numeroPartecipanti, status,activities)
+            VALUES (?,?,?,?,?,?,?)
             """;
 
         try (PreparedStatement ps =
@@ -41,6 +41,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
             ps.setTime  (4, Time.valueOf(b.getTime()));
             ps.setInt   (5, b.getSeats());
             ps.setString(6, b.getStatus().name());
+            ps.setString(7, String.join(",", b.getFreeActivities()));
 
             ps.executeUpdate();
 
@@ -81,6 +82,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
                    ora               = ?,
                    numeroPartecipanti = ?,
                    status            = ?
+                   
              WHERE id = ?
             """;
 
