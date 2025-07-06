@@ -69,12 +69,12 @@ public class ReviewAltView {
     /* valori inseriti */
     public LocalTime getTime() {
         try { return LocalTime.parse(timeField.getText().trim()); }
-        catch (Exception e) { return null; }
+        catch (Exception _) { return null; }
     }
 
     public int getStars() {
         try { return Integer.parseInt(starsField.getText().trim()); }
-        catch (NumberFormatException __) { return 0; }
+        catch (NumberFormatException _) { return 0; }
     }
 
     public String getSelectedService() {
