@@ -98,7 +98,35 @@ public final class ApplicationFacade {
 
         EmailService.sendEmail(to, subject, body);
     }
+    public static void sendBookingReceivedEmail(Booking b) {
 
+        /* destinatario = mail dell’utente loggato (già presente nel bean) */
+        String to = b.getConfirmationEmail();
+
+        String subject = "Abbiamo ricevuto la tua prenotazione!";
+        String body = """
+                      Ciao %s,
+
+                      abbiamo ricevuto la tua richiesta di prenotazione.
+
+                      • ID provvisorio     : %d
+                      • Nome prenotazione  : %s
+                      • Data               : %s
+                      • Ora                : %s
+                      • Partecipanti       : %d
+
+                      Il nostro staff la verificherà al più presto: riceverai
+                      un’altra e-mail di conferma non appena sarà approvata. 😺
+                      """
+                .formatted(b.getTitle(),
+                           b.getId(),
+                           b.getTitle(),
+                           b.getDate(),
+                           b.getTime(),
+                           b.getSeats());
+
+        EmailService.sendEmail(to, subject, body);
+    }
     public static void sendBookingConfirmationEmail(Booking b) {
 
         /* destinatario = indirizzo inserito in fase di prenotazione   */

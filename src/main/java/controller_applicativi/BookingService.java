@@ -12,6 +12,7 @@ import dao.DaoFactory;
 import dao.GenericDao;
 import entity.Activity;
 import entity.Booking;
+import facade.ApplicationFacade;
 
 
 
@@ -63,6 +64,7 @@ public class BookingService {
         /* ---------- 4. PERSISTENZA ---------- */
         try {
             genericDao.create(b);
+            ApplicationFacade.sendBookingReceivedEmail(b);
             return "success";
 
         } catch (SQLException ex) {

@@ -9,8 +9,8 @@ public class ActivityDaoMemory implements GenericDao<Activity> {
     private final List<Activity> activities = new ArrayList<>();
 
     public ActivityDaoMemory() {
-        activities.add(new Activity("Escursione guidata", "Esplora la costa con una guida esperta"));
-        activities.add(new Activity("Giro in barca al tramonto", "Ammira il tramonto dal mare"));
+        activities.add(new Activity("Aperitivo", "Goditi l'aperitivo con i nostri gatti"));
+        activities.add(new Activity("Gelato", "Mangia il gelato in compagnia"));
     }
 
     @Override
