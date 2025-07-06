@@ -103,7 +103,7 @@ public class ReviewDaoDB implements GenericDao<Review> {
         }
     }
 
-    /* ---------------- READ ALL -------------- */
+    /* ---------------- READ ALL --------------- */
     @Override
     public List<Review> readAll() {
         List<Review> list = new ArrayList<>();
