@@ -7,7 +7,6 @@ import java.util.List;
 
 
 import dao.SessionManager;
-import entity.Booking;
 import entity.Client;
 import entity.Adoption;
 import view.*;

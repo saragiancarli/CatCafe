@@ -42,7 +42,7 @@ class BookingServiceTest {
     private BookingBean invalidBean;   // seats = 0
 
     @BeforeEach
-    void setUp() throws SQLException {
+    void setUp()  {
 
         /* 1. static-mock di DaoFactory */
         daoFactoryStatic = mockStatic(DaoFactory.class);
