@@ -2,16 +2,13 @@ package controller;
 
 import bean.BookingBean;
 import controller_applicativi.BookingService;
+import dao.DaoFactory;
 import dao.GenericDao;
 import entity.Booking;
-
-import entity.User;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.sql.SQLException;
@@ -30,68 +27,76 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class BookingServiceTest {
 
-    /* ──────────────────── mock & SUT ─────────────────── */
-
+    /* ---------- mock DAO ----------- */
     @Mock
-    private GenericDao<Booking> bookingDao;          // finto DAO
+    private GenericDao<Booking> bookingDao;
 
-    @InjectMocks
-    private BookingService service;                  // SUT
+    /* ---------- static mock --------- */
+    private MockedStatic<DaoFactory> daoFactoryStatic;
 
-    /* ──────────────────── dati di supporto ───────────── */
+    /* ---------- SUT ----------- */
+    private BookingService service;
 
-    private User user;
+    /* ---------- dati ----------- */
     private BookingBean validBean;
-    private BookingBean invalidBean;
+    private BookingBean invalidBean;   // seats = 0
 
     @BeforeEach
     void setUp() throws SQLException {
 
-        /*  • utente corrente  */
-        user = new User();
-        user.setEmail("alice@example.com");
+        /* 1. static-mock di DaoFactory */
+        daoFactoryStatic = mockStatic(DaoFactory.class);
 
-        /*  • prenotazione valida  */
+        DaoFactory factoryMock = mock(DaoFactory.class);
+        when(factoryMock.getBookingDao()).thenReturn(bookingDao);
+
+        daoFactoryStatic.when(DaoFactory::getInstance).thenReturn(factoryMock);
+
+        /* 2. Istanzia il service (userà il DAO mock grazie allo static-mock) */
+        service = new BookingService();
+
+        
+        /* -------- bean valido -------- */
         validBean = new BookingBean();
         validBean.setTitle("Tavolo Alice");
-        validBean.setDate(LocalDate.of(2025, 8, 30));
-        validBean.setTime(LocalTime.of(18, 30));
+        validBean.setDate (LocalDate.of(2026, 8, 30));
+        validBean.setTime (LocalTime.of(18, 30));
         validBean.setSeats(2);
         validBean.setConfirmationEmail("alice@example.com");
+        validBean.setFreeActivities(List.of("Aperitivo"));
 
-        /*  • prenotazione NON valida (0 posti) */
+        /* -------- bean non valido -------- */
         invalidBean = new BookingBean();
-        invalidBean.setTitle("Niente");
-        invalidBean.setDate(LocalDate.of(2025, 5, 30));
-        invalidBean.setTime(LocalTime.of(18, 30));
-        invalidBean.setSeats(0);                      // <- errore
+        invalidBean.setTitle("Errore");
+        invalidBean.setDate (LocalDate.of(2025, 5, 30));
+        invalidBean.setTime (LocalTime.of(18, 30));
+        invalidBean.setSeats(0);                         // errore sintattico
         invalidBean.setConfirmationEmail("alice@example.com");
-
-        /*  • stubbing default: nessun duplicato, create() ok */
-        lenient().when(bookingDao.readAll()).thenReturn(java.util.List.of()); // se usato
-        lenient().doNothing().when(bookingDao).create(any(Booking.class));
+        invalidBean.setFreeActivities(List.of("Aperitivo"));
     }
 
-    /* ════════════════════════════════════════════════════ */
-    @Test
-    void testPrenotazione()  {
-        /* given – nessuna prenotazione esistente */
-    	lenient().when(bookingDao.readAll()).thenReturn(List.of());     // lista vuota
-
-        /* when */
-        String esito = service.book( validBean);
-
-        /* then */
-        assertEquals("success", esito);       
+    @AfterEach
+    void tearDown() {
+        daoFactoryStatic.close();   // IMPORTANTISSIMO: libera lo static-mock
     }
 
+    /* ===================================================================== */
 
     @Test
-    void testValidazione() throws SQLException {
-        // dati non validi (seats = 0)
-        String esito = service.book( invalidBean);
+    void testPrenotazioneValida() throws SQLException {
+
+        String esito = service.book(validBean);
+
+        assertEquals("success", esito);
+        verify(bookingDao, times(1)).create(any());
+    }
+
+    @Test
+    void testPrenotazioneNonValida() throws SQLException {
+
+        String esito = service.book(invalidBean);
 
         assertEquals("error:validation", esito);
         verify(bookingDao, never()).create(any());
     }
-}  
+}

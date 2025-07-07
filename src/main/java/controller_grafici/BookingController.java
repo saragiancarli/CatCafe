@@ -11,65 +11,65 @@ import view.BookingView;
 
 import java.util.List;
 
-/** Controller grafico della schermata di prenotazione. */
+/**
+ * Controller GUI per la view “standard” di prenotazione.
+ */
 public class BookingController {
 
-    
-
     private final NavigationService nav;
-    private final BookingView       view = new BookingView();
-    private final BookingService    service = new BookingService();
     private final String            typeOfLogin;
 
+    private final BookingView    view   = new BookingView();
+    private final BookingService service = new BookingService();
+    private final Client         currentUser = ApplicationFacade.getUserFromLogin();
+
     public BookingController(NavigationService nav, String typeOfLogin) {
-        this.nav = nav;
+        this.nav         = nav;
         this.typeOfLogin = typeOfLogin;
         addEventHandlers();
-        loadAvailableActivities();          // <-- carica i RadioButton
+        loadAvailableActivities();
     }
 
-    /* ------------------------- EVENTI GUI ------------------------ */
+    /* ------------------------- EVENTI ------------------------- */
     private void addEventHandlers() {
         view.getConfirmButton().setOnAction(_ -> handleConfirm());
         view.getCancelButton() .setOnAction(_ -> nav.navigateToHomePage(nav, typeOfLogin));
     }
 
-    /* -------------------- CONFERMA PRENOTAZIONE ------------------ */
+    /* --------------- CONFERMA PRENOTAZIONE -------------------- */
     private void handleConfirm() {
-        BookingBean bean = ModelBeanFactory.getBookingBean(view);
 
-        /* validazione base GUI */
+        BookingBean bean = ModelBeanFactory.getBookingBean(view, currentUser);
+
+        /* --- mini-check di PRESENZA per UX --- */
         boolean ok = true; view.hideAllErrors();
-        if (!bean.hasValidTitle())  { view.setNomeError("Titolo obbligatorio"); ok=false; }
-        if (!bean.hasValidDates())  { view.setDataError("Data/ora non valide"); ok=false; }
-        if (!bean.hasValidSeats())  { view.setPartecipantiError("Posti 1-50");   ok=false; }
+        if (bean.getTitle() == null || bean.getTitle().isBlank())
+            { view.setNomeError("Titolo obbligatorio"); ok = false; }
+        if (bean.getDate() == null || bean.getTime() == null)
+            { view.setDataError("Data/ora mancanti"); ok = false; }
+        if (bean.getSeats() <= 0)
+            { view.setPartecipantiError("Inserisci i posti"); ok = false; }
         if (!ok) return;
 
-        /* attività scelta (può essere null) */
-        String selected = view.getSelectedActivityName();
-        bean.setFreeActivities(selected == null ? List.of()
-                                                : List.of(selected));
+        /* attività scelta (facoltativa) */
+        String sel = view.getSelectedActivityName();
+        bean.setFreeActivities(sel == null ? List.of() : List.of(sel));
 
-        /* --- business layer --- */
-        
-        String esito   = service.book( bean);
-
-        switch (esito) {
-            case "success"           -> nav.navigateToHomePage(nav, typeOfLogin);
-            case "error:duplicate"   -> view.setDataError("Prenotazione già presente per quel giorno");
-            case "error:validation"  -> view.setNomeError ("Campi non validi");
-            default -> view.setNomeError("Errore di sistema, riprova");
-            
+        /* --- delega al service --- */
+        switch (service.book(bean)) {
+            case "success"          -> nav.navigateToHomePage(nav, typeOfLogin);
+            case "error:duplicate"  -> view.setDataError("Prenotazione già presente quel giorno");
+            case "error:validation" -> view.setNomeError("Dati non validi");
+            default                 -> view.setNomeError("Errore di sistema, riprova");
         }
     }
 
-    /* ------------------- CARICA LE ATTIVITÀ ---------------------- */
+    /* --------------- CARICA ATTIVITÀ --------------------------- */
     private void loadAvailableActivities() {
-        List<Activity> activities = service.getAvailableActivities();
-        List<String> names = activities.stream().map(Activity::getName).toList();
-        view.addActivityRadios(names);   // la View crea i RadioButton
+        List<Activity> acts = service.getAvailableActivities();
+        view.addActivityRadios(acts.stream().map(Activity::getName).toList());
     }
 
-    /* ---------------------------- API per Navigation ------------ */
+    /* --------------- API Navigation ---------------------------- */
     public VBox getRoot() { return view.getRoot(); }
 }

@@ -1,6 +1,7 @@
 package controller_grafici;
 
 import bean.BookingBean;
+import bean.ModelBeanFactory;
 import controller_applicativi.BookingService;
 import entity.Activity;
 import entity.Client;
@@ -11,68 +12,65 @@ import view.BookingViewAlternative;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Controller GUI per la view “alternativa” (con combobox ecc.).
+ */
 public class BookingControllerAlternative {
 
     private static final Logger LOG = Logger.getLogger(BookingControllerAlternative.class.getName());
 
+    private final NavigationService nav;
+    private final String            typeOfLogin;
+
     private final BookingViewAlternative view = new BookingViewAlternative();
-    private final NavigationService     nav;
     private final BookingService        service = new BookingService();
-    private final String                typeOfLogin;
+    private final Client                currentUser = ApplicationFacade.getUserFromLogin();
 
     public BookingControllerAlternative(NavigationService nav, String typeOfLogin) {
         this.nav = nav;
         this.typeOfLogin = typeOfLogin;
         addEventHandlers();
-        loadActivities();                     // <-- carica la tendina
+        loadActivities();
     }
 
-    public VBox getRoot(){ return view.getRoot(); }
+    public VBox getRoot() { return view.getRoot(); }
 
-    /* -------------------- eventi GUI -------------------- */
-    private void addEventHandlers(){
+    /* ------------------ EVENTI ------------------ */
+    private void addEventHandlers() {
         view.getConfirmButton().setOnAction(_ -> handleConfirm());
         view.getCancelButton() .setOnAction(_ -> nav.navigateToHomePage(nav, typeOfLogin));
     }
 
-    /* -------------------- conferma ---------------------- */
-    private void handleConfirm(){
+    /* ------------------ CONFERMA ---------------- */
+    private void handleConfirm() {
 
-        BookingBean bean = new BookingBean();
-        bean.setTitle            (view.getNomePrenotazione());
-        bean.setDate             (view.getDate());
-        bean.setTime             (view.getTime());
-        bean.setSeats            (view.getParticipants());
-        bean.setConfirmationEmail(view.getConfirmationEmail());
+        BookingBean bean = ModelBeanFactory.getBookingBean(view, currentUser);
 
-        /* attività scelta (può essere null) */
-        String selected = view.getSelectedActivity();
-        bean.setFreeActivities(selected == null ? List.of() : List.of(selected));
+        String sel = view.getSelectedActivity();
+        bean.setFreeActivities(sel == null ? List.of() : List.of(sel));
 
-        /* --- validazione GUI minima --- */
+        /* mini-check di presenza */
         boolean ok = true; view.hideAllErrors();
-        if (!bean.hasValidTitle()){ view.setNomeError("Titolo obbligatorio"); ok=false; }
-        if (!bean.hasValidDates()){ view.setDataError("Data/ora non valide");  ok=false; }
-        if (!bean.hasValidSeats()){ view.setPartecipantiError("Posti 1-50");   ok=false; }
+        if (bean.getTitle() == null || bean.getTitle().isBlank())
+            { view.setNomeError("Titolo obbligatorio"); ok = false; }
+        if (bean.getDate() == null || bean.getTime() == null)
+            { view.setDataError("Data/ora mancanti");  ok = false; }
+        if (bean.getSeats() <= 0)
+            { view.setPartecipantiError("Inserisci i posti"); ok = false; }
         if (!ok) return;
 
-        /* --- business layer --- */
-        
-        String esito  = service.book( bean);
-
-        switch (esito){
-            case "success"            -> nav.navigateToHomePage(nav, typeOfLogin);
-            case "error:duplicate"    -> view.setDataError("Prenotazione già presente quel giorno");
-            case "error:validation"   -> view.setNomeError("Dati non validi");
-            default -> view.setNomeError("Errore di sistema, riprova");
-            
+        /* business layer */
+        switch (service.book(bean)) {
+            case "success"          -> nav.navigateToHomePage(nav, typeOfLogin);
+            case "error:duplicate"  -> view.setDataError("Prenotazione già presente quel giorno");
+            case "error:validation" -> view.setNomeError("Dati non validi");
+            default                 -> view.setNomeError("Errore di sistema");
         }
     }
 
-    /* ----------------- carica attività ------------------ */
-    private void loadActivities(){
+    /* --------------- CARICA ATTIVITÀ --------------- */
+    private void loadActivities() {
         List<Activity> acts = service.getAvailableActivities();
-        List<String>   names = acts.stream().map(Activity::getName).toList();
-        view.loadActivities(names);
+        view.loadActivities(acts.stream().map(Activity::getName).toList());
     }
 }
