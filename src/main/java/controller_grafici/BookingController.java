@@ -4,8 +4,7 @@ import bean.BookingBean;
 import bean.ModelBeanFactory;
 import controller_applicativi.BookingService;
 import entity.Activity;
-import entity.Client;
-import facade.ApplicationFacade;
+
 import javafx.scene.layout.VBox;
 import view.BookingView;
 
@@ -21,7 +20,7 @@ public class BookingController {
 
     private final BookingView    view   = new BookingView();
     private final BookingService service = new BookingService();
-    private final Client         currentUser = ApplicationFacade.getUserFromLogin();
+    
 
     public BookingController(NavigationService nav, String typeOfLogin) {
         this.nav         = nav;
@@ -39,7 +38,7 @@ public class BookingController {
     /* --------------- CONFERMA PRENOTAZIONE -------------------- */
     private void handleConfirm() {
 
-        BookingBean bean = ModelBeanFactory.getBookingBean(view, currentUser);
+        BookingBean bean = ModelBeanFactory.getBookingBean(view);
 
         /* --- mini-check di PRESENZA per UX --- */
         boolean ok = true; view.hideAllErrors();

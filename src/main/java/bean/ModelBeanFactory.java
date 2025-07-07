@@ -94,26 +94,26 @@ public final class ModelBeanFactory {
         b.setUserType(v.getSelectedUserType());
         return b;
     }
-    public static BookingBean getBookingBean(BookingView v,Client user) {
+    public static BookingBean getBookingBean(BookingView v) {
         BookingBean b = new BookingBean();
         b.setTitle   (v.getNomePrenotazione());
         b.setDate (v.getDate());
         b.setTime(v.getTime());                
         b.setSeats   (v.getParticipants());
         b.setConfirmationEmail(v.getConfirmationEmail());
-        String sel = v.getSelectedActivityName();   // oppure getSelectedActivity()
+        String sel = v.getSelectedActivityName();  
         b.setFreeActivities(List.of(sel)); 
         return b;
     }
     
-    public static BookingBean getBookingBean(view.BookingViewAlternative v, Client user) {
+    public static BookingBean getBookingBean(view.BookingViewAlternative v) {
         BookingBean b = new BookingBean();
         b.setTitle   (v.getNomePrenotazione());
         b.setDate    (v.getDate());
         b.setTime    (v.getTime());
         b.setSeats   (v.getParticipants());
-        b.setConfirmationEmail(user == null ? null : user.getEmail());
-        String sel = v.getSelectedActivity();   // oppure getSelectedActivity()
+        b.setConfirmationEmail(v.getConfirmationEmail());
+        String sel = v.getSelectedActivity();   
         b.setFreeActivities(List.of(sel)); 
         return b;
     }

@@ -4,8 +4,7 @@ import bean.BookingBean;
 import bean.ModelBeanFactory;
 import controller_applicativi.BookingService;
 import entity.Activity;
-import entity.Client;
-import facade.ApplicationFacade;
+
 import javafx.scene.layout.VBox;
 import view.BookingViewAlternative;
 
@@ -24,7 +23,7 @@ public class BookingControllerAlternative {
 
     private final BookingViewAlternative view = new BookingViewAlternative();
     private final BookingService        service = new BookingService();
-    private final Client                currentUser = ApplicationFacade.getUserFromLogin();
+    
 
     public BookingControllerAlternative(NavigationService nav, String typeOfLogin) {
         this.nav = nav;
@@ -44,7 +43,7 @@ public class BookingControllerAlternative {
     /* ------------------ CONFERMA ---------------- */
     private void handleConfirm() {
 
-        BookingBean bean = ModelBeanFactory.getBookingBean(view, currentUser);
+        BookingBean bean = ModelBeanFactory.getBookingBean(view);
 
         String sel = view.getSelectedActivity();
         bean.setFreeActivities(sel == null ? List.of() : List.of(sel));
