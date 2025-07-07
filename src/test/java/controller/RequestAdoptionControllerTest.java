@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
- * Test  sviluppatato da Sara Giancarli
+ * Test sviluppatato da Sara Giancarli
  * Test di integrazione su {RequestAdoptionController}.
  * Usiamo DAO mockati, così NON tocchiamo il DB vero.
  */
