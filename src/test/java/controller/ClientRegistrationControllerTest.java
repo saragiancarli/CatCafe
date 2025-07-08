@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
- * Test per {@link ClientRegistrationController}.
+ * Test creato da Sara Giancarli per { ClientRegistrationController}.
  */
 @ExtendWith(MockitoExtension.class)
 class ClientRegistrationControllerTest {
