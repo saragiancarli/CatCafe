@@ -23,7 +23,7 @@ public class BookingService {
      */
     public String book(BookingBean bean) {
 
-        /* ---- 1. Validazione completa (sintassi + semantica) ---- */
+        /* ---- 1. Validazione completa) ---- */
         if (bean.getTitle() == null || bean.getTitle().isBlank()
             || bean.getDate()  == null || bean.getTime() == null
             || bean.getSeats() <= 0 || bean.getSeats() > 50

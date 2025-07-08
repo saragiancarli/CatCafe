@@ -10,13 +10,10 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.IntStream;
 
-/**
- * View per prenotare un tavolo “immerso nei gatti 🐾”.
- * Ora le attività vengono mostrate con RadioButton (una sola scelta).
- */
+
 public class BookingView {
 
-    /* ---------- nodi principali ---------- */
+   
     private final VBox             root = new VBox(15);
 
     private final DatePicker       data = new DatePicker();
@@ -25,15 +22,15 @@ public class BookingView {
     private final TextField        nomePrenotazione   = new TextField();
     private final TextField        email              = new TextField();
 
-    /* ---------- sezione attività ---------- */
+    
     private final VBox         activitySection = new VBox(8);
-    private final ToggleGroup  activityGroup   = new ToggleGroup();   // <- chiave
+    private final ToggleGroup  activityGroup   = new ToggleGroup();   
 
-    /* ---------- bottoni ---------- */
+    
     private final Button confirmButton = new Button("Conferma");
     private final Button cancelButton  = new Button("Annulla");
 
-    /* ---------- label di errore (private helper) ---------- */
+   
     private Label makeErr() {
         Label l = new Label();
         l.getStyleClass().add("error-message");
@@ -54,10 +51,10 @@ public class BookingView {
 
         Label title = new Label("Prenota un tavolo immerso tra i gatti 🐾");
 
-        /* ----- combo orari ----- */
+        
         populateTimeBox();
 
-        /* ----- sezione attività (inizialmente vuota: la riempie il controller) ----- */
+       
         Label activityTitle = new Label("Attività disponibili:");
         activitySection.getChildren().add(activityTitle);
 
@@ -74,43 +71,66 @@ public class BookingView {
         );
     }
 
-    /* ======================================================= */
-    /*                      API PUBLICA                        */
-    /* ======================================================= */
-    public VBox   getRoot()            { return root; }
-    public Button getConfirmButton()   { return confirmButton; }
-    public Button getCancelButton()    { return cancelButton; }
+ 
+    public VBox   getRoot()  { 
+    	return root; 
+    	}
+    public Button getConfirmButton(){
+    	return confirmButton; 
+    	}
+    public Button getCancelButton(){
+    	return cancelButton;
+    	}
 
-    /* ----- valori inseriti dall’utente ----- */
-    public LocalDate  getDate()            { return data.getValue();   }
-    public LocalTime  getTime()            { return ora.getValue();    }
+  
+    public LocalDate  getDate()  {
+    	return data.getValue();  
+    	}
+    public LocalTime  getTime()  {
+    	return ora.getValue();   
+    	}
     public int        getParticipants()    {
-        try { return Integer.parseInt(numeroPartecipanti.getText().trim()); }
-        catch (NumberFormatException _) { return 0; }
+        try { 
+        	return Integer.parseInt(numeroPartecipanti.getText().trim()); 
+        	}
+        catch (NumberFormatException _) {
+        	return 0; 
+        	}
     }
-    public String     getNomePrenotazione(){ return nomePrenotazione.getText().trim(); }
-    public String     getConfirmationEmail(){ return email.getText().trim(); }
+    public String     getNomePrenotazione(){
+    	return nomePrenotazione.getText().trim(); 
+    	}
+    public String     getConfirmationEmail(){
+    	return email.getText().trim(); 
+    	}
 
-    /** Restituisce il nome dell’attività selezionata (o `null` se nessuna). */
+    
     public String getSelectedActivityName() {
         Toggle sel = activityGroup.getSelectedToggle();
         return sel == null ? null : ((RadioButton) sel).getText();
     }
 
-    /* ----- error helper ----- */
-    public void hideAllErrors() { dataErr.setVisible(false); oraErr.setVisible(false);
-        seatErr.setVisible(false); nameErr.setVisible(false); mailErr.setVisible(false);}
-    public void setDataError(String m){ dataErr.setText(m); dataErr.setVisible(true);}
-    public void setOraError (String m){ oraErr .setText(m); oraErr .setVisible(true);}
-    public void setPartecipantiError(String m){ seatErr.setText(m); seatErr.setVisible(true);}
-    public void setNomeError(String m){ nameErr.setText(m); nameErr.setVisible(true);}
-    public void setEmailError(String m){ mailErr.setText(m); mailErr.setVisible(true);}
+    
+    public void hideAllErrors() {
+    	dataErr.setVisible(false); oraErr.setVisible(false);
+        seatErr.setVisible(false); nameErr.setVisible(false); mailErr.setVisible(false);
+        }
+    public void setDataError(String m){
+    	dataErr.setText(m); dataErr.setVisible(true);
+    	}
+    public void setOraError (String m){
+    	oraErr .setText(m); oraErr .setVisible(true);
+    	}
+    public void setPartecipantiError(String m){
+    	seatErr.setText(m); seatErr.setVisible(true);}
+    public void setNomeError(String m){ nameErr.setText(m); nameErr.setVisible(true);
+    }
+    public void setEmailError(String m){
+    	mailErr.setText(m); mailErr.setVisible(true);
+    	}
 
-    /* ======================================================= */
-    /*              METODI CHIAMATI DAL CONTROLLER             */
-    /* ======================================================= */
-
-    /** Aggiunge i RadioButton per le attività passate dal controller. */
+  
+    
     public void addActivityRadios(List<String> activityNames) {
         for (String name : activityNames) {
             RadioButton rb = new RadioButton(name);
@@ -119,9 +139,7 @@ public class BookingView {
         }
     }
 
-    /* ======================================================= */
-    /*                      helpers interni                     */
-    /* ======================================================= */
+  
     private void populateTimeBox() {
         var times = IntStream.rangeClosed(32,95)   // 08:00 → 23:45
                 .mapToObj(i -> LocalTime.of(i/4,(i%4)*15))

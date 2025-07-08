@@ -14,27 +14,22 @@ import java.util.List;
 
 public class BookingViewAlternative {
 
-    /* ---------- root ---------- */
     private final VBox root = new VBox(20);
 
-    /* ---------- campi data/ora ---------- */
+   
     private final TextField           dataField;
     private final Spinner<Integer>    oraHour;
     private final Spinner<Integer>    oraMin;
 
-    /* ---------- altri campi ---------- */
     private final TextField  numeroPartecipanti;
     private final TextField  nomePrenotazione;
     private final TextField  email;
 
-    /* ---------- scelta attività (ComboBox) ---------- */
     private final ComboBox<String> activityCombo = new ComboBox<>();
 
-    /* ---------- bottoni ---------- */
     private final Button confirmButton = new Button("Conferma");
     private final Button cancelButton  = new Button("Annulla");
 
-    /* ---------- label di errore (helper) ---------- */
     private Label err() { Label l=new Label(); l.getStyleClass().add("error-message"); l.setVisible(false); return l; }
     private final Label dataErr  = err();
     private final Label oraErr   = err();
@@ -42,7 +37,6 @@ public class BookingViewAlternative {
     private final Label nameErr  = err();
     private final Label mailErr  = err();
 
-    /* ============================================================= */
     public BookingViewAlternative() {
 
         root.setPadding(new Insets(24));
@@ -54,64 +48,59 @@ public class BookingViewAlternative {
 
         int r = -1;
 
-        /* ----- titolo ----- */
         Label title = new Label("Prenotazione – modalità compatta");
 
-        /* ----- giorno (text) ----- */
         grid.add(new Label("Data (yyyy-MM-dd)"), 0, ++r);
         dataField = new TextField(); dataField.setPromptText("2025-06-01");
         grid.add(dataField, 1, r); grid.add(dataErr, 2, r);
 
-        /* ----- ora (spinner hh:mm) ----- */
         grid.add(new Label("Ora"), 0, ++r);
         oraHour = new Spinner<>(0,23,12); oraHour.setPrefWidth(70);
         oraMin  = new Spinner<>(0,45,0,15); oraMin.setPrefWidth(70);
         grid.add(new HBox(5, oraHour, new Label(":"), oraMin), 1, r);
         grid.add(oraErr, 2, r);
 
-        /* ----- partecipanti ----- */
         grid.add(new Label("Partecipanti"), 0, ++r);
         numeroPartecipanti = new TextField(); numeroPartecipanti.setPrefWidth(80);
         grid.add(numeroPartecipanti, 1, r); grid.add(seatsErr, 2, r);
 
-        /* ----- titolo prenotazione ----- */
         grid.add(new Label("Titolo"), 0, ++r);
         nomePrenotazione = new TextField();
         grid.add(nomePrenotazione, 1, r); grid.add(nameErr, 2, r);
 
-        /* ----- email conferma ----- */
         grid.add(new Label("E-mail"), 0, ++r);
         email = new TextField();
         grid.add(email, 1, r); grid.add(mailErr, 2, r);
 
-        /* ----- attività (ComboBox) ----- */
         grid.add(new Label("Attività"), 0, ++r);
         activityCombo.setPromptText("Seleziona un’attività");
         grid.add(activityCombo, 1, r);
 
-        /* ----- bottoni ----- */
         HBox buttons = new HBox(10, confirmButton, cancelButton);
 
-        /* ----- composizione root ----- */
         root.getChildren().addAll(title, grid, buttons);
     }
 
-    /* ============================================================= */
-    /*                   METODI CHIAMATI DAL CONTROLLER              */
-    /* ============================================================= */
+    
     public void loadActivities(List<String> names) {
         activityCombo.getItems().setAll(names);
     }
-    public String getSelectedActivity() { return activityCombo.getValue(); }
+    public String getSelectedActivity() {
+    	return activityCombo.getValue(); 
+    	}
 
-    /* ============================================================= */
-    /*                            GETTER                             */
-    /* ============================================================= */
-    public VBox   getRoot()          { return root; }
-    public Button getConfirmButton() { return confirmButton; }
-    public Button getCancelButton()  { return cancelButton; }
+  
+    public VBox   getRoot()          {
+    	return root; 
+    	}
+    public Button getConfirmButton() {
+    	return confirmButton;
+    	}
+    public Button getCancelButton()  {
+    	return cancelButton; 
+    	}
 
-    /* ----- valori inseriti ----- */
+
     public LocalDate getDate() {
         try { return LocalDate.parse(dataField.getText().trim()); }
         catch (DateTimeParseException _){ return null; }
@@ -125,11 +114,23 @@ public class BookingViewAlternative {
     public String getConfirmationEmail(){ return email.getText().trim(); }
 
     /* ----- error helper ----- */
-    public void hideAllErrors(){ dataErr.setVisible(false); oraErr.setVisible(false);
-        seatsErr.setVisible(false); nameErr.setVisible(false); mailErr.setVisible(false);}
-    public void setDataError(String m){ dataErr.setText(m); dataErr.setVisible(true);}
-    public void setOraError (String m){ oraErr .setText(m); oraErr .setVisible(true);}
-    public void setPartecipantiError(String m){ seatsErr.setText(m); seatsErr.setVisible(true);}
-    public void setNomeError(String m){ nameErr.setText(m); nameErr.setVisible(true);}
-    public void setEmailError(String m){ mailErr.setText(m); mailErr.setVisible(true);}
+    public void hideAllErrors(){
+    	dataErr.setVisible(false); oraErr.setVisible(false);
+        seatsErr.setVisible(false); nameErr.setVisible(false); mailErr.setVisible(false);
+        }
+    public void setDataError(String m){
+    	dataErr.setText(m); dataErr.setVisible(true);
+    	}
+    public void setOraError (String m){
+    	oraErr .setText(m); oraErr .setVisible(true);
+    	}
+    public void setPartecipantiError(String m){
+    	seatsErr.setText(m); seatsErr.setVisible(true);
+    	}
+    public void setNomeError(String m){ 
+    	nameErr.setText(m); nameErr.setVisible(true);
+    	}
+    public void setEmailError(String m){ 
+    	mailErr.setText(m); mailErr.setVisible(true);
+    	}
 }

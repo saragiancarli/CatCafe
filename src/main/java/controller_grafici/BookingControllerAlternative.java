@@ -9,14 +9,14 @@ import javafx.scene.layout.VBox;
 import view.BookingViewAlternative;
 
 import java.util.List;
-import java.util.logging.Logger;
+
 
 /**
  * Controller GUI per la view “alternativa” (con combobox ecc.).
  */
 public class BookingControllerAlternative {
 
-    private static final Logger LOG = Logger.getLogger(BookingControllerAlternative.class.getName());
+    
 
     private final NavigationService nav;
     private final String            typeOfLogin;
@@ -40,7 +40,7 @@ public class BookingControllerAlternative {
         view.getCancelButton() .setOnAction(_ -> nav.navigateToHomePage(nav, typeOfLogin));
     }
 
-    /* ------------------ CONFERMA ---------------- */
+    
     private void handleConfirm() {
 
         BookingBean bean = ModelBeanFactory.getBookingBean(view);
@@ -48,17 +48,23 @@ public class BookingControllerAlternative {
         String sel = view.getSelectedActivity();
         bean.setFreeActivities(sel == null ? List.of() : List.of(sel));
 
-        /* mini-check di presenza */
+       
         boolean ok = true; view.hideAllErrors();
         if (bean.getTitle() == null || bean.getTitle().isBlank())
-            { view.setNomeError("Titolo obbligatorio"); ok = false; }
+            { 
+        	view.setNomeError("Titolo obbligatorio"); ok = false;
+        	}
         if (bean.getDate() == null || bean.getTime() == null)
-            { view.setDataError("Data/ora mancanti");  ok = false; }
+            { 
+        	view.setDataError("Data/ora mancanti");  ok = false; 
+        	}
         if (bean.getSeats() <= 0)
-            { view.setPartecipantiError("Inserisci i posti"); ok = false; }
+            { 
+        	view.setPartecipantiError("Inserisci i posti"); ok = false; 
+        	}
         if (!ok) return;
 
-        /* business layer */
+        
         switch (service.book(bean)) {
             case "success"          -> nav.navigateToHomePage(nav, typeOfLogin);
             case "error:duplicate"  -> view.setDataError("Prenotazione già presente quel giorno");
@@ -67,7 +73,7 @@ public class BookingControllerAlternative {
         }
     }
 
-    /* --------------- CARICA ATTIVITÀ --------------- */
+    
     private void loadActivities() {
         List<Activity> acts = service.getAvailableActivities();
         view.loadActivities(acts.stream().map(Activity::getName).toList());

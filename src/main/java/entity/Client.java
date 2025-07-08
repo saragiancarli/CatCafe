@@ -11,7 +11,7 @@ public abstract class Client implements Serializable {
     private String password;
 
     protected Client() {
-        //classe bean
+        
     }
 
     protected Client(String firstName, String lastName, String email, String password) {

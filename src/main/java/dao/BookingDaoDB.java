@@ -9,7 +9,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
-/** DAO JDBC per la tabella <code>bookings</code> (senza SELECT *). */
+
 public class BookingDaoDB implements GenericDao<Booking> {
 
     private static final String BASE_SELECT = """
@@ -54,7 +54,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------ READ by id */
+ 
     @Override
     public Booking read(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
@@ -70,7 +70,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------ UPDATE ---- */
+   
     @Override
     public void update(Booking b) throws SQLException {
         final String sql = """
@@ -97,7 +97,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------ DELETE ---- */
+   
     @Override
     public void delete(Object... keys) throws SQLException {
         if (keys.length != 1 || !(keys[0] instanceof Integer id))
@@ -110,7 +110,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* ------------------------------------------------ READ ALL -- */
+   
     @Override
     public List<Booking> readAll() {
         List<Booking> list = new ArrayList<>();
@@ -123,7 +123,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         return list;
     }
 
-    /* -------------------------------- exists / find ------------- */
+
     public boolean existsByUserAndCheckIn(String email, LocalDate in) {
         final String sql = "SELECT 1 FROM bookings WHERE email = ? AND data = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -148,7 +148,7 @@ public class BookingDaoDB implements GenericDao<Booking> {
         }
     }
 
-    /* --------------------- ResultSet → Booking ------------------ */
+   
     private Booking map(ResultSet rs) throws SQLException {
         Booking b = new Booking();
         b.setId               (rs.getInt   ("id"));

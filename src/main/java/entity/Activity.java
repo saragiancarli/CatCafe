@@ -1,9 +1,9 @@
 package entity;
 
-import java.io.Serializable;
 
-/** Entità “base” con nome, descrizione, max partecipanti e prezzo extra. */
-public class Activity implements Serializable {
+
+
+public class Activity  {
 
    
     private String name;
