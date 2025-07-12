@@ -13,7 +13,7 @@ public class DaoFactory implements DaoFactoryInterface {
         return INSTANCE;
     }
 
-    /* ---------- configurazione  ---------- */
+    /* ---------- configurazione ---------- */
     public enum Store {DATABASE, FILE, STATELESS}
 
     private static Store storageOption = Store.STATELESS;      // default
