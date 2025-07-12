@@ -198,10 +198,6 @@ public class DaoFactory implements DaoFactoryInterface {
         }
         return (ActivityDaoMemory) activityDaoMemoryInstance;
     }
-    public static List<Activity> getAvailableActivities() {
-        DaoFactory daoFactory = new DaoFactory();
-        GenericDao<Activity> activityDao = daoFactory.getActivityDao();
-        return activityDao.readAll(); // Metodo da implementare nel DAO
-    }
+    
 
 }

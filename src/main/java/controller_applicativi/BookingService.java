@@ -57,6 +57,7 @@ public class BookingService {
     }
 
     public List<Activity> getAvailableActivities() {
-        return DaoFactory.getAvailableActivities();
+    	GenericDao<Activity> activityDao = DaoFactory.getInstance().getActivityDao();
+        return activityDao.readAll();
     }
 }

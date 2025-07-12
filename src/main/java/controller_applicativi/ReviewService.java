@@ -63,6 +63,7 @@ public class ReviewService {
 
     /* ----- servizi utili al controller grafico ----- */
     public List<Activity> getAvailableSpecialServices() {
-        return DaoFactory.getAvailableActivities();
+    	GenericDao<Activity> activityDao = DaoFactory.getInstance().getActivityDao();
+        return activityDao.readAll();
     }
 }
