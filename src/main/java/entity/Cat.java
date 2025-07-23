@@ -14,7 +14,6 @@ public class Cat {
 
     public int getIdCat() {
         return idCat.get();
-        //porcodio
     }
 
     public void setIdCat(int idCat) {
