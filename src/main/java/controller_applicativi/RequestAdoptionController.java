@@ -1,12 +1,9 @@
 package controller_applicativi;
-
+import dao.GenericDao;
 import entity.Adoption;
-import dao.BeanDao;
 import dao.DaoFactory;
-
 import dao.RequestAdoptionDaoDB;
 import facade.ApplicationFacade;
-
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,13 +12,14 @@ public class RequestAdoptionController{
 
     private static final Logger LOG = Logger.getLogger(RequestAdoptionController.class.getName());
 
-    private final BeanDao<Adoption> beanDao = DaoFactory.getInstance().getRequestAdoptionDao();
+    private final GenericDao<Adoption> adoptionDao = DaoFactory.getInstance().getRequestAdoptionDao();
 
     /**
      * Crea una richiesta di adozione.
      * @param a dati della richiesta
      * @return "success" | "error:validation" | "error:duplicate" | "error:database_error"
      */
+
     public String requestAdoption(Adoption a) {
 
         /* ---------- validation ---------- */
@@ -37,7 +35,7 @@ public class RequestAdoptionController{
 
         /* ---------- check duplicates ---------- */
 
-        if (beanDao instanceof RequestAdoptionDaoDB daoDB) {
+        if (adoptionDao instanceof RequestAdoptionDaoDB daoDB) {
             try {
                 boolean exists = daoDB.existsByEmailAndCat(a.getEmail(), a.getNameCat());
                 if (exists) {
@@ -51,7 +49,7 @@ public class RequestAdoptionController{
 
         /* ---------- PERSISTENZA ---------- */
         try {
-            beanDao.create(a);
+            adoptionDao.create(a);
             ApplicationFacade.sendAdoptionConfirmationEmail(a);
             return "success";
         } catch (SQLException ex) {

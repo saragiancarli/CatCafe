@@ -44,40 +44,40 @@ public class RequestAdoptionGUIController {
     private void handleConfirm() {
         view.hideAllErrors();
 
-        Adoption bean;
+        Adoption adoption;
         try {
-            bean = ModelBeanFactory.getRequestAdoptionBean(view);
+            adoption = ModelBeanFactory.getRequestAdoptionBean(view);
         } catch (IllegalArgumentException e) {
             view.setTelefonoError(e.getMessage());
             return;
         }
         boolean ok = true;
 
-        if (!bean.hasValidName()) {
+        if (!adoption.hasValidName()) {
             view.setNomeError("Nome obbligatorio");
             ok = false;
         }
-        if (!bean.hasValidSurname()) {
+        if (!adoption.hasValidSurname()) {
             view.setCognomeError("Cognome obbligatorio");
             ok = false;
 
         }
-        if (!bean.hasValidPhoneNumber()) {
+        if (!adoption.hasValidPhoneNumber()) {
             view.setTelefonoError("Numero di telefono non valido (min 10 cifre)");
             ok = false;
 
         }
-        if (!bean.hasValidEmail()) {
+        if (!adoption.hasValidEmail()) {
             view.setEmailError("Email non valida");
             ok = false;
 
         }
-        if (!bean.hasValidAddress()) {
+        if (!adoption.hasValidAddress()) {
             view.setIndirizzoError("Indirizzo obbligatorio");
             ok = false;
 
         }
-        if (bean.getNameCat() == null || bean.getNameCat().isBlank()) {
+        if (adoption.getNameCat() == null || adoption.getNameCat().isBlank()) {
             view.setNomeGattoError("Seleziona un gatto");
             ok = false;
         }
@@ -92,7 +92,7 @@ public class RequestAdoptionGUIController {
             return; // Interrompe l'esecuzione del metodo
         }
 
-        String esito = request.requestAdoption(bean);
+        String esito = request.requestAdoption(adoption);
 
         switch (esito) {
             case "success" -> {
@@ -115,7 +115,7 @@ public class RequestAdoptionGUIController {
         }
     }
     private void loadCatsIntoComboBox() {
-        List<Cat> cats = catDAO.readAdoptableCats();
+        List<Cat> cats = catDAO.readAdoptableCats();    //requestadoptioncontroller.getcats()
         populateCatNames(cats);
     }
     private void populateCatNames(List<Cat> cats) {
@@ -132,9 +132,7 @@ public class RequestAdoptionGUIController {
     }
     /* -------------------- root per il NavigationManager --------- */
     public VBox getRoot() { return view.getRoot(); }
-
     /* ----------------------- modifica ---------------------------- */
-
     private void handleModify() {
         nav.navigateToHomePage(nav, typeOfLogin);
     }

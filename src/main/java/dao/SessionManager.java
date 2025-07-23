@@ -10,7 +10,7 @@ public class SessionManager {
 
     protected SessionManager() {}
 
-    public static SessionManager getInstance() {
+    public static  SessionManager getInstance() {
         if (instance == null) {
             instance = new SessionManager();
         }

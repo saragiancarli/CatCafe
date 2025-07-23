@@ -37,7 +37,7 @@ public class DaoFactory implements DaoFactoryInterface {
     private static GenericDao<Staf> stafDaoFileInstance;
     private static GenericDao<Booking> bookingDaoFileInstance;
     private static GenericDao<Cat> catDaoFileInstance;
-    private static BeanDao<Adoption> requestAdoptionDaoFileInstance;
+    private static GenericDao<Adoption> requestAdoptionDaoFileInstance;
     private static GenericDao<Activity> activityDaoFileInstance;
 
     /* ---------- costruttore privato ---------- */
@@ -121,7 +121,7 @@ public class DaoFactory implements DaoFactoryInterface {
         return bookingDaoMemoryInstance;
     }
 
-    public BeanDao<Adoption> getRequestAdoptionDao() {
+    public GenericDao<Adoption> getRequestAdoptionDao() {
         switch (storageOption) {
             case DATABASE -> {return new RequestAdoptionDaoDB(DatabaseConnectionManager.getConnection());}
             case FILE -> {return getRequestAdoptionFileInstance();}
@@ -129,7 +129,7 @@ public class DaoFactory implements DaoFactoryInterface {
         }
     }
 
-    private static BeanDao<Adoption> getRequestAdoptionFileInstance() {
+    private static GenericDao<Adoption> getRequestAdoptionFileInstance() {
         if (requestAdoptionDaoFileInstance == null)
             requestAdoptionDaoFileInstance = new RequestAdoptionDaoFile();
         return requestAdoptionDaoFileInstance;

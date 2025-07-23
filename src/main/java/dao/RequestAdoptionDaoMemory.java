@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * DAO in-memory (thread-safe) per RequestAdoptionBean,
  * usa come chiave composta nomeGatto + email concatenati.
  */
-public class RequestAdoptionDaoMemory implements BeanDao<Adoption> {
+public class RequestAdoptionDaoMemory implements GenericDao<Adoption> {
 
     private static final Map<String, Adoption> STORE = new ConcurrentHashMap<>();
 

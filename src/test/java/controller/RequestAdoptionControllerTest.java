@@ -1,8 +1,8 @@
 package controller;
 
 import controller_applicativi.RequestAdoptionController;
-import dao.BeanDao;
 import dao.DaoFactory;
+import dao.GenericDao;
 import entity.Adoption;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ class RequestAdoptionControllerTest {
 
     /* ------------ DAO mock ------------ */
     @Mock
-    private BeanDao<Adoption> adoptionDao;
+    private GenericDao<Adoption> adoptionDao;
 
     /* ------------ static mock ---------- */
     private MockedStatic<DaoFactory> daoFactoryStatic;

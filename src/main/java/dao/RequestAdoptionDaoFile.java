@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class RequestAdoptionDaoFile implements BeanDao<Adoption> {
+public class RequestAdoptionDaoFile implements GenericDao<Adoption> {
 
     private static final String FILE_PATH = "request_adoptions.json";
     private final Gson gson;

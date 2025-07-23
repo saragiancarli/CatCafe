@@ -64,9 +64,9 @@ CREATE TABLE IF NOT EXISTS `Cat` (
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 *------------------------------------------------------------------
-  4. TABELLA adoption_requsts  (nameCat, phoneNumber, name, surname, email, address, stateAdoption)
+  4. TABELLA adoption_requests  (nameCat, phoneNumber, name, surname, email, address, stateAdoption)
 ------------------------------------------------------------------*/
-CREATE TABLE IF NOT EXISTS `adoption_requsts` (
+CREATE TABLE IF NOT EXISTS `adoption_requests` (
     nameCat         VARCHAR(50) NOT NULL,
     phoneNumber     VARCHAR(30) NOT NULL,
     name            VARCHAR(100) NOT NULL,

@@ -1,7 +1,7 @@
 package controller_grafici;
 
 
-import controller_applicativi.ManageCatController;
+
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

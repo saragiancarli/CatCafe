@@ -1,10 +1,9 @@
 package entity;
-
 import javafx.beans.property.*;
 
 public class Cat {
 
-    private final IntegerProperty idCat = new SimpleIntegerProperty(); // 👈 ID aggiunto
+    private final IntegerProperty idCat = new SimpleIntegerProperty(); //  ID aggiunto
     private final StringProperty nameCat = new SimpleStringProperty();
     private final StringProperty race = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();

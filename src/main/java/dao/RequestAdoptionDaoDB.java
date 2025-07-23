@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** DAO JDBC per la tabella <code>adoption_requests</code>. */
-public class RequestAdoptionDaoDB implements BeanDao<Adoption> {
+public class RequestAdoptionDaoDB implements GenericDao<Adoption> {
 
     private final Connection conn;
 
@@ -19,7 +19,7 @@ public class RequestAdoptionDaoDB implements BeanDao<Adoption> {
     /* --------------------------create------------------------------ */
 
     @Override
-    public void create(Adoption bean) throws SQLException {
+    public void create(Adoption adoption) throws SQLException {
         final String sql = """
             INSERT INTO adoption_requests
               (nameCat, phoneNumber, name, surname, email, address, stateAdoption)
@@ -27,13 +27,13 @@ public class RequestAdoptionDaoDB implements BeanDao<Adoption> {
             """;
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, bean.getNameCat());
-            ps.setString(2, bean.getPhoneNumber());
-            ps.setString(3, bean.getName());
-            ps.setString(4, bean.getSurname());
-            ps.setString(5, bean.getEmail());
-            ps.setString(6, bean.getAddress());
-            ps.setBoolean(7, bean.getStateAdoption());
+            ps.setString(1, adoption.getNameCat());
+            ps.setString(2, adoption.getPhoneNumber());
+            ps.setString(3, adoption.getName());
+            ps.setString(4, adoption.getSurname());
+            ps.setString(5, adoption.getEmail());
+            ps.setString(6, adoption.getAddress());
+            ps.setBoolean(7, adoption.getStateAdoption());
             ps.executeUpdate();
         }
     }
