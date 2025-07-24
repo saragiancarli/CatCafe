@@ -3,8 +3,6 @@ package controller_grafici;
 import entity.Adoption;
 import bean.ModelBeanFactory;
 import controller_applicativi.RequestAdoptionController;
-import dao.CatDaoDB;
-import dao.DatabaseConnectionManager;
 import entity.Cat;
 import entity.Client;
 import facade.ApplicationFacade;
@@ -22,8 +20,7 @@ public class RequestAdoptionGUIController {
     private final NavigationService nav;
     private final RequestAdoption view;
     private final String typeOfLogin;
-    private final RequestAdoptionController request = new RequestAdoptionController();
-    private final CatDaoDB catDAO;
+    private final RequestAdoptionController request;
 
 
 
@@ -31,10 +28,11 @@ public class RequestAdoptionGUIController {
         this.nav = nav;
         this.view = new RequestAdoption();
         this.typeOfLogin = typeOfLogin;
-        this.catDAO = new CatDaoDB(DatabaseConnectionManager.getConnection());
+        this.request = new RequestAdoptionController();
         loadCatsIntoComboBox();
         addEventHandlers();
     }
+
     /* -------------------------- eventi GUI ---------------------- */
     private void addEventHandlers() {
         view.getConferma().setOnAction(_ -> handleConfirm());
@@ -115,7 +113,7 @@ public class RequestAdoptionGUIController {
         }
     }
     private void loadCatsIntoComboBox() {
-        List<Cat> cats = catDAO.readAdoptableCats();    //requestadoptioncontroller.getcats()
+        List<Cat> cats = request.readAdoptableCats();    //requestadoptioncontroller.getcats()
         populateCatNames(cats);
     }
     private void populateCatNames(List<Cat> cats) {

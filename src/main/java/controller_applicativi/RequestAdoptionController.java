@@ -3,8 +3,10 @@ import dao.GenericDao;
 import entity.Adoption;
 import dao.DaoFactory;
 import dao.RequestAdoptionDaoDB;
+import entity.Cat;
 import facade.ApplicationFacade;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,5 +59,10 @@ public class RequestAdoptionController{
             return "error:database_error";
         }
     }
+    public List<Cat> readAdoptableCats() {
+        GenericDao<Cat> catGenericDao = DaoFactory.getInstance().getCatDao();
+        return catGenericDao.readAll();
+    }
+    
 }
 
