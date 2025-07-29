@@ -11,8 +11,6 @@ public interface NavigationService {
     void navigateToAdopt(NavigationService navigationService,String typeOfLogin);
     void navigateToRegistration(NavigationService navigationService,  String typeOfLogin);
     void navigateToHomePage(NavigationService navigationService,String typeOfLogin);
-    void navigateToBooking(NavigationService navigationService,String typeOfLogin);
     void navigateToManageCat(NavigationService navigationService,String typeOfLogin);
-    void navigateToReviview(NavigationService navigationService,String typeOfLogin);
     Stage getStage();
 }

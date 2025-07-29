@@ -31,11 +31,8 @@ public class HomePageAlternativeController {
             return;
         }
         /* Radio-button  ➜  navigazione corrispondente */
-        if (sel == homeView.getBookSeatOption()) {
-        	navigationService.navigateToBooking(navigationService, typeOfLogin);
 
-        } 
-        else if (sel == homeView.getAdoptOption()) {
+         if (sel == homeView.getAdoptOption()) {
             navigationService.navigateToAdopt(navigationService, typeOfLogin);}
 
          
@@ -49,20 +46,11 @@ public class HomePageAlternativeController {
         else if (sel == homeView.getChangeToUserButton()) {
        	 navigationService.navigateToLogin(navigationService, "user");
        }
-        else if (sel == homeView.getReviviewOption()) {
-          	 navigationService.navigateToReviview(navigationService, "user");
-          }
        
     });
 }
 
-  
 
-    
-   public void goToBooking() {navigationService.navigateToBooking(navigationService,typeOfLogin);}
-   public void goToMenageBooking() {
-	   	navigationService.navigateToBooking(navigationService,typeOfLogin);
-	    }
     public void goToAdopt() {
         navigationService.navigateToAdopt(navigationService,typeOfLogin);
     }

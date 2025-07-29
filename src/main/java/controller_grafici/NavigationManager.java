@@ -38,10 +38,6 @@ public class NavigationManager implements NavigationService {
         HomePageController controller = new HomePageController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Home Page");
     }
-    public void navigateToBooking(NavigationService navigationService,String typeOfLogin) {
-        BookingController controller = new BookingController(navigationService,typeOfLogin);
-        this.display(controller.getRoot(), "Booking Page");
-    }
     public void navigateToAdopt(NavigationService navigationService,String typeOfLogin) {
         RequestAdoptionGUIController controller= new RequestAdoptionGUIController(navigationService,typeOfLogin);
         this.display(controller.getRoot(), "Adoption Page");
@@ -50,11 +46,7 @@ public class NavigationManager implements NavigationService {
         ManageCatGUIController controller = new ManageCatGUIController(navigationService, typeOfLogin);
         this.display(controller.getRoot(), "Cat Page");
     }
-        
-        public void navigateToReviview(NavigationService navigationService,String typeOfLogin) {
-        	ReviewController controller = new ReviewController(navigationService,typeOfLogin);
-            this.display(controller.getRoot(), "Booking Page");
-        }
+
         
 
     public void display(VBox root, String title) {

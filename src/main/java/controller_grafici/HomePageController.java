@@ -21,17 +21,11 @@ public class HomePageController {
 
     private void addEventHandlers() {
 
-        homeView.getBookButton().setOnAction(_ -> goToBooking());
         homeView.getAdoptionButton().setOnAction(_ -> goToAdopt());
        
         homeView.getManageCat().setOnAction(_ -> gotoManageCat());
         homeView.getLogoutButton().setOnAction(_ ->goToLogin());
-        homeView.getReviviewButton().setOnAction(_ ->goToReviview());
 
-    }
-
-    public void goToBooking() {
-        navigationService.navigateToBooking(navigationService,typeOfLogin);
     }
     public void goToAdopt() {
         navigationService.navigateToAdopt(navigationService,typeOfLogin);
@@ -42,9 +36,6 @@ public class HomePageController {
     }
     public void goToLogin() {
         navigationService.navigateToLogin(navigationService,typeOfLogin);
-    }
-    public void goToReviview() {
-        navigationService.navigateToReviview(navigationService,typeOfLogin);
     }
     
 

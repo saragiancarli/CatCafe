@@ -72,7 +72,7 @@ public class HomePageAlternative {
         // Aggiunta degli elementi alla root
         root.getChildren().addAll(
                 title,
-               
+
                 bookSeatOption,
                 adoptOption,
                 reviviewOption,
@@ -84,23 +84,12 @@ public class HomePageAlternative {
                 changeToUserOption
         );
     }
-
-    public RadioButton getBookSeatOption() {
-        return bookSeatOption;
-    }
-
     public RadioButton getAdoptOption() {
         return adoptOption;
     }
-    public RadioButton getReviviewOption() {
-        return reviviewOption;
-    }
-
-    
     public RadioButton getCatOption() {
         return catOption;
     }
-
     public Button getConfirmButton() {
         return confirmButton;
     }
@@ -110,16 +99,12 @@ public class HomePageAlternative {
     public RadioButton getChangeToUserButton() {
     	return changeToUserOption; 
     	}
-    
-
     public ToggleGroup getSelectionGroup() {
         return selectionGroup;
     }
-
     public void showSelectionError() {
         selectionError.setVisible(true);
     }
-
     public VBox getRoot() {
         return root;
     }

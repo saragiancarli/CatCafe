@@ -1,13 +1,7 @@
 package bean;
 
 
-
-import java.time.LocalDate;
-import java.util.List;
-
-
 import dao.SessionManager;
-import entity.Client;
 import entity.Adoption;
 import view.*;
 
@@ -94,30 +88,7 @@ public final class ModelBeanFactory {
         b.setUserType(v.getSelectedUserType());
         return b;
     }
-    public static BookingBean getBookingBean(BookingView v) {
-        BookingBean b = new BookingBean();
-        b.setTitle   (v.getNomePrenotazione());
-        b.setDate (v.getDate());
-        b.setTime(v.getTime());                
-        b.setSeats   (v.getParticipants());
-        b.setConfirmationEmail(v.getConfirmationEmail());
-        String sel = v.getSelectedActivityName();  
-        b.setFreeActivities(List.of(sel)); 
-        return b;
-    }
-    
-    public static BookingBean getBookingBean(view.BookingViewAlternative v) {
-        BookingBean b = new BookingBean();
-        b.setTitle   (v.getNomePrenotazione());
-        b.setDate    (v.getDate());
-        b.setTime    (v.getTime());
-        b.setSeats   (v.getParticipants());
-        b.setConfirmationEmail(v.getConfirmationEmail());
-        String sel = v.getSelectedActivity();   
-        b.setFreeActivities(List.of(sel)); 
-        return b;
-    }
-    
+
     public static Adoption getRequestAdoptionBean(RequestAdoption a) {
         Adoption bean = new Adoption();
         bean.setName(a.getName());
@@ -132,29 +103,4 @@ public final class ModelBeanFactory {
 
         return bean;
     }
-    public static ReviewBean getReviewBean(ReviewView v, Client user) {
-        ReviewBean b = new ReviewBean();
-        b.setDate(LocalDate.now());
-        b.setTime(v.getTime());
-        b.setEmail(user == null ? null : user.getEmail());
-        b.setStars(v.getStars());
-        b.setSpecialService(v.getSelectedService());
-        b.setBody(v.getBody());
-        return b;
-    }
-
-    /* ============================================================= */
-    /*                         REVIEW – view alternativa             */
-    /* ============================================================= */
-    public static ReviewBean getReviewBean(ReviewAltView v, Client user) {
-        ReviewBean b = new ReviewBean();
-        b.setDate(LocalDate.now());
-        b.setTime(v.getTime());
-        b.setEmail(user == null ? null : user.getEmail());
-        b.setStars(v.getStars());
-        b.setSpecialService(v.getSelectedService());
-        b.setBody(v.getBody());
-        return b;
-    }
-    
 }

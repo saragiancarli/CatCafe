@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class RequestAdoptionGUIController {
+
     private static final Logger LOG = Logger.getLogger(RequestAdoptionGUIController.class.getName());
     /* ------------------------------------------------------------ */
     private final NavigationService nav;

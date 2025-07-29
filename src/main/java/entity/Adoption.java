@@ -1,16 +1,72 @@
 package entity;
 
-import javafx.beans.property.*;
-
 public class Adoption {
 
-    private final StringProperty nameCat = new SimpleStringProperty();
-    private final StringProperty phoneNumber = new SimpleStringProperty();
-    private final StringProperty name = new SimpleStringProperty();
-    private final StringProperty surname = new SimpleStringProperty();
-    private final StringProperty email = new SimpleStringProperty();
-    private final StringProperty address = new SimpleStringProperty();
-    private final BooleanProperty stateAdoption = new SimpleBooleanProperty(false);
+    private String  nameCat;
+    private String  phoneNumber;
+    private String  name;
+    private String  surname;
+    private String  email;
+    private String  address ;
+    private boolean  stateAdoption =false;
+
+    /* ---------------- getter/setter/property ---------------- */
+    public String getNameCat() {
+        return nameCat;
+    }
+
+    public void setNameCat(String nameCat) {
+        this.nameCat = nameCat;
+    }
+
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public boolean getStateAdoption() {
+        return stateAdoption;
+    }
+
+    public void setStateAdoption(boolean stateAdoption) {
+        this.stateAdoption = stateAdoption;
+    }
 
     /* ---------------- helpers ---------------- */
 
@@ -27,36 +83,6 @@ public class Adoption {
                 emailValue.length() <= 254 &&
                 emailValue.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
     }
-
-    /* ---------------- getter/setter/property ---------------- */
-    public String getNameCat() { return nameCat.get(); }
-    public void setNameCat(String v) { nameCat.set(v); }
-    public StringProperty nameCatProperty() { return nameCat; }
-
-    public String getPhoneNumber() { return phoneNumber.get(); }
-    public void setPhoneNumber(String v) { phoneNumber.set(v); }
-    public StringProperty phoneNumberProperty() { return phoneNumber; }
-
-    public String getName() { return name.get(); }
-    public void setName(String v) { name.set(v); }
-    public StringProperty nameProperty() { return name; }
-
-    public String getSurname() { return surname.get(); }
-    public void setSurname(String v) { surname.set(v); }
-    public StringProperty surnameProperty() { return surname; }
-
-    public String getEmail() { return email.get(); }
-    public void setEmail(String v) { email.set(v); }
-    public StringProperty emailProperty() { return email; }
-
-    public String getAddress() { return address.get(); }
-    public void setAddress(String v) { address.set(v); }
-    public StringProperty addressProperty() { return address; }
-
-    public boolean getStateAdoption() { return stateAdoption.get(); }
-    public void setStateAdoption(boolean v) { stateAdoption.set(v); }
-    public BooleanProperty approvedProperty() { return stateAdoption; }
-
     /* =================== METODI DI VALIDAZIONE =================== */
 
     public boolean hasValidName() {
@@ -74,7 +100,6 @@ public class Adoption {
     public boolean hasValidEmail() {
         return isValidEmail(getEmail());
     }
-
     public boolean hasValidAddress() {
         return isValidString(getAddress(), 200); // 200 chars max for address
     }
@@ -85,7 +110,13 @@ public class Adoption {
 
     @Override
     public String toString() {
-        return "Adoption["+nameCat.get()+", "+name.get()+" "+surname.get() +
-                ", "+email.get()+", "+stateAdoption.get()+"]";
+        return "Adoption[" +
+                "nameCat='" + nameCat + '\'' +
+                ", name='" + name + " " + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", status=" + (stateAdoption ? "Adottato" : "Da adottare") +
+                ']';
     }
 }

@@ -25,20 +25,15 @@ public class DaoFactory implements DaoFactoryInterface {
     /* ---------- cache DAO in-memory ---------- */
     private static UserDaoMemory userDaoMemoryInstance;
     private static StafDaoMemory stafDaoMemoryInstance;
-    private static BookingDaoMemory bookingDaoMemoryInstance;
     private static CatDaoMemory catDaoMemoryInstance;
     private static RequestAdoptionDaoMemory requestAdoptionMemoryInstance;
-    private static GenericDao<Activity> activityDaoMemoryInstance;
-   
-    private static ReviewDaoMemory           reviewDaoMemoryInstance;
-    private static GenericDao<Review>        reviewDaoFileInstance;
+
 
     private static GenericDao<User> userDaoFileInstance;
     private static GenericDao<Staf> stafDaoFileInstance;
-    private static GenericDao<Booking> bookingDaoFileInstance;
     private static GenericDao<Cat> catDaoFileInstance;
     private static GenericDao<Adoption> requestAdoptionDaoFileInstance;
-    private static GenericDao<Activity> activityDaoFileInstance;
+
 
     /* ---------- costruttore privato ---------- */
     public DaoFactory() {
@@ -88,38 +83,6 @@ public class DaoFactory implements DaoFactoryInterface {
         return stafDaoMemoryInstance;
     }
 
-    public GenericDao<Booking> getBookingDao() {
-
-        switch (storageOption) {
-
-            case DATABASE -> {
-                return new BookingDaoDB(DatabaseConnectionManager.getConnection());
-
-            }
-
-            case FILE -> {
-                return getBookingFileInstance();
-            }
-
-            default -> {                              // STATELESS
-                return getBookingMemoryInstance();
-            }
-        }
-    }
-
-
-    private static GenericDao<Booking> getBookingFileInstance() {
-        if (bookingDaoFileInstance == null)
-            bookingDaoFileInstance = new BookingDaoFile();
-        return bookingDaoFileInstance;
-    }
-
-    /* ---- singleton in-memory --------------------------------- */
-    private static BookingDaoMemory getBookingMemoryInstance() {
-        if (bookingDaoMemoryInstance == null)
-            bookingDaoMemoryInstance = new BookingDaoMemory();
-        return bookingDaoMemoryInstance;
-    }
 
     public GenericDao<Adoption> getRequestAdoptionDao() {
         switch (storageOption) {
@@ -157,47 +120,6 @@ public class DaoFactory implements DaoFactoryInterface {
             catDaoMemoryInstance = new CatDaoMemory();
         return catDaoMemoryInstance;
     }
-    
-    public GenericDao<Activity> getActivityDao() {
-        return switch (storageOption) {
-            case DATABASE -> new ActivityDaoDB(DatabaseConnectionManager.getConnection());
-            case FILE -> getActivityFileInstance(); 
-            default -> getActivityMemoryInstance();
-        };
-    }
-    
-    
-    public GenericDao<Review> getReviewDao() {
-        return switch (storageOption) {
-            case DATABASE -> new ReviewDaoDB(DatabaseConnectionManager.getConnection());
-            case FILE     -> getReviewFileInstance();
-            default       -> getReviewMemoryInstance();
-        };
-    }
-    private static GenericDao<Review> getReviewFileInstance() {
-        if (reviewDaoFileInstance == null) reviewDaoFileInstance = new ReviewDaoFile();
-        return reviewDaoFileInstance;
-    }
-    private static ReviewDaoMemory getReviewMemoryInstance() {
-        if (reviewDaoMemoryInstance == null) reviewDaoMemoryInstance = new ReviewDaoMemory();
-        return reviewDaoMemoryInstance;
-    }
-    
-    
 
-    public static GenericDao<Activity> getActivityFileInstance() {
-        if (activityDaoFileInstance == null) {
-            activityDaoFileInstance = new ActivityDaoFile();
-        }
-        return activityDaoFileInstance;
-    }
-
-    public static ActivityDaoMemory getActivityMemoryInstance(){
-        if (activityDaoMemoryInstance == null) {
-            activityDaoMemoryInstance = new ActivityDaoMemory();
-        }
-        return (ActivityDaoMemory) activityDaoMemoryInstance;
-    }
-    
 
 }
