@@ -2,12 +2,12 @@ package bean;
 
 public class AdoptionBean {
 
-    private String nameCat;
-    private String phoneNumber;
-    private String name;
-    private String surname;
-    private String email;
-    private String address;
+    private String  nameCat;
+    private String  phoneNumber;
+    private String  name;
+    private String  surname;
+    private String  email;
+    private String  address;
     private boolean stateAdoption;
 
     /* -------------- validazioni -------------- */

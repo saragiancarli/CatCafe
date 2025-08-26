@@ -11,6 +11,20 @@ public class Adoption {
     private boolean  stateAdoption =false;
 
     /* ---------------- getter/setter/property ---------------- */
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
     public String getNameCat() {
         return nameCat;
     }
@@ -26,18 +40,6 @@ public class Adoption {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
     }
 
     public void setSurname(String surname) {
