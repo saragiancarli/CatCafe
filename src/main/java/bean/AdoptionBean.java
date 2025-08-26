@@ -46,14 +46,6 @@ public class AdoptionBean {
     public void setNameCat(String nameCat) {
         this.nameCat = nameCat;
     }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
     public String getEmail() {
         return email;
     }
@@ -62,13 +54,15 @@ public class AdoptionBean {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
+
+
 
     public boolean getStateAdoption() {
         return stateAdoption;
@@ -80,6 +74,13 @@ public class AdoptionBean {
 
     public String getName() {
         return name;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void setName(String name) {
