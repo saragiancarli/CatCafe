@@ -40,8 +40,8 @@ public class ManageCatGUIController {
 
         // CONFERMA / CREA
         view.getBtnConfirm().setOnAction(_ -> {
+            Cat selectedCat = bean.getSelected();
             if (deleteMode) {
-                Cat selectedCat = bean.getSelected();
                 if (selectedCat != null) {
                     logger.info("Sto eliminando il gatto con id: " + selectedCat.getIdCat());
                     service.cancelCat(selectedCat);
@@ -52,7 +52,6 @@ public class ManageCatGUIController {
                 }
                 deleteMode = false; // resetta modalità cancellazione
             } else {
-                Cat selectedCat = bean.getSelected();
                 if (selectedCat != null) {
                     if (selectedCat.getIdCat() > 0) {
                         // se ha id => è già nel DB => aggiorno
