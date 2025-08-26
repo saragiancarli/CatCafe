@@ -8,18 +8,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public  class LoginView {
-    private VBox root;
-    private Label titleLabel;
-    private TextField emailField;
-    private Label emailErrorLabel;
-    private PasswordField passwordField;
-    private Label passwordErrorLabel;
-    private Button loginButton;
+    private final VBox root;
+    private final Label titleLabel;
+    private final TextField emailField;
+    private final Label emailErrorLabel;
+    private final PasswordField passwordField;
+    private final Label passwordErrorLabel;
+    private final Button loginButton;
     
-    private Text errorMessage;
-    private Text registrationPrompt;
-    private Button registerButton;
-	private String typeOfLogin;
+    private final Text errorMessage;
+    private final Text registrationPrompt;
+    private final Button registerButton;
+	private final String typeOfLogin;
 	
 
     public LoginView(String typeOfLogin) {

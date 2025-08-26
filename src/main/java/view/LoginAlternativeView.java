@@ -6,20 +6,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public  class LoginAlternativeView {
-    private VBox root;
-    private Label titleLabel;
-    private TextField emailField;
-    private Label emailErrorLabel;
-    private PasswordField passwordField;
-    private Label passwordErrorLabel;
-    private RadioButton clientLoginOption;
-    private RadioButton stafLoginOption;
-    private ToggleGroup loginTypeGroup;
-    private Button confirmButton;
-   
-    private Text errorMessage;
-    private Text registrationPrompt;
-    private Button registerButton;
+    private final VBox root;
+    private final TextField emailField;
+    private final Label emailErrorLabel;
+    private final PasswordField passwordField;
+    private final Label passwordErrorLabel;
+    private final RadioButton clientLoginOption;
+    private final RadioButton stafLoginOption;
+    private final ToggleGroup loginTypeGroup;
+    private final Button confirmButton;
+    private final Text errorMessage;
+    private final Text registrationPrompt;
+    private final Button registerButton;
 
     public LoginAlternativeView() {
         root = new VBox(15);
@@ -27,7 +25,7 @@ public  class LoginAlternativeView {
         root.setAlignment(Pos.CENTER);
         root.getStyleClass().add("root");
 
-        titleLabel = new Label("Benventuto accedi con le tue credenziali");
+        Label titleLabel = new Label("Benventuto accedi con le tue credenziali");
         
 
         emailField = new TextField();

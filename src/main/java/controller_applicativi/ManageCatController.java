@@ -2,27 +2,21 @@ package controller_applicativi;
 import dao.DaoFactory;
 import dao.GenericDao;
 import entity.Cat;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import bean.ManageCatBean;
 import exception.CatDaoException;
 
 public class ManageCatController {
 
-    private static final Logger LOG =
-            Logger.getLogger(ManageCatController.class.getName());
+    private static final Logger LOG = Logger.getLogger(ManageCatController.class.getName());
 
-
-    private final GenericDao<Cat> catDao =
-            DaoFactory.getInstance().getCatDao();
+    private final GenericDao<Cat> catDao = DaoFactory.getInstance().getCatDao();
 
     /* ----- carica tutti i gatti ----- */
-    public List<Cat> loadAll() {return catDao.readAll();
-    }
+    public List<Cat> loadAll() {return catDao.readAll();}
 
     /* ----- aggiunta nuovo gatto ----- */
     public void newCat(ManageCatBean bean) {
@@ -35,6 +29,25 @@ public class ManageCatController {
             catDao.create(bean.getSelected());  // Assicurati che CatDaoDB abbia create/update/delete
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, "Errore DB durante l'inserimento del gatto", e);
+        }
+    }
+    /* ----- aggiornamento gatto ----- */
+    public void updateCat(ManageCatBean bean) {
+        if (!bean.isSelected()) {
+            LOG.log(Level.WARNING, "Nessun gatto selezionato per l'aggiornamento.");
+            return;
+        }
+
+        try {
+            Cat selected = bean.getSelected();
+            if (selected.getIdCat() == 0) {
+                LOG.log(Level.SEVERE, "idCat mancante: impossibile aggiornare");
+                return;
+            }
+            catDao.update(selected);
+        } catch (SQLException e) {
+            LOG.log(Level.SEVERE, "Errore DB durante l'aggiornamento del gatto", e);
+            throw new CatDaoException("Errore DB durante l'aggiornamento del gatto", e);
         }
     }
 

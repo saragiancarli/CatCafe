@@ -37,7 +37,6 @@ public final class ApplicationFacade {
         LOG.info(() -> "ApplicationFacade inizializzata in modalità " + storageMode);
     }
 
-    /** Controlla se le credenziali sono valide. */
     public static boolean isLoginValid(LoginBean bean) {
         ensureInit();
         try {

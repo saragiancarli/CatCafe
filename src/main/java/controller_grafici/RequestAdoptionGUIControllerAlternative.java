@@ -1,5 +1,6 @@
 package controller_grafici;
 
+import bean.AdoptionBean;
 import entity.Adoption;
 import controller_applicativi.RequestAdoptionController;
 import dao.CatDaoMemory;
@@ -34,7 +35,7 @@ public class RequestAdoptionGUIControllerAlternative {
     }
     private void handleConfirm() {
 
-        Adoption bean = new Adoption();
+        AdoptionBean bean = new AdoptionBean();
         bean.setName(view.getName());
         bean.setSurname(view.getSurname());
         bean.setPhoneNumber(view.getPhoneNumber());

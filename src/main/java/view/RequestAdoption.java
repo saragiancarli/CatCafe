@@ -18,7 +18,6 @@ public class RequestAdoption {
     private final TextField indirizzo;
     private final TextField telefono;
 
-    private final Button modifica;
     private final Button conferma;
     private final Button annulla;
 
@@ -82,14 +81,9 @@ public class RequestAdoption {
         telefonoErrorLabel = makeErrLabel();
 
         // Bottoni
-        modifica = new Button("Modifica richieste adozione");
         conferma = new Button("Conferma");
         annulla = new Button("Annulla");
 
-        // Layout bottone "Modifica" in basso a sinistra
-        HBox modificaBox = new HBox(modifica);
-        modificaBox.setAlignment(Pos.CENTER_LEFT);
-        modificaBox.setPadding(new Insets(20, 0, 0, 0));
 
         // Layout bottoni "Conferma" e "Annulla" centrati
         HBox azioniBox = new HBox(15, conferma, annulla);
@@ -105,7 +99,6 @@ public class RequestAdoption {
                 emailConfermaLabel, emailConferma, emailConfermaErrorLabel,
                 indirizzoLabel, indirizzo, indirizzoErrorLabel,
                 telefonoLabel, telefono, telefonoErrorLabel,
-                modificaBox,
                 azioniBox
         );
     }
@@ -116,9 +109,6 @@ public class RequestAdoption {
         return root;
     }
 
-    public Button getModifica() {
-        return modifica;
-    }
 
     public Button getConferma() {
         return conferma;

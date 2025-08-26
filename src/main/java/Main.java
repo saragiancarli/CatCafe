@@ -39,7 +39,7 @@ public class Main extends Application {
 
         /* ===== Pulsante conferma ===== */
         Button confirmBtn = new Button("Conferma");
-        confirmBtn.setOnAction(e -> {
+        confirmBtn.setOnAction(_ -> {
 
         	Store selectedStore;                // 1. dichiara la variabile
 

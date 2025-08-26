@@ -41,6 +41,7 @@ public class ManageCatBean {
     public boolean isSelected() {
         return selected != null;
     }
+
 }
 
 

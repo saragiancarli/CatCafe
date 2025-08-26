@@ -6,17 +6,14 @@ import javafx.scene.layout.VBox;
 
 public class HomePageAlternative {
     protected VBox root;
-    private final RadioButton bookSeatOption;
     private final RadioButton adoptOption;
-    private final RadioButton reviviewOption;
-    
     private final RadioButton catOption;
     private final Button confirmButton;
     private final ToggleGroup selectionGroup;
     private final Label selectionError;
     private final RadioButton changeToStaftOption;
     private final RadioButton changeToUserOption;
-	private String typeOfLogin;
+	private final String typeOfLogin;
 	  String role;
     
 
@@ -39,24 +36,18 @@ public class HomePageAlternative {
         // Gruppo di selezione con RadioButton
         selectionGroup = new ToggleGroup();
 
-        bookSeatOption = new RadioButton("Prenota Tavolo");
         adoptOption = new RadioButton("Adotta");
-        reviviewOption= new RadioButton("Lascia una tua recensione");
         catOption = new RadioButton("Gestisci Gatti");
         changeToStaftOption= new RadioButton("Vuoi passare al pannello di controllo dello Staf?");
         changeToUserOption= new RadioButton("Vuoi passare alla schermata da Utente?");
-        
-        bookSeatOption.setToggleGroup(selectionGroup);
+
         adoptOption.setToggleGroup(selectionGroup);
-        reviviewOption.setToggleGroup(selectionGroup);
         catOption.setToggleGroup(selectionGroup);
         changeToStaftOption.setToggleGroup(selectionGroup);
         changeToUserOption.setToggleGroup(selectionGroup);
-        
-        bookSeatOption .setDisable(!isUser);
+
         adoptOption    .setDisable(!isUser);
         changeToStaftOption.setDisable(!isUser);
-        reviviewOption.setDisable(!isUser);
 
         catOption .setDisable(!isStaf);
         changeToUserOption.setDisable(!isStaf);
@@ -73,9 +64,7 @@ public class HomePageAlternative {
         root.getChildren().addAll(
                 title,
 
-                bookSeatOption,
                 adoptOption,
-                reviviewOption,
                 
                 catOption,
                 selectionError,

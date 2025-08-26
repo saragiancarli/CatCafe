@@ -18,7 +18,6 @@ public class ManageCatGUIController {
 
     private final ManageCat view = new ManageCat();
     private final ManageCatController service = new ManageCatController();
-
     private final ManageCatBean bean = new ManageCatBean();
     private final NavigationService navigationService;
     private final String typeOfLogin;
@@ -45,7 +44,7 @@ public class ManageCatGUIController {
                 Cat selectedCat = bean.getSelected();
                 if (selectedCat != null) {
                     logger.info("Sto eliminando il gatto con id: " + selectedCat.getIdCat());
-                    service.cancelCat(selectedCat);  // passare il gatto completo
+                    service.cancelCat(selectedCat);
                     refreshTable();
                     logger.info("Gatto eliminato.");
                 } else {
@@ -53,9 +52,20 @@ public class ManageCatGUIController {
                 }
                 deleteMode = false; // resetta modalità cancellazione
             } else {
-                if (bean.isSelected()) {
-                    service.newCat(bean);
+                Cat selectedCat = bean.getSelected();
+                if (selectedCat != null) {
+                    if (selectedCat.getIdCat() > 0) {
+                        // se ha id => è già nel DB => aggiorno
+                        logger.info("Aggiornamento gatto con id: " + selectedCat.getIdCat());
+                        service.updateCat(bean);
+                    } else {
+                        // se non ha id => nuovo gatto
+                        logger.info("Creazione nuovo gatto");
+                        service.newCat(bean);
+                    }
                     refreshTable();
+                } else {
+                    logger.info("Nessun gatto selezionato.");
                 }
             }
         });

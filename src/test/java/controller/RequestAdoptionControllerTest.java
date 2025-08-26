@@ -1,5 +1,6 @@
 package controller;
 
+import bean.AdoptionBean;
 import controller_applicativi.RequestAdoptionController;
 import dao.DaoFactory;
 import dao.GenericDao;
@@ -16,11 +17,6 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-/**
- * Test sviluppatato da Sara Giancarli
- * Test di integrazione su {RequestAdoptionController}.
- * Usiamo DAO mockati, così NON tocchiamo il DB vero.
- */
 @ExtendWith(MockitoExtension.class)
 class RequestAdoptionControllerTest {
 
@@ -35,8 +31,8 @@ class RequestAdoptionControllerTest {
     private RequestAdoptionController controller;
 
     /* ------------ dati ----------------- */
-    private Adoption validAdoption;
-    private Adoption invalidAdoption;   // phone vuoto
+    private AdoptionBean validAdoption;
+    private AdoptionBean invalidAdoption;   // phone vuoto
 
     @BeforeEach
     void setUp()  {
@@ -53,7 +49,7 @@ class RequestAdoptionControllerTest {
        
 
         /* ---------- richiesta valida ---------- */
-        validAdoption = new Adoption();
+        validAdoption = new AdoptionBean();
         validAdoption.setName("Alice");
         validAdoption.setSurname("Wonder");
         validAdoption.setPhoneNumber("3331234567");
@@ -63,7 +59,7 @@ class RequestAdoptionControllerTest {
         validAdoption.setStateAdoption(false);   // default
 
         /* ---------- richiesta non valida ---------- */
-        invalidAdoption = new Adoption();
+        invalidAdoption = new AdoptionBean();
         invalidAdoption.setName("Bob");
         invalidAdoption.setSurname("Bad");
         invalidAdoption.setPhoneNumber("");        // <- errore

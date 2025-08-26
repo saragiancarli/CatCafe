@@ -7,14 +7,9 @@ import javafx.scene.layout.VBox;
 public class HomePageView {
 
     private final VBox    root = new VBox(20);
-
-
     private final Button adoptionButton     = new Button("Adotta un gatto!!");
-   
     private final Button menageCatButton    = new Button("Gestisci i gatti del cat cafè");
     private final Button logoutButton       = new Button("Logout");
-
-    
 
     /* ------------------------------------------------------------ */
     public HomePageView(String typeOfLogin) {
@@ -30,7 +25,7 @@ public class HomePageView {
 
         /* Messaggio descrittivo */
         String msg = isUser
-                ? "Effettuate la vostra prenotazione e godetevi i nostri gatti."
+                ? "Aprite il cuore: scoprite i gatti in attesa di una nuova famiglia.."
                 : "Benvenuto nel pannello di controllo per lo staf.";
         Label description = new Label(msg);
 

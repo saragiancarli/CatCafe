@@ -1,6 +1,6 @@
 package controller_grafici;
 
-import entity.Adoption;
+import bean.AdoptionBean;
 import bean.ModelBeanFactory;
 import controller_applicativi.RequestAdoptionController;
 import entity.Cat;
@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 public class RequestAdoptionGUIController {
 
     private static final Logger LOG = Logger.getLogger(RequestAdoptionGUIController.class.getName());
-    /* ------------------------------------------------------------ */
     private final NavigationService nav;
     private final RequestAdoption view;
     private final String typeOfLogin;
@@ -37,12 +36,11 @@ public class RequestAdoptionGUIController {
     private void addEventHandlers() {
         view.getConferma().setOnAction(_ -> handleConfirm());
         view.getAnnulla().setOnAction(_ -> handleCancel());
-        view.getModifica().setOnAction(_ -> handleModify());
     }
     private void handleConfirm() {
         view.hideAllErrors();
 
-        Adoption adoption;
+        AdoptionBean adoption;
         try {
             adoption = ModelBeanFactory.getRequestAdoptionBean(view);
         } catch (IllegalArgumentException e) {

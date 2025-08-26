@@ -1,4 +1,5 @@
 package controller_applicativi;
+import bean.AdoptionBean;
 import dao.GenericDao;
 import entity.Adoption;
 import dao.DaoFactory;
@@ -16,30 +17,34 @@ public class RequestAdoptionController{
 
     private final GenericDao<Adoption> adoptionDao = DaoFactory.getInstance().getRequestAdoptionDao();
 
-    /**
-     * Crea una richiesta di adozione.
-     * @param a dati della richiesta
-     * @return "success" | "error:validation" | "error:duplicate" | "error:database_error"
-     */
-
-    public String requestAdoption(Adoption a) {
+    public String requestAdoption(AdoptionBean bean) {
 
         /* ---------- validation ---------- */
-        if (!a.hasValidName() ||
-                !a.hasValidSurname() ||
-                !a.hasValidPhoneNumber() ||
-                !a.hasValidEmail() ||
-                !a.hasValidAddress() ||
-                !a.hasValidStatus() ||
-                a.getNameCat() == null || a.getNameCat().isBlank()) {
+        if (!bean.hasValidName() ||
+                !bean.hasValidSurname() ||
+                !bean.hasValidPhoneNumber() ||
+                !bean.hasValidEmail() ||
+                !bean.hasValidAddress() ||
+                !bean.hasValidStatus() ||
+                bean.getNameCat() == null || bean.getNameCat().isBlank()) {
             return "error:validation";
         }
+        Adoption adoptionEntity = new Adoption();
+        adoptionEntity.setName(bean.getName());
+        adoptionEntity.setSurname(bean.getSurname());
+        adoptionEntity.setPhoneNumber(bean.getPhoneNumber());
+        adoptionEntity.setEmail(bean.getEmail());
+        adoptionEntity.setAddress(bean.getAddress());
+        adoptionEntity.setNameCat(bean.getNameCat());
+        adoptionEntity.setStateAdoption(bean.getStateAdoption());
+
+
 
         /* ---------- check duplicates ---------- */
 
         if (adoptionDao instanceof RequestAdoptionDaoDB daoDB) {
             try {
-                boolean exists = daoDB.existsByEmailAndCat(a.getEmail(), a.getNameCat());
+                boolean exists = daoDB.existsByEmailAndCat(bean.getEmail(), bean.getNameCat());
                 if (exists) {
                     return "error:duplicate";
                 }
@@ -51,8 +56,8 @@ public class RequestAdoptionController{
 
         /* ---------- PERSISTENZA ---------- */
         try {
-            adoptionDao.create(a);
-            ApplicationFacade.sendAdoptionConfirmationEmail(a);
+            adoptionDao.create(adoptionEntity);
+            ApplicationFacade.sendAdoptionConfirmationEmail(adoptionEntity);
             return "success";
         } catch (SQLException ex) {
             LOG.log(Level.SEVERE, "Errore DB durante insert adozione", ex);

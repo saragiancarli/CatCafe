@@ -2,7 +2,6 @@ package bean;
 
 
 import dao.SessionManager;
-import entity.Adoption;
 import view.*;
 
 public final class ModelBeanFactory {
@@ -89,13 +88,12 @@ public final class ModelBeanFactory {
         return b;
     }
 
-    public static Adoption getRequestAdoptionBean(RequestAdoption a) {
-        Adoption bean = new Adoption();
+    public static AdoptionBean getRequestAdoptionBean(RequestAdoption a) {
+        AdoptionBean bean = new AdoptionBean();
         bean.setName(a.getName());
         bean.setSurname(a.getSurname());
         String phoneNumber = a.getPhoneNumber();
         bean.setPhoneNumber(phoneNumber);
-
         bean.setEmail(a.getEmail());
         bean.setAddress(a.getAddress());
         bean.setNameCat(a.getSelectedCatName());

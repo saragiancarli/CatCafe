@@ -1,6 +1,5 @@
 package bean;
 
-import entity.Adoption;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +20,7 @@ class ModelBeanFactoryAdoptionTest {
     @Mock
     private RequestAdoption view;   // view mockata
 
-    private Adoption adoptionBean;
+    private AdoptionBean adoptionBean;
 
     @BeforeEach
     void setUp() {
