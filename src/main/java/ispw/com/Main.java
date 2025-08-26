@@ -1,3 +1,5 @@
+package ispw.com;
+
 import controller_grafici.NavigationManager;
 import controller_grafici.NavigationManagerAlternative;
 import controller_grafici.NavigationService;
